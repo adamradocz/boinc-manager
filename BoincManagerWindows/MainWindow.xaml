@@ -47,7 +47,7 @@
                     <Image Source="Resources\delete.png" />
                 </MenuItem.Icon>
             </MenuItem>
-            <MenuItem Header="Properties">
+            <MenuItem Header="Properties TODO">
                 <MenuItem.Icon>
                     <Image Source="Resources\information.png" />
                 </MenuItem.Icon>
@@ -79,7 +79,7 @@
                     <Image Source="Resources\delete.png" />
                 </MenuItem.Icon>
             </MenuItem>
-            <MenuItem Header="Properties">
+            <MenuItem Header="Properties TODO">
                 <MenuItem.Icon>
                     <Image Source="Resources\information.png" />
                 </MenuItem.Icon>
@@ -106,7 +106,7 @@
                     <Image Source="Resources\delete.png" />
                 </MenuItem.Icon>
             </MenuItem>
-            <MenuItem Header="Properties">
+            <MenuItem Header="Properties TODO">
                 <MenuItem.Icon>
                     <Image Source="Resources\information.png" />
                 </MenuItem.Icon>
@@ -194,7 +194,7 @@
                     <Button>
                         <StackPanel Orientation="Horizontal">
                             <Image Source="Resources\information.png" Margin="0,0,5,0"/>
-                            <TextBlock Text="Properties"/>
+                            <TextBlock Text="Properties TODO"/>
                         </StackPanel>
                     </Button>
                 </ToolBar>
@@ -239,7 +239,7 @@
                     <Button>
                         <StackPanel Orientation="Horizontal">
                             <Image Source="Resources\information.png" Margin="0,0,5,0"/>
-                            <TextBlock Text="Properties"/>
+                            <TextBlock Text="Properties TODO"/>
                         </StackPanel>
                     </Button>
                 </ToolBar>
@@ -265,7 +265,7 @@
                     <Button>
                         <StackPanel Orientation="Horizontal">
                             <Image Source="Resources\information.png" Margin="0,0,5,0"/>
-                            <TextBlock Text="Properties"/>
+                            <TextBlock Text="Properties TODO"/>
                         </StackPanel>
                     </Button>
                 </ToolBar>
