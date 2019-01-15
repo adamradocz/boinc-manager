@@ -252,9 +252,7 @@ namespace BoincManagerWindows.ViewModels
                         break;
                     }
                 }
-            }
-
-            
+            }            
         }
 
         private async void ExecuteConnectComputerCommand()
@@ -539,7 +537,7 @@ namespace BoincManagerWindows.ViewModels
         
         public async Task Connect(ComputerViewModel computer)
         {
-            if (string.IsNullOrEmpty(computer.IpAddress) || string.IsNullOrEmpty(computer.Password) || computer.Connected)
+            if (string.IsNullOrWhiteSpace(computer.IpAddress) || string.IsNullOrEmpty(computer.Password) || computer.Connected)
             {
                 return;
             }
@@ -555,20 +553,21 @@ namespace BoincManagerWindows.ViewModels
                 hostState.Authorized = await hostState.RpcClient.AuthorizeAsync(computer.Password);
 
                 if (hostState.Authorized)
-                {
-                    computer.Status = "Connected. Updating...";
-
-                    hostsState.Add(computer.Id, hostState);
-
-                    // Updating the hostState Model
-                    await hostState.BoincState.UpdateAll();
-
-                    // Updating the ComputerViewModel
-                    await computer.FirstUpdateOnConnect(hostState);
-
+                {                    
                     // Since the ObservableCollections is created on UI thread, it can only be modified from UI thread and not from other threads.
                     await Application.Current.Dispatcher.Invoke(async delegate
                     {
+                        computer.Status = "Connected. Updating...";
+
+                        hostsState.Add(computer.Id, hostState);
+
+                        // Updating the hostState Model
+                        await hostState.BoincState.UpdateAll();
+
+                        // Updating the ComputerViewModel
+                        await computer.FirstUpdateOnConnect(hostState);
+
+                        
                         UpdateProjectViewModels(hostState);
                         UpdateTaskViewModels(hostState);
                         UpdateTransferViewModels(hostState);
@@ -606,7 +605,7 @@ namespace BoincManagerWindows.ViewModels
         {
             Status = "Updating...";
 
-            // Enable synchronization with a collection that changes from different threads. It collection has to be syncronized because of the ParallelForEachAsync.
+            // Enable synchronization with a collection that changes from different threads. The collection has to be syncronized because of the ParallelForEachAsync.
             // (Exception will be thrown when an item's source has changed from another thread and DataGrid doesn't receive a notification (CollectionChanged event) about ItemsSource being changed.)
             switch (CurrentTabPage)
             {             
