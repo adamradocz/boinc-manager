@@ -124,6 +124,7 @@ namespace BoincManagerWindows.ViewModels
 
         public IEnumerable<string> GetContentsForFiltering()
         {
+            yield return ComputerName;
             yield return Project;
             yield return Application;
             yield return Workunit;
@@ -137,6 +138,8 @@ namespace BoincManagerWindows.ViewModels
 
         public static IEnumerable<string> GetLiveFilteringProperties()
         {
+            yield return nameof(ComputerName);
+            yield return nameof(Project);
             //yield return nameof(CpuTime);
             //yield return nameof(CpuTimeRemaining);
             //yield return nameof(LastCheckpoint);

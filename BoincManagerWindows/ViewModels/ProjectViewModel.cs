@@ -72,6 +72,7 @@ namespace BoincManagerWindows.ViewModels
 
         public IEnumerable<string> GetContentsForFiltering()
         {
+            yield return ComputerName;
             yield return Name;
             yield return Username;
             yield return Team;
@@ -82,6 +83,10 @@ namespace BoincManagerWindows.ViewModels
 
         public static IEnumerable<string> GetLiveFilteringProperties()
         {
+            yield return nameof(ComputerName);
+            yield return nameof(Name);
+            yield return nameof(Username);
+            yield return nameof(Team);
             yield return nameof(Status);
         }
     }

@@ -87,6 +87,7 @@ namespace BoincManagerWindows.ViewModels
 
         public IEnumerable<string> GetContentsForFiltering()
         {
+            yield return ComputerName;
             yield return Project;
             yield return FileName;
             yield return FileSize;
@@ -98,6 +99,8 @@ namespace BoincManagerWindows.ViewModels
 
         public static IEnumerable<string> GetLiveFilteringProperties()
         {
+            yield return nameof(ComputerName);
+            yield return nameof(Project);
             //yield return nameof(TransferRate);
             //yield return nameof(ElapsedTime);
             //yield return nameof(TimeRemaining);

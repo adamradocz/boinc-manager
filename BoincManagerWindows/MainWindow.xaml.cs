@@ -30,22 +30,28 @@ namespace BoincManagerWindows
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
             // Constructor is too early for setting these properties.
-            projectsDataGrid.Items.IsLiveFiltering = true;
-            foreach (string prop in ProjectViewModel.GetLiveFilteringProperties())
+            computersDataGrid.Items.IsLiveFiltering = true;
+            foreach (string propertie in ComputerViewModel.GetLiveFilteringProperties())
             {
-                projectsDataGrid.Items.LiveFilteringProperties.Add(prop);
+                computersDataGrid.Items.LiveFilteringProperties.Add(propertie);
+            }
+
+            projectsDataGrid.Items.IsLiveFiltering = true;
+            foreach (string propertie in ProjectViewModel.GetLiveFilteringProperties())
+            {
+                projectsDataGrid.Items.LiveFilteringProperties.Add(propertie);
             }
 
             tasksDataGrid.Items.IsLiveFiltering = true;
-            foreach (string prop in TaskViewModel.GetLiveFilteringProperties())
+            foreach (string propertie in TaskViewModel.GetLiveFilteringProperties())
             {
-                tasksDataGrid.Items.LiveFilteringProperties.Add(prop);
+                tasksDataGrid.Items.LiveFilteringProperties.Add(propertie);
             }
 
             transfersDataGrid.Items.IsLiveFiltering = true;
-            foreach (string prop in TransferViewModel.GetLiveFilteringProperties())
+            foreach (string propertie in TransferViewModel.GetLiveFilteringProperties())
             {
-                transfersDataGrid.Items.LiveFilteringProperties.Add(prop);
+                transfersDataGrid.Items.LiveFilteringProperties.Add(propertie);
             }            
             
             await viewModel.ConnectToAllComputers();            
@@ -183,9 +189,9 @@ namespace BoincManagerWindows
                     if (filterableViewModel == null)
                         return true;
 
-                    string searchTerms = filterTextBox.Text;
+                    string searchTerms = filterTextBox.Text;                    
 
-                    return filterableViewModel.GetContentsForFiltering().Any(content => content.IndexOf(searchTerms, StringComparison.InvariantCultureIgnoreCase) != -1);
+                    return filterableViewModel.GetContentsForFiltering().Any(content => content != null && content.IndexOf(searchTerms, StringComparison.InvariantCultureIgnoreCase) != -1);
                 };
             }
         }

@@ -33,6 +33,7 @@ namespace BoincManagerWindows.ViewModels
 
         public IEnumerable<string> GetContentsForFiltering()
         {
+            yield return ComputerName;
             yield return Project;
             yield return Date;
             yield return Message;
