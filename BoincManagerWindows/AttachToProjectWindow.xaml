@@ -1,0 +1,96 @@
+﻿<Window x:Class="BoincManagerWindows.AttachToProjectWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:BoincManagerWindows"
+        Title="Attach to project" Height="600" Width="800" WindowStartupLocation="CenterOwner" UseLayoutRounding="True">
+    <Window.Resources>
+        <local:ProjectHomeConverter x:Key="projectHomeConverter" />
+    </Window.Resources>
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+            <RowDefinition Height="150" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <TextBlock Margin="0,0,0,20" Grid.Row="0">The following is a list of well-known BOINC projects that do research in various areas. Select a project you like and click "continue".</TextBlock>
+        <CheckBox Name="checkBoxGroup" Content="Group by research area" Margin="0,0,0,10" IsChecked="True" HorizontalAlignment="Right" Grid.Row="1"
+                  Click="checkBoxGroup_Click" />
+        <ListView Name="listViewAllProjectList" SelectionMode="Single" IsSynchronizedWithCurrentItem="True" Grid.Row="2">
+            <ListView.GroupStyle>
+                <GroupStyle>
+                    <GroupStyle.HeaderTemplate>
+                        <DataTemplate>
+                            <TextBlock FontSize="15" FontWeight="Bold" Text="{Binding Name}"/>
+                        </DataTemplate>
+                    </GroupStyle.HeaderTemplate>
+                </GroupStyle>
+            </ListView.GroupStyle>
+            <!--<ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="ToolTip">
+                        <Setter.Value>
+                            <ToolTip MaxWidth="450">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition />
+                                    </Grid.RowDefinitions>
+                                    <TextBlock Grid.Row="0" FontSize="15" FontWeight="Bold" Margin="10" HorizontalAlignment="Left" Text="{Binding Name}" />
+                                    <TextBlock Grid.Row="1" Foreground="Blue" Text="Website" Cursor="Hand" HorizontalAlignment="Left" Margin="10,0,10,10" />
+                                    <Image Grid.Row="0" Grid.RowSpan="2" HorizontalAlignment="Right" MaxWidth="200" MaxHeight="46" Margin="10"
+                       Source="{Binding Image}" />
+                                    <TextBlock Grid.Row="2" Text="{Binding Description}" TextWrapping="Wrap" Margin="10" />
+                                </Grid>
+                            </ToolTip>
+                        </Setter.Value>
+                    </Setter>
+                    <Setter Property="ToolTipService.ShowDuration" Value="60000" />
+                </Style>
+            </ListView.ItemContainerStyle>-->
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Project" DisplayMemberBinding="{Binding Name}" />
+                    <GridViewColumn Header="Research area" DisplayMemberBinding="{Binding SpecificArea}" />
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <!--<StackPanel Name="stackPanelLoading" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="2">
+            <local:BoincProgressIndicator Margin="10" />
+            <TextBlock Text="Loading project details..." />
+        </StackPanel>-->
+        <TextBlock Name="textBlockLoading" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="2">Loading project details...</TextBlock>
+        <GroupBox Header="Selected project" Grid.Row="3">          
+            <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" >
+                <Grid DataContext="{Binding ElementName=listViewAllProjectList, Path=ItemsSource}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Row="0" FontSize="15" FontWeight="Bold" Margin="10" HorizontalAlignment="Left" Text="{Binding Name}" />
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="10,0,10,10" Grid.Row="1">                        
+                        <TextBlock Text="{Binding Home, Converter={StaticResource projectHomeConverter}}" />                            
+                        <TextBlock Name="textBlockWebsite" Foreground="Blue" Text="Website" Cursor="Hand" MouseLeftButtonUp="textBlockWebsite_MouseLeftButtonUp" />
+                    </StackPanel>                  
+                    <Image Grid.Row="0" Grid.RowSpan="2" HorizontalAlignment="Right" MaxWidth="200" MaxHeight="46" Margin="10"
+                           Source="{Binding Image}" />
+                    <TextBlock Grid.Row="2" Text="{Binding Description}" TextWrapping="Wrap" Margin="10" />
+                </Grid>
+            </ScrollViewer>
+        </GroupBox>
+        <TextBlock Margin="0,20,0,10" Grid.Row="4">Your project does not appear in the list above? Copy and paste the project's website address below:</TextBlock>
+        <DockPanel Margin="0,0,0,20" Grid.Row="5">
+            <TextBlock Margin="0,0,10,0" VerticalAlignment="Center" DockPanel.Dock="Left">URL:</TextBlock>
+            <TextBox Name="textBoxUrl" DataContext="{Binding ElementName=listViewAllProjectList, Path=ItemsSource}" Text="{Binding Url, Mode=OneWay}"  />
+        </DockPanel>
+        <DockPanel LastChildFill="False" Grid.Row="6">
+            <Button Name="buttonCancel" Content="Cancel" DockPanel.Dock="Right" Click="buttonCancel_Click" />
+            <Button Name="buttonContinue" Content="Continue" DockPanel.Dock="Right" Margin="0,0,10,0" Click="buttonContinue_Click" />
+        </DockPanel>
+    </Grid>
+</Window>

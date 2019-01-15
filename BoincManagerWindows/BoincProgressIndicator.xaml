@@ -1,0 +1,76 @@
+﻿<UserControl x:Class="BoincManagerWindows.BoincProgressIndicator"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignWidth="50" d:DesignHeight="50">
+    <UserControl.Resources>
+        <PathGeometry x:Key="ringGeometry" Figures="M12.744002,44.568 L9.4320024,41.76 C7.7760024,40.32 7.4880024,39.744 7.5600024,37.872 7.5600024,37.872 7.7040024,36.576 7.7040024,36.504 7.9920024,31.896 6.3360024,27.216 2.6640024,23.688 1.8000024,22.896 0.93600244,22.176 2.4414063E-06,21.528 2.4414063E-06,21.528 5.2211472,16.750012 5.2211472,16.750012 15.304417,24.582943 16.269986,35.740817 12.773336,44.556115 12.701336,44.628115 12.744002,44.568 12.744002,44.568 z" />
+        <RadialGradientBrush x:Key="ringFillBrush" Center="64.704102,35.215801" RadiusX="111.2814" RadiusY="111.2814" GradientOrigin="64.704102,35.215801" MappingMode="Absolute" SpreadMethod="Pad" Transform="Identity">
+            <GradientStop Color="#FF265581" Offset="0" />
+            <GradientStop Color="#FF265581" Offset="0.24" />
+            <GradientStop Color="#FF0086B8" Offset="0.61" />
+            <GradientStop Color="#FF0086B8" Offset="1" />
+        </RadialGradientBrush>
+    </UserControl.Resources>
+    <UserControl.Triggers>
+        <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+            <BeginStoryboard>
+                <Storyboard>
+                    <DoubleAnimation From="0" To="360" Duration="0:0:1" RepeatBehavior="Forever" 
+                                     Storyboard.TargetName="gridRotateTransform" Storyboard.TargetProperty="Angle" />
+                </Storyboard>
+            </BeginStoryboard>
+        </EventTrigger>
+    </UserControl.Triggers>
+    <Grid>      
+        <Ellipse Width="16" Height="16">
+            <Ellipse.Fill>
+                <RadialGradientBrush SpreadMethod="Pad">
+                    <GradientStop Color="#FFF9C635" Offset="0" />
+                    <GradientStop Color="#FFF9C635" Offset="0.52" />
+                    <GradientStop Color="#FFF7B832" Offset="0.71" />
+                    <GradientStop Color="#FFF7B832" Offset="1" />
+                </RadialGradientBrush>
+            </Ellipse.Fill>
+        </Ellipse>
+        <Grid RenderTransformOrigin="0.5,0.5">
+            <Grid.CacheMode>
+                <BitmapCache RenderAtScale="1" />
+            </Grid.CacheMode>
+            <Grid.RenderTransform>
+                <RotateTransform x:Name="gridRotateTransform" />
+            </Grid.RenderTransform>
+            <Path Data="{StaticResource ringGeometry}" Fill="{StaticResource ringFillBrush}" Height="27.842" Stretch="Fill" Width="14.61" RenderTransformOrigin="0.5,0.5">
+                <Path.RenderTransform>
+                    <TranslateTransform X="15" Y="-5"/>
+                </Path.RenderTransform>
+            </Path>
+            <Path Data="{StaticResource ringGeometry}" Fill="{StaticResource ringFillBrush}" Height="27.842" Stretch="Fill" Width="14.61" RenderTransformOrigin="0.5,0.5">
+                <Path.RenderTransform>
+                    <TransformGroup>
+                        <RotateTransform Angle="-90"/>
+                        <TranslateTransform Y="-15" X="-5"/>
+                    </TransformGroup>
+                </Path.RenderTransform>
+            </Path>
+            <Path Data="{StaticResource ringGeometry}" Fill="{StaticResource ringFillBrush}" Height="27.842" Stretch="Fill" Width="14.61" RenderTransformOrigin="0.5,0.5">
+                <Path.RenderTransform>
+                    <TransformGroup>
+                        <RotateTransform Angle="-180"/>
+                        <TranslateTransform X="-15" Y="5"/>
+                    </TransformGroup>
+                </Path.RenderTransform>
+            </Path>
+            <Path Data="{StaticResource ringGeometry}" Fill="{StaticResource ringFillBrush}" Height="27.842" Stretch="Fill" Width="14.61" RenderTransformOrigin="0.5,0.5">
+                <Path.RenderTransform>
+                    <TransformGroup>
+                        <RotateTransform Angle="90"/>
+                        <TranslateTransform X="5" Y="15"/>
+                    </TransformGroup>
+                </Path.RenderTransform>
+            </Path>
+        </Grid>
+    </Grid>
+</UserControl>
