@@ -139,7 +139,7 @@
                 <MenuItem Header="Close" Command="{Binding CloseCommand}" />
                 <MenuItem Header="Close and stop BOINC (localhost)" Command="{Binding CloseAndStopBoincCommand}" />
             </MenuItem>
-            <MenuItem Header="Activity">
+            <MenuItem Header="Activity (localhost) TODO">
                 <MenuItem Header="Run tasks always" IsCheckable="True" />
                 <MenuItem Header="Run tasks based on preferences" IsCheckable="True" />
                 <MenuItem Header="Suspend tasks" IsCheckable="True" />
@@ -155,14 +155,14 @@
                     <MenuItem Header="Suspend network communication" IsCheckable="True" />
                 </MenuItem>
             </MenuItem>
-            <MenuItem Header="Settings">
+            <MenuItem Header="Settings TODO">
                 <MenuItem Header="Options..." />
                 <MenuItem Header="Global preferences..." />
             </MenuItem>
             <MenuItem Header="Extras">
                 <MenuItem Header="Run benchmarks" Command="{Binding RunBenchmarksCommand}" />
             </MenuItem>
-            <MenuItem Header="Help">
+            <MenuItem Header="Help TODO">
                 <MenuItem Header="BOINC online help" />
                 <MenuItem Header="BOINC website" />
                 <Separator />
