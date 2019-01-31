@@ -139,7 +139,7 @@
                 <MenuItem Header="Close" Command="{Binding CloseCommand}" />
                 <MenuItem Header="Close and stop BOINC (localhost)" Command="{Binding CloseAndStopBoincCommand}" />
             </MenuItem>
-            <MenuItem Header="Activity (localhost) TODO">
+            <MenuItem Header="Activity TODO">
                 <MenuItem Header="Run tasks always" IsCheckable="True" />
                 <MenuItem Header="Run tasks based on preferences" IsCheckable="True" />
                 <MenuItem Header="Suspend tasks" IsCheckable="True" />
