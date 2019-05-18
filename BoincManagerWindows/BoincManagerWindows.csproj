@@ -142,6 +142,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.0.0-preview5.19227.1" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\BoincManager\BoincManager.csproj" />
     <ProjectReference Include="..\BoincRpc\BoincRpc.csproj" />
   </ItemGroup>

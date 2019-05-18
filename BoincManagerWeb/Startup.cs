@@ -5,9 +5,11 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using BoincManagerWeb.Models;
 
 namespace BoincManagerWeb
 {
@@ -16,6 +18,13 @@ namespace BoincManagerWeb
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+
+            // Make sure the database is created at the start of the application.
+            /*using (var db = new ApplicationDbContext())
+            {
+                db.Database.EnsureCreated();
+                db.Database.Migrate();
+            }*/
         }
 
         public IConfiguration Configuration { get; }
@@ -32,6 +41,9 @@ namespace BoincManagerWeb
 
             services.AddRazorPages()
                 .AddNewtonsoftJson();
+
+            services.AddDbContext<ApplicationDbContext>(options =>
+                    options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
