@@ -6,8 +6,11 @@ namespace BoincManagerWeb.Models
     {
         public DbSet<BoincManager.Models.Host> Host { get; set; }
 
-        public ApplicationDbContext (DbContextOptions<ApplicationDbContext> options)
-            : base(options)
+        public ApplicationDbContext (DbContextOptions<ApplicationDbContext> options) : base(options)
+        {
+        }
+
+        public ApplicationDbContext()
         {
         }
     }

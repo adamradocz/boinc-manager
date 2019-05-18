@@ -18,13 +18,6 @@ namespace BoincManagerWeb
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-
-            // Make sure the database is created at the start of the application.
-            /*using (var db = new ApplicationDbContext())
-            {
-                db.Database.EnsureCreated();
-                db.Database.Migrate();
-            }*/
         }
 
         public IConfiguration Configuration { get; }
@@ -73,6 +66,15 @@ namespace BoincManagerWeb
             {
                 endpoints.MapRazorPages();
             });
+
+
+            // Make sure the database is created and up to date at the start of the application.
+            using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
+            {
+                var dbContext = serviceScope.ServiceProvider.GetService<ApplicationDbContext>();
+
+                dbContext.Database.Migrate();
+            }
         }
     }
 }
