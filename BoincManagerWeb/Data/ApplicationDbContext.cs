@@ -10,8 +10,5 @@ namespace BoincManagerWeb.Models
         {
         }
 
-        public ApplicationDbContext()
-        {
-        }
     }
 }
