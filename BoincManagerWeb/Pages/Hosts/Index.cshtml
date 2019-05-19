@@ -22,9 +22,6 @@
             <th>
                 @Html.DisplayNameFor(model => model.Host[0].Port)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Host[0].Password)
-            </th>
             <th></th>
         </tr>
     </thead>
@@ -39,9 +36,6 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Port)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Password)
             </td>
             <td>
                 <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
