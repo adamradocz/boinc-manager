@@ -7,23 +7,25 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using BoincManager.Models;
 using BoincManagerWeb.Models;
+using BoincManagerWeb.ViewModels;
 
 namespace BoincManagerWeb.Pages.Hosts
 {
     public class IndexModel : PageModel
     {
-        private readonly BoincManagerWeb.Models.ApplicationDbContext _context;
+        private readonly ApplicationDbContext _context;
 
-        public IndexModel(BoincManagerWeb.Models.ApplicationDbContext context)
+        public IndexModel(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        public IList<Host> Host { get;set; }
+        public IList<Host> Hosts { get;set; }
+        public IList<HostViewModel> HostVms { get; set; }
 
         public async Task OnGetAsync()
         {
-            Host = await _context.Host.ToListAsync();
+            Hosts = await _context.Host.ToListAsync();           
         }
     }
 }

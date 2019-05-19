@@ -14,19 +14,19 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Host[0].Name)
+                @Html.DisplayNameFor(model => model.Hosts[0].Name)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Host[0].IpAddress)
+                @Html.DisplayNameFor(model => model.Hosts[0].IpAddress)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Host[0].Port)
+                @Html.DisplayNameFor(model => model.Hosts[0].Port)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.Host) {
+@foreach (var item in Model.Hosts) {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Name)

@@ -14,7 +14,7 @@ namespace BoincManager.Models
 
         [Required]
         [Range(0, 65535)]
-        public int Port { get; set; }
+        public int Port { get; set; } = Constants.BoincDefaultPort;
 
         [Required]
         [DataType(DataType.Password)]
