@@ -20,12 +20,12 @@
             </div>
             <div class="form-group">
                 <label asp-for="Host.IpAddress" class="control-label"></label>
-                <input asp-for="Host.IpAddress" class="form-control" value="@BoincManager.Constants.BoincDefaultPort" />
+                <input asp-for="Host.IpAddress" class="form-control" />
                 <span asp-validation-for="Host.IpAddress" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Host.Port" class="control-label"></label>
-                <input asp-for="Host.Port" class="form-control" />
+                <input asp-for="Host.Port" class="form-control" value="@BoincManager.Constants.BoincDefaultPort" />
                 <span asp-validation-for="Host.Port" class="text-danger"></span>
             </div>
             <div class="form-group">

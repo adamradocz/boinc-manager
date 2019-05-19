@@ -12,11 +12,13 @@ namespace BoincManagerWeb.Pages.Hosts
 {
     public class DeleteModel : PageModel
     {
-        private readonly BoincManagerWeb.Models.ApplicationDbContext _context;
+        private readonly ApplicationDbContext _context;
+        private readonly BoincManager.Manager _manager;
 
-        public DeleteModel(BoincManagerWeb.Models.ApplicationDbContext context)
+        public DeleteModel(ApplicationDbContext context, BoincManager.Manager manager)
         {
             _context = context;
+            _manager = manager;
         }
 
         [BindProperty]
@@ -51,6 +53,8 @@ namespace BoincManagerWeb.Pages.Hosts
             {
                 _context.Host.Remove(Host);
                 await _context.SaveChangesAsync();
+
+                _manager.RemoveHost(Host);
             }
 
             return RedirectToPage("./Index");

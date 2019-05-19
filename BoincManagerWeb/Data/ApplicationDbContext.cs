@@ -9,6 +9,5 @@ namespace BoincManagerWeb.Models
         public ApplicationDbContext (DbContextOptions<ApplicationDbContext> options) : base(options)
         {
         }
-
     }
 }

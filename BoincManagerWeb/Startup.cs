@@ -37,10 +37,12 @@ namespace BoincManagerWeb
 
             services.AddDbContext<ApplicationDbContext>(options =>
                     options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddSingleton<BoincManager.Manager>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ApplicationDbContext context, BoincManager.Manager manager)
         {
             if (env.IsDevelopment())
             {
@@ -67,14 +69,11 @@ namespace BoincManagerWeb
                 endpoints.MapRazorPages();
             });
 
-
             // Make sure the database is created and up to date at the start of the application.
-            using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
-            {
-                var dbContext = serviceScope.ServiceProvider.GetService<ApplicationDbContext>();
+            context.Database.Migrate();
 
-                dbContext.Database.Migrate();
-            }
+            // Initialize the Boinc Manager
+            manager.Initialize(context.Host.ToList());
         }
     }
 }

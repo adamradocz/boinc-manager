@@ -13,11 +13,13 @@ namespace BoincManagerWeb.Pages.Hosts
 {
     public class EditModel : PageModel
     {
-        private readonly BoincManagerWeb.Models.ApplicationDbContext _context;
+        private readonly ApplicationDbContext _context;
+        private readonly BoincManager.Manager _manager;
 
-        public EditModel(BoincManagerWeb.Models.ApplicationDbContext context)
+        public EditModel(ApplicationDbContext context, BoincManager.Manager manager)
         {
             _context = context;
+            _manager = manager;
         }
 
         [BindProperty]
@@ -51,6 +53,7 @@ namespace BoincManagerWeb.Pages.Hosts
             try
             {
                 await _context.SaveChangesAsync();
+                _manager.UpdateHost(Host);
             }
             catch (DbUpdateConcurrencyException)
             {
