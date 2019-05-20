@@ -7,7 +7,7 @@ namespace BoincManager
 {
     public static class Statuses
     {
-        public static async Task<string> GetComputerStatus(HostState hostState)
+        public static async Task<string> GetHostStatus(HostState hostState)
         {
             StringBuilder status = new StringBuilder();
             status.Append("Connected. ");

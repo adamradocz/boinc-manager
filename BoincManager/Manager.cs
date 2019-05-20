@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using BoincManager.Models;
 using BoincManager.ViewModels;
@@ -17,12 +18,18 @@ namespace BoincManager
             HostsState = new Dictionary<int, HostState>();            
         }
 
-        public async Task Initialize(IList<Host> hosts)
+        public async Task Start(IList<Host> hosts)
         {
+            // Connect to all the hosts stored in the database.
             foreach (var host in hosts)
             {
                 await AddHost(host);
             }
+            // await Utils.ParallelForEachAsync(hosts, AddHost); // Connect to all the hosts in parallel, instead of sequential order
+
+#pragma warning disable CS4014
+            StartBoincUpdateLoop(CancellationToken.None);
+#pragma warning restore CS4014
         }
 
         public async Task AddHost(Host host)
@@ -76,7 +83,7 @@ namespace BoincManager
 
             try
             {
-                HostState hostState = new HostState(hostVm.Id, hostVm.Name);
+                var hostState = new HostState(hostVm.Id, hostVm.Name);
 
                 // Connecting to host
                 await hostState.RpcClient.ConnectAsync(hostVm.IpAddress, hostVm.Port);
@@ -90,6 +97,10 @@ namespace BoincManager
 
                     // Updating the hostState Model
                     await hostState.BoincState.UpdateAll();
+
+                    // Updating the ComputerViewModel
+                    await hostVm.FirstUpdateOnConnect(hostState);
+
                 }
                 else
                 {
@@ -102,5 +113,28 @@ namespace BoincManager
                 hostVm.Status = $"Error connecting. {e.Message}";
             }
         }
+        
+        private async Task StartBoincUpdateLoop(CancellationToken cancellationToken)
+        {
+            while (true)
+            {
+                await Task.Delay(2000, cancellationToken);
+                await Update();
+            }
+        }
+
+        /// <summary>
+        /// Update the Models and the ViewModels, but only on the visible tabs.
+        /// </summary>
+        /// <returns></returns>
+        public async Task Update()
+        {
+            //await Utils.ParallelForEachAsync(filteredHosts.Values, UpdateParallel); // Update in parallel
+            foreach (var hostState in HostsState)
+            {
+                //await UpdateParallel(hostState);
+            }
+        }
+
     }
 }

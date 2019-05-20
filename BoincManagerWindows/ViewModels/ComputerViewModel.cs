@@ -53,7 +53,7 @@ namespace BoincManagerWindows.ViewModels
             OperatingSystem = hostState.BoincState.CoreClientState.HostInfo.OSName;
             BoincVersion = $"{hostState.BoincState.CoreClientState.CoreClientMajorVersion}.{hostState.BoincState.CoreClientState.CoreClientMinorVersion}.{hostState.BoincState.CoreClientState.CoreClientReleaseVersion}";
             Connected = true;
-            Status = await BoincManager.Statuses.GetComputerStatus(hostState);
+            Status = await BoincManager.Statuses.GetHostStatus(hostState);
         }
 
         public void Update(string name, string ipAddress, int port, string password)

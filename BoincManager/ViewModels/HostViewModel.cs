@@ -1,4 +1,5 @@
 ﻿using BoincManager.Models;
+using System.Threading.Tasks;
 
 namespace BoincManager.ViewModels
 {
@@ -16,6 +17,14 @@ namespace BoincManager.ViewModels
             IpAddress = host.IpAddress;
             Port = host.Port;
             Password = host.Password;
+        }
+
+        public async Task FirstUpdateOnConnect(HostState hostState)
+        {
+            OperatingSystem = hostState.BoincState.CoreClientState.HostInfo.OSName;
+            BoincVersion = $"{hostState.BoincState.CoreClientState.CoreClientMajorVersion}.{hostState.BoincState.CoreClientState.CoreClientMinorVersion}.{hostState.BoincState.CoreClientState.CoreClientReleaseVersion}";
+            Connected = true;
+            Status = await Statuses.GetHostStatus(hostState);
         }
 
         public void Update(Host host)

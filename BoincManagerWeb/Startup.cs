@@ -72,8 +72,8 @@ namespace BoincManagerWeb
             // Make sure the database is created and up to date at the start of the application.
             context.Database.Migrate();
 
-            // Initialize the Boinc Manager
-            manager.Initialize(context.Host.ToList());
+            // Start the Boinc Manager
+            manager.Start(context.Host.ToList());
         }
     }
 }

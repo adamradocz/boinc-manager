@@ -54,7 +54,7 @@ namespace BoincManagerWindows
                 transfersDataGrid.Items.LiveFilteringProperties.Add(propertie);
             }            
             
-            await viewModel.ConnectToAllComputers();            
+            await viewModel.ConnectToAllComputers();
         }
 
         private void MessagesDataGrid_ItemContainerGenerator_StatusChanged(object sender, EventArgs e)
