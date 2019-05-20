@@ -5,7 +5,7 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Hosts</h1>
 
 <p>
     <a asp-page="Create">Create New</a>
@@ -14,28 +14,28 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model._manager.HostsVm[0].Name)
+                @Html.DisplayNameFor(model => model._manager.Hosts[0].Name)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model._manager.HostsVm[0].IpAddress)
+                @Html.DisplayNameFor(model => model._manager.Hosts[0].IpAddress)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model._manager.HostsVm[0].Port)
+                @Html.DisplayNameFor(model => model._manager.Hosts[0].Port)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model._manager.HostsVm[0].BoincVersion)
+                @Html.DisplayNameFor(model => model._manager.Hosts[0].BoincVersion)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model._manager.HostsVm[0].OperatingSystem)
+                @Html.DisplayNameFor(model => model._manager.Hosts[0].OperatingSystem)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model._manager.HostsVm[0].Status)
+                @Html.DisplayNameFor(model => model._manager.Hosts[0].Status)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model._manager.HostsVm)
+        @foreach (var item in Model._manager.Hosts)
         {
         <tr>
             <td>

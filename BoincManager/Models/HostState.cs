@@ -14,7 +14,7 @@ namespace BoincManager.Models
         public BoincState BoincState { get; }
 
         public int Id { get; }
-        public string ComputerName { get; set; }
+        public string HostName { get; set; }
 
         private string ipAddress;
         public string IpAddress
@@ -38,7 +38,7 @@ namespace BoincManager.Models
             BoincState = new BoincState(RpcClient);
 
             Id = id;
-            ComputerName = computerName;            
+            HostName = computerName;            
         }
         
         public void Close()

@@ -20,6 +20,7 @@ namespace BoincManagerWeb.Pages.Hosts
         {
             _context = context;
             _manager = manager;
+            _manager.CurrentUpdateScope = BoincManager.Manager.UpdateScope.None;
         }
 
         [BindProperty]

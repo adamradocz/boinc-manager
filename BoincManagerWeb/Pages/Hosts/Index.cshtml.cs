@@ -17,6 +17,7 @@ namespace BoincManagerWeb.Pages.Hosts
         public IndexModel(BoincManager.Manager manager)
         {
             _manager = manager;
+            _manager.CurrentUpdateScope = BoincManager.Manager.UpdateScope.Hosts;
         }
 
         public void OnGet()

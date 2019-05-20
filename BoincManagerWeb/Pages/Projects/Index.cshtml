@@ -1,0 +1,64 @@
+﻿@page
+@model BoincManagerWeb.Pages.Projects.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Projects</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model._manager.Projects[0].HostName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model._manager.Projects[0].Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model._manager.Projects[0].Username)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model._manager.Projects[0].Team)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model._manager.Projects[0].Credit)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model._manager.Projects[0].AverageCredit)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model._manager.Projects[0].Status)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model._manager.Projects)
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.HostName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Username)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Team)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Credit)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AverageCredit)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Status)
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>

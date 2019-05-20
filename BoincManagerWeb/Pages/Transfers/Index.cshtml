@@ -1,0 +1,81 @@
+﻿@page
+@model BoincManagerWeb.Pages.Transfers.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Transfers</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model._manager.Transfers[0].HostName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model._manager.Transfers[0].Project)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model._manager.Transfers[0].FileName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model._manager.Transfers[0].Progress)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model._manager.Transfers[0].FileSize)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model._manager.Transfers[0].TransferRate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model._manager.Transfers[0].ElapsedTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model._manager.Transfers[0].TimeRemaining)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model._manager.Transfers[0].Status)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model._manager.Transfers)
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.HostName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Project)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FileName)
+            </td>
+            <td>
+                @{
+                    var progress = Math.Round(item.Progress * 100, 1);
+                    <div class="progress">
+                        <div class="progress-bar" style="width:@progress%">@progress%</div>
+                    </div>
+                }
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FileSize)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TransferRate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ElapsedTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TimeRemaining)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Status)
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>

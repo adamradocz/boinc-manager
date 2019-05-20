@@ -708,7 +708,7 @@ namespace BoincManagerWindows.ViewModels
                 
                 if (projectViewModel == null)
                 {
-                    projectViewModel = new ProjectViewModel(hostState.Id, hostState.ComputerName);
+                    projectViewModel = new ProjectViewModel(hostState.Id, hostState.HostName);
                     projectViewModel.Update(project);
                     Projects.Add(projectViewModel);
                 }
@@ -750,7 +750,7 @@ namespace BoincManagerWindows.ViewModels
 
                 if (taskViewModel == null)
                 {
-                    taskViewModel = new TaskViewModel(hostState.Id, hostState.ComputerName);
+                    taskViewModel = new TaskViewModel(hostState.Id, hostState.HostName);
                     taskViewModel.Update(result, hostState.BoincState);
                     Tasks.Add(taskViewModel);
                 }
@@ -792,7 +792,7 @@ namespace BoincManagerWindows.ViewModels
 
                 if (transferVM == null)
                 {
-                    transferVM = new TransferViewModel(hostState.Id, hostState.ComputerName);
+                    transferVM = new TransferViewModel(hostState.Id, hostState.HostName);
                     transferVM.Update(fileTransfer);
                     Transfers.Add(transferVM);
                 }
@@ -827,7 +827,7 @@ namespace BoincManagerWindows.ViewModels
             foreach (Message newMessage in newMessages)
             {
                 MessageViewModel message = new MessageViewModel(hostState.Id);
-                message.Update(newMessage, hostState.ComputerName);
+                message.Update(newMessage, hostState.HostName);
                 Messages.Add(message);
             }            
         }

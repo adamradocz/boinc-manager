@@ -12,11 +12,14 @@ namespace BoincManagerWeb.Pages.Hosts
 {
     public class DetailsModel : PageModel
     {
-        private readonly BoincManagerWeb.Models.ApplicationDbContext _context;
+        private readonly ApplicationDbContext _context;
+        private readonly BoincManager.Manager _manager;
 
-        public DetailsModel(BoincManagerWeb.Models.ApplicationDbContext context)
+        public DetailsModel(ApplicationDbContext context, BoincManager.Manager manager)
         {
             _context = context;
+            _manager = manager;
+            _manager.CurrentUpdateScope = BoincManager.Manager.UpdateScope.None;
         }
 
         public Host Host { get; set; }

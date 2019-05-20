@@ -14,7 +14,7 @@ namespace BoincManager
             
             string newerVersion = await hostState.RpcClient.GetNewerVersionAsync();
             if (!string.IsNullOrEmpty(newerVersion))
-                status.Append($"BOINC {newerVersion} is available for download on {hostState.ComputerName}.");
+                status.Append($"BOINC {newerVersion} is available for download on {hostState.HostName}.");
 
             return status.ToString().TrimEnd(' ');
         }

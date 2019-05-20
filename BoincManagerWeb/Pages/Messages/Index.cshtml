@@ -1,0 +1,46 @@
+﻿@page
+@model BoincManagerWeb.Pages.Messages.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Messages</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model._manager.Messages[0].HostName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model._manager.Messages[0].Project)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model._manager.Messages[0].Date)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model._manager.Messages[0].Message)
+            </th>            
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model._manager.Messages)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.HostName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Project)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Date)
+                </td>                
+                <td>
+                    @Html.DisplayFor(modelItem => item.Message)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,81 @@
+﻿@page
+@model BoincManagerWeb.Pages.Tasks.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Tasks</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model._manager.Tasks[0].HostName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model._manager.Tasks[0].Project)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model._manager.Tasks[0].Progress)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model._manager.Tasks[0].Status)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model._manager.Tasks[0].ElapsedTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model._manager.Tasks[0].LastCheckpoint)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model._manager.Tasks[0].Deadline)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model._manager.Tasks[0].Application)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model._manager.Tasks[0].Workunit)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model._manager.Tasks)
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.HostName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Project)
+            </td>
+            <td>
+                @{
+                    var progress = Math.Round(item.Progress * 100, 1);
+                    <div class="progress">
+                        <div class="progress-bar" style="width:@progress%">@progress%</div>
+                    </div>
+                }
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Status)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ElapsedTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LastCheckpoint)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Deadline)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Application)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Workunit)
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>
