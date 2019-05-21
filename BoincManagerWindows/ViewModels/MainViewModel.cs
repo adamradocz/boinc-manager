@@ -14,7 +14,7 @@ using BoincRpc;
 
 namespace BoincManagerWindows.ViewModels
 {
-    class MainViewModel : ViewModel
+    class MainViewModel : BaseViewModel
     {
         private static readonly object lockObject = new object(); // lockObject for EnableCollectionSynchronization method. Info: http://www.jonathanantoine.com/2011/09/24/wpf-4-5-part-7-accessing-collections-on-non-ui-threads/
         
@@ -121,15 +121,6 @@ namespace BoincManagerWindows.ViewModels
             // Messages tab
             CopyMessagesCommand = new RelayCommand(ExecuteCopyMessagesCommand, CanExecuteCopyMessagesCommand);
 
-
-            // Get the hosts' connection data
-            var hostsConnectionData = BoincManager.Utils.ReadHostsDataFromFile(BoincManager.Constants.HostsFile);
-            foreach (var hostConnectionData in hostsConnectionData)
-            {
-                var id = Guid.NewGuid().ToString();
-                Computers.Add(new ComputerViewModel(id, hostConnectionData.Name, hostConnectionData.IpAddress, hostConnectionData.Port, hostConnectionData.Password));
-            }
-
             // Creating groups for the Tree View
             var computerGroup = new ComputerGorupViewModel("All")
             {
@@ -153,20 +144,7 @@ namespace BoincManagerWindows.ViewModels
 
         private void SaveConnectionData()
         {
-            var hostsConnectionData = new List<HostConnectionModel>();
-            foreach (var computer in Computers)
-            {
-                var hostConnectionData = new HostConnectionModel
-                {
-                    Name = computer.Name,
-                    IpAddress = computer.IpAddress,
-                    Port = computer.Port,
-                    Password = computer.Password
-                };
-
-                hostsConnectionData.Add(hostConnectionData);
-            }
-            BoincManager.Utils.WriteHostsConnectionDataToFile(hostsConnectionData, BoincManager.Constants.HostsFile);
+            throw new NotImplementedException();
         }
 
         private async void ExecuteCloseAndStopBoincCommand()

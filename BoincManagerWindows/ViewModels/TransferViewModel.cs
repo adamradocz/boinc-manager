@@ -3,7 +3,7 @@ using BoincRpc;
 
 namespace BoincManagerWindows.ViewModels
 {
-    class TransferViewModel : ViewModel, IFilterableViewModel
+    class TransferViewModel : BaseViewModel, IFilterableViewModel
     {
         public string ComputerId { get; }
         public string ComputerName { get; private set; }

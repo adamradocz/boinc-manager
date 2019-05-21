@@ -7,3 +7,9 @@
 */bin
 */obj
 **/.toolstarget
+Dockerfile
+LICENSE
+*.md
+
+# Other BoincManager projects which are don't needed
+BoincManagerWindows

@@ -12,43 +12,8 @@ using System.Xml.Serialization;
 namespace BoincManager
 {
     public static class Utils
-    {        
-        /// <summary>
-        /// Read the Host data from the file. If the file doesn't exist or empty, it creates the file with default values and returns it.
-        /// </summary>
-        /// <param name="fileName">File name.</param>
-        /// <returns>List of Host authorization data.</returns>
-        public static List<HostConnectionModel> ReadHostsDataFromFile(string fileName)
-        {
-            var data = new List<HostConnectionModel>();
-
-            // Check whether the file is exist or empty.
-            var fileInfo = new FileInfo(fileName);
-            if (!fileInfo.Exists || fileInfo.Length == 0)
-            {
-                data.Add(GetDefaultHostConnection());
-                WriteHostsConnectionDataToFile(data, fileName);
-                return data;
-            }
-
-            // Read the file.
-            using (var reader = new StreamReader(fileName))
-            {
-                XmlSerializer deserializer = new XmlSerializer(data.GetType());
-                data = (List<HostConnectionModel>) deserializer.Deserialize(reader);
-            }
-
-            // The file wasn't empty but didn't contain host connection data.
-            if (data.Count == 0)
-            {
-                data.Add(GetDefaultHostConnection());
-                WriteHostsConnectionDataToFile(data, fileName);
-            }
-
-            return data;
-        }
-
-        private static HostConnectionModel GetDefaultHostConnection()
+    {   
+        public static string GetLocalhostGuiRpcPassword()
         {
             string filePath = string.Empty;
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
@@ -71,21 +36,7 @@ namespace BoincManager
                 password = File.ReadAllText(filePath);
             }
 
-            return new HostConnectionModel() { Name = Environment.MachineName, IpAddress = "localhost", Port = Constants.BoincDefaultPort, Password = password };
-        }
-        
-        /// <summary>
-        /// Write the Host data to a file.
-        /// </summary>
-        /// <param name="hostConnectionData">List of host connection data.</param>
-        /// <param name="fileName">Filename</param>
-        public static void WriteHostsConnectionDataToFile(IEnumerable<HostConnectionModel> hostConnectionData, string fileName)
-        {
-            using (var writer = new StreamWriter(fileName))
-            {
-                XmlSerializer serializer = new XmlSerializer(hostConnectionData.GetType());
-                serializer.Serialize(writer, hostConnectionData);
-            }
+            return password;
         }
         
         /// <summary>

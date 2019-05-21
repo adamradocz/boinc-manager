@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace BoincManagerWindows.ViewModels
 {
-    class ComputerViewModel : ViewModel, IFilterableViewModel
+    class ComputerViewModel : BaseViewModel, IFilterableViewModel
     {
-        public string Id { get; }
+        public int Id { get; }
 
         private string name;
         public string Name { get => name; set => SetProperty(ref name, value); }
@@ -39,7 +39,7 @@ namespace BoincManagerWindows.ViewModels
         private string status;
         public string Status { get => status; set => SetProperty(ref status, value); }
 
-        public ComputerViewModel(string computerId, string computerName, string ipAddress, int port, string password)
+        public ComputerViewModel(int computerId, string computerName, string ipAddress, int port, string password)
         {
             Id = computerId;
             Name = computerName;

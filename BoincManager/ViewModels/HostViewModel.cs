@@ -3,12 +3,17 @@ using System.Threading.Tasks;
 
 namespace BoincManager.ViewModels
 {
-    public class HostViewModel : Host
+    public class HostViewModel
     {
-        public string BoincVersion { get; set; }
-        public string OperatingSystem { get; set; }
-        public bool Connected { get; set; }
-        public string Status { get; set; }
+        public virtual int Id { get; set; }
+        public virtual string Name { get; set; }
+        public virtual string IpAddress { get; set; }
+        public virtual int Port { get; set; }
+        public virtual string Password { get; set; }
+        public virtual string BoincVersion { get; set; }
+        public virtual string OperatingSystem { get; set; }
+        public virtual bool Connected { get; set; }
+        public virtual string Status { get; set; }
         
         public HostViewModel(Host host)
         {

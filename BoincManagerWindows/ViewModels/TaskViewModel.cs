@@ -5,7 +5,7 @@ using BoincRpc;
 
 namespace BoincManagerWindows.ViewModels
 {
-    class TaskViewModel : ViewModel, IFilterableViewModel
+    class TaskViewModel : BaseViewModel, IFilterableViewModel
     {
         public string ComputerId { get; }
         public string ComputerName { get; private set; }
