@@ -6,19 +6,20 @@ namespace BoincManager.ViewModels
     public class ProjectViewModel
     {
         public int HostId { get; }
-        public string HostName { get; set; }
-        public string Name { get; set; }
-        public string Username { get; set; }
-        public string Team { get; set; }
-        public string Credit { get; set; }
-        public string AverageCredit { get; set; }
-        public string Status { get; set; }
+        public string HostName { get; }
+        public string Name { get; private set; }
+        public string Username { get; private set; }
+        public string Team { get; private set; }
+        public string Credit { get; private set; }
+        public string AverageCredit { get; private set; }
+        public string Status { get; private set; }
+
         public Project Project { get; private set; }
 
         public ProjectViewModel(HostState hostState)
         {
             HostId = hostState.Id;
-            HostName = hostState.HostName;
+            HostName = hostState.Name;
         }
 
         public void Update(Project project)

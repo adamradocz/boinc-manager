@@ -1,10 +1,11 @@
-﻿using BoincRpc;
+﻿using BoincManager.ViewModels;
+using BoincRpc;
 using System;
 
 namespace BoincManager.Models
 {
     /// <summary>
-    /// Contains all the data, the RpcClient and the BoincState of the connected Computer (host).
+    /// Contains all the data, the RpcClient and the BoincState of the connected host.
     /// </summary>
     public class HostState : IDisposable
     {
@@ -14,7 +15,7 @@ namespace BoincManager.Models
         public BoincState BoincState { get; }
 
         public int Id { get; }
-        public string HostName { get; set; }
+        public string Name { get; set; }
 
         private string ipAddress;
         public string IpAddress
@@ -32,13 +33,13 @@ namespace BoincManager.Models
         public bool Localhost { get; private set; }
         public bool Authorized { get; set; }
 
-        public HostState(int id, string computerName)
+        public HostState(HostViewModel hostVm)
         {
             RpcClient = new RpcClient();
             BoincState = new BoincState(RpcClient);
 
-            Id = id;
-            HostName = computerName;            
+            Id = hostVm.Id;
+            Name = hostVm.Name;
         }
         
         public void Close()

@@ -3,25 +3,25 @@ using System.Threading.Tasks;
 
 namespace BoincManager.ViewModels
 {
-    public class HostViewModel
+    public class HostViewModel : BindableBase
     {
-        public virtual int Id { get; set; }
-        public virtual string Name { get; set; }
-        public virtual string IpAddress { get; set; }
-        public virtual int Port { get; set; }
-        public virtual string Password { get; set; }
-        public virtual string BoincVersion { get; set; }
-        public virtual string OperatingSystem { get; set; }
-        public virtual bool Connected { get; set; }
+        public int Id { get; }
+        public virtual string Name { get; protected set; }
+        public virtual string IpAddress { get; protected set; }
+        public virtual int Port { get; protected set; }
+        public virtual string Password { get; protected set; }
+        public virtual string BoincVersion { get; protected set; }
+        public virtual string OperatingSystem { get; protected set; }
+        public virtual bool Connected { get; protected set; }
         public virtual string Status { get; set; }
         
-        public HostViewModel(Host host)
+        public HostViewModel(Host  hostModel)
         {
-            Id = host.Id;
-            Name = host.Name;
-            IpAddress = host.IpAddress;
-            Port = host.Port;
-            Password = host.Password;
+            Id = hostModel.Id;
+            Name = hostModel.Name;
+            IpAddress = hostModel.IpAddress;
+            Port = hostModel.Port;
+            Password = hostModel.Password;
         }
 
         public async Task FirstUpdateOnConnect(HostState hostState)

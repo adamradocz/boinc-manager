@@ -7,17 +7,17 @@ namespace BoincManager.ViewModels
     public class TaskViewModel
     {
         public int HostId { get; }
-        public string HostName { get; private set; }
-        public string Project { get; set; }
-        public string Application { get; set; }
-        public string Workunit { get; set; }
-        public double Progress { get; set; }
-        public string ElapsedTime { get; set; }
-        public string CpuTime { get; set; }
-        public string CpuTimeRemaining { get; set; }
-        public string LastCheckpoint { get; set; }
-        public string Deadline { get; set; }
-        public string Status { get; set; }
+        public string HostName { get; }
+        public string Project { get; private set; }
+        public string Application { get; private set; }
+        public string Workunit { get; private set; }
+        public double Progress { get; private set; }
+        public string ElapsedTime { get; private set; }
+        public string CpuTime { get; private set; }
+        public string CpuTimeRemaining { get; private set; }
+        public string LastCheckpoint { get; private set; }
+        public string Deadline { get; private set; }
+        public string Status { get; private set; }
 
         public Result RpcResult { get; private set; }
         public Project RpcProject { get; private set; }
@@ -25,10 +25,10 @@ namespace BoincManager.ViewModels
         public BoincRpc.App RpcApp { get; private set; }
         public AppVersion RpcAppVersion { get; private set; }
 
-        public TaskViewModel(int hostId, string hostName)
+        public TaskViewModel(HostState hostState)
         {
-            HostId = hostId;
-            HostName = hostName;
+            HostId = hostState.Id;
+            HostName = hostState.Name;
         }
         
         public void Update(Result result, BoincState boincState)

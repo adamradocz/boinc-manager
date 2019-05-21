@@ -1,11 +1,12 @@
-﻿using BoincRpc;
+﻿using BoincManager.Models;
+using BoincRpc;
 
 namespace BoincManager.ViewModels
 {
     public class MessageViewModel
     {
         public int HostId { get; }
-        public string HostName { get; private set; }
+        public string HostName { get; }
         public string Project { get; private set; }
         public string Date { get; private set; }
         public string Message { get; private set; }
@@ -13,12 +14,13 @@ namespace BoincManager.ViewModels
 
         public Message RpcMessage { get; private set; }
 
-        public MessageViewModel(int hostId)
+        public MessageViewModel(HostState hostState)
         {
-            HostId = hostId;
+            HostId = hostState.Id;
+            HostName = hostState.Name;
         }
 
-        public void Update(Message message, string computerName)
+        public void Update(Message message)
         {
             RpcMessage = message;
 
@@ -26,8 +28,6 @@ namespace BoincManager.ViewModels
             Date = message.Timestamp.ToLocalTime().ToString("g");
             Message = message.Body;
             Priority = message.Priority.ToString();
-
-            HostName = computerName;
         }
     }
 }

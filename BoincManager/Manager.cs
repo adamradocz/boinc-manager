@@ -105,7 +105,7 @@ namespace BoincManager
 
             try
             {
-                var hostState = new HostState(hostVm.Id, hostVm.Name);
+                var hostState = new HostState(hostVm);
 
                 // Connecting to host
                 await hostState.RpcClient.ConnectAsync(hostVm.IpAddress, hostVm.Port);
@@ -263,7 +263,7 @@ namespace BoincManager
 
                 if (taskViewModel == null)
                 {
-                    taskViewModel = new TaskViewModel(hostState.Id, hostState.HostName);
+                    taskViewModel = new TaskViewModel(hostState);
                     taskViewModel.Update(result, hostState.BoincState);
                     Tasks.Add(taskViewModel);
                 }
@@ -305,7 +305,7 @@ namespace BoincManager
 
                 if (transferVM == null)
                 {
-                    transferVM = new TransferViewModel(hostState.Id, hostState.HostName);
+                    transferVM = new TransferViewModel(hostState);
                     transferVM.Update(fileTransfer);
                     Transfers.Add(transferVM);
                 }
@@ -339,8 +339,8 @@ namespace BoincManager
             var newMessages = await hostState.BoincState.GetNewMessages();
             foreach (Message newMessage in newMessages)
             {
-                MessageViewModel message = new MessageViewModel(hostState.Id);
-                message.Update(newMessage, hostState.HostName);
+                MessageViewModel message = new MessageViewModel(hostState);
+                message.Update(newMessage);
                 Messages.Add(message);
             }
         }

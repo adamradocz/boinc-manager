@@ -1,67 +1,43 @@
 ﻿using BoincManager.Models;
-using BoincRpc;
+using BoincManager.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Threading.Tasks;
 
 namespace BoincManagerWindows.ViewModels
 {
-    class ComputerViewModel : BaseViewModel, IFilterableViewModel
+    class ComputerViewModel : HostViewModel, IFilterableViewModel
     {
-        public int Id { get; }
-
         private string name;
-        public string Name { get => name; set => SetProperty(ref name, value); }
+        public override string Name { get => name; protected set => SetProperty(ref name, value); }
 
         private string ipAddress;
-        public string IpAddress { get => ipAddress; set => SetProperty(ref ipAddress, value); }
+        public override string IpAddress { get => ipAddress; protected set => SetProperty(ref ipAddress, value); }
 
         private int port;
         [Range(0, 65535, ErrorMessage = "Value for {0} must be between {1} and {2}.")]
-        public int Port { get => port; set => SetProperty(ref port, value); }
+        public override int Port { get => port; protected set => SetProperty(ref port, value); }
 
         private string password;
         [Category("Security")]
         [PasswordPropertyText(true)]
-        public string Password { get => password; set => SetProperty(ref password, value); }
+        public override string Password { get => password; protected set => SetProperty(ref password, value); }
 
         private string boincVersion;
-        public string BoincVersion { get => boincVersion; private set => SetProperty(ref boincVersion, value); }
+        public override string BoincVersion { get => boincVersion; protected set => SetProperty(ref boincVersion, value); }
 
         private string operatingSystem;
-        public string OperatingSystem { get => operatingSystem; private set => SetProperty(ref operatingSystem, value); }
+        public override string OperatingSystem { get => operatingSystem; protected set => SetProperty(ref operatingSystem, value); }
         
         private bool connected;
-        public bool Connected { get => connected; private set => SetProperty(ref connected, value); }
+        public override bool Connected { get => connected; protected set => SetProperty(ref connected, value); }
 
         private string status;
-        public string Status { get => status; set => SetProperty(ref status, value); }
+        public override string Status { get => status; set => SetProperty(ref status, value); }
 
-        public ComputerViewModel(int computerId, string computerName, string ipAddress, int port, string password)
+        public ComputerViewModel(Host hostModel) : base (hostModel)
         {
-            Id = computerId;
-            Name = computerName;
-            IpAddress = ipAddress;
-            Port = port;
-            Password = password;
-        }
-
-        public async Task FirstUpdateOnConnect(HostState hostState)
-        {
-            OperatingSystem = hostState.BoincState.CoreClientState.HostInfo.OSName;
-            BoincVersion = $"{hostState.BoincState.CoreClientState.CoreClientMajorVersion}.{hostState.BoincState.CoreClientState.CoreClientMinorVersion}.{hostState.BoincState.CoreClientState.CoreClientReleaseVersion}";
-            Connected = true;
-            Status = await BoincManager.Statuses.GetHostStatus(hostState);
-        }
-
-        public void Update(string name, string ipAddress, int port, string password)
-        {
-            Name = name;
-            IpAddress = ipAddress;
-            Port = port;
-            Password = password;
         }
 
         public IEnumerable<string> GetContentsForFiltering()

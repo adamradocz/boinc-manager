@@ -1,26 +1,27 @@
-﻿using BoincRpc;
+﻿using BoincManager.Models;
+using BoincRpc;
 
 namespace BoincManager.ViewModels
 {
     public class TransferViewModel
     {
         public int HostId { get; }
-        public string HostName { get; private set; }
-        public string Project { get; set; }
-        public string FileName { get; set; }
-        public double Progress { get; set; }
-        public string FileSize { get; set; }
-        public string TransferRate { get; set; }
-        public string ElapsedTime { get; set; }
-        public string TimeRemaining { get; set; }
-        public string Status { get; set; }
+        public string HostName { get; }
+        public string Project { get; private set; }
+        public string FileName { get; private set; }
+        public double Progress { get; private set; }
+        public string FileSize { get; private set; }
+        public string TransferRate { get; private set; }
+        public string ElapsedTime { get; private set; }
+        public string TimeRemaining { get; private set; }
+        public string Status { get; private set; }
 
         public FileTransfer FileTransfer { get; private set; }
 
-        public TransferViewModel(int hostId, string hostName)
+        public TransferViewModel(HostState hostState)
         {
-            HostId = hostId;
-            HostName = hostName;
+            HostId = hostState.Id;
+            HostName = hostState.Name;
         }
 
         public void Update(FileTransfer fileTransfer)
