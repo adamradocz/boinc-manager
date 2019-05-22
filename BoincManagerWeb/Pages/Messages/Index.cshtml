@@ -11,21 +11,21 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model._manager.Messages[0].HostName)
+                @Html.DisplayNameFor(model => model.Messages[0].HostName)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model._manager.Messages[0].Project)
+                @Html.DisplayNameFor(model => model.Messages[0].Project)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model._manager.Messages[0].Date)
+                @Html.DisplayNameFor(model => model.Messages[0].Date)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model._manager.Messages[0].Message)
+                @Html.DisplayNameFor(model => model.Messages[0].Message)
             </th>            
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model._manager.Messages)
+        @foreach (var item in Model.Messages)
         {
             <tr>
                 <td>

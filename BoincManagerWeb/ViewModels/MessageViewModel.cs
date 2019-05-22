@@ -1,28 +1,21 @@
 ﻿using BoincManager.Models;
 using BoincRpc;
 
-namespace BoincManager.ViewModels
+namespace BoincManagerWeb.ViewModels
 {
     public class MessageViewModel
     {
         public int HostId { get; }
         public string HostName { get; }
-        public string Project { get; private set; }
-        public string Date { get; private set; }
-        public string Message { get; private set; }
-        public string Priority { get; private set; }
+        public string Project { get; }
+        public string Date { get; }
+        public string Message { get; }
+        public string Priority { get; }
 
-        public Message RpcMessage { get; private set; }
-
-        public MessageViewModel(HostState hostState)
+        public MessageViewModel(HostState hostState, Message message)
         {
             HostId = hostState.Id;
             HostName = hostState.Name;
-        }
-
-        public void Update(Message message)
-        {
-            RpcMessage = message;
 
             Project = message.Project;
             Date = message.Timestamp.ToLocalTime().ToString("g");

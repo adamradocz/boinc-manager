@@ -14,16 +14,16 @@ using BoincRpc;
 
 namespace BoincManagerWindows.ViewModels
 {
-    class MainViewModel : BaseViewModel
+    class MainViewModel : BoincManager.ViewModels.BindableBase
     {
-        private readonly BoincManager.Manager manager = new BoincManager.Manager();
+        private readonly BoincManager.Manager _manager = new BoincManager.Manager();
 
         private static readonly object lockObject = new object(); // lockObject for EnableCollectionSynchronization method. Info: http://www.jonathanantoine.com/2011/09/24/wpf-4-5-part-7-accessing-collections-on-non-ui-threads/
         
-        private readonly Dictionary<string, HostState> hostsState = new Dictionary<string, HostState>(); // Key is the Id of the host/computer
+        //private readonly Dictionary<string, HostState> hostsState = new Dictionary<string, HostState>(); // Key is the Id of the host/computer
 
         public List<ComputerGorupViewModel> ComputerGroups { get; }
-        public ObservableCollection<ComputerViewModel> Computers { get; }
+        public ObservableCollection<HostViewModel> Computers { get; }
         public ObservableCollection<ProjectViewModel> Projects { get; }
         public ObservableCollection<TaskViewModel> Tasks { get; }
         public ObservableCollection<TransferViewModel> Transfers { get; }
@@ -33,17 +33,17 @@ namespace BoincManagerWindows.ViewModels
         public string Status
         {
             get { return status; }
-            set { SetProperty(ref status, value); }
+            private set { SetProperty(ref status, value); }
         }
 
         int currentTabPage;
         public int CurrentTabPage
         {
             get { return currentTabPage; }
-            set { SetProperty(ref currentTabPage, value); }
+            private set { SetProperty(ref currentTabPage, value); }
         }
 
-        public ComputerViewModel SelectedComputerInTreeView { get; set; }
+        public HostViewModel SelectedComputerInTreeView { get; set; }
         public IList SelectedComputers { get; set; }
         public IList SelectedProjects { get; set; }
         public IList SelectedTasks { get; set; }
@@ -85,7 +85,7 @@ namespace BoincManagerWindows.ViewModels
         public MainViewModel()
         {
             ComputerGroups = new List<ComputerGorupViewModel>();
-            Computers = new ObservableCollection<ComputerViewModel>();
+            Computers = new ObservableCollection<HostViewModel>();
             Projects = new ObservableCollection<ProjectViewModel>();
             Tasks = new ObservableCollection<TaskViewModel>();
             Transfers = new ObservableCollection<TransferViewModel>();
@@ -133,7 +133,7 @@ namespace BoincManagerWindows.ViewModels
 
         private void ExecuteCloseCommand()
         {
-            foreach (var hostState in hostsState.Values)
+            foreach (var hostState in _manager.HostsState.Values)
             {
                 hostState.Close();
                 hostState.Dispose();
@@ -154,7 +154,7 @@ namespace BoincManagerWindows.ViewModels
             if (MessageBox.Show($"Stop BOINC on localhost. Are you sure?", "Stop BOINC and close BOINC Manager", MessageBoxButton.OKCancel, MessageBoxImage.Warning) == MessageBoxResult.Cancel)
                 return;
 
-            foreach (var hoststate in hostsState.Values)
+            foreach (var hoststate in _manager.HostsState.Values)
             {
                 if (hoststate.Localhost)
                 {
@@ -168,7 +168,7 @@ namespace BoincManagerWindows.ViewModels
 
         private bool CanExecuteCloseAndStopBoincCommand()
         {
-            foreach (var hoststate in hostsState.Values)
+            foreach (var hoststate in _manager.HostsState.Values)
             {
                 if (hoststate.Localhost)
                 {
@@ -181,9 +181,9 @@ namespace BoincManagerWindows.ViewModels
 
         private async void ExecuteRunBenchmarksCommand()
         {
-            foreach(ComputerViewModel selectedComputer in SelectedComputers)
+            foreach(HostViewModel selectedComputer in SelectedComputers)
             {
-                await hostsState[selectedComputer.Id].RpcClient.RunBenchmarksAsync();
+                await _manager.HostsState[selectedComputer.Id].RpcClient.RunBenchmarksAsync();
             }
         }
 
@@ -194,14 +194,14 @@ namespace BoincManagerWindows.ViewModels
 
         private void ExecuteAddComputerCommand()
         {
-            var id = Guid.NewGuid().ToString();
-            Computers.Add(new ComputerViewModel(id, "New Computer", string.Empty, BoincManager.Constants.BoincDefaultPort, string.Empty));
+            Computers.Add(new HostViewModel(id, "New Computer", string.Empty, BoincManager.Constants.BoincDefaultPort, string.Empty));
+            _manager.AddHost(new Ho)
         }
 
         private void ExecuteRemoveComputerCommand()
         {
             string messageBoxText = SelectedComputers.Count == 1
-                ? string.Format("Removing computer {0}. Are you sure?", ((ComputerViewModel)SelectedComputers[0]).Name)
+                ? string.Format("Removing computer {0}. Are you sure?", ((HostViewModel)SelectedComputers[0]).Name)
                 : string.Format("Removing {0} computers. Are you sure?", SelectedComputers.Count);
 
             if (MessageBox.Show(messageBoxText, "Removing computer(s)", MessageBoxButton.OKCancel, MessageBoxImage.Warning) == MessageBoxResult.Cancel)
@@ -209,15 +209,15 @@ namespace BoincManagerWindows.ViewModels
 
             // Remove the selected computers from Model
             List<string> removableComputerIds = new List<string>();
-            foreach (ComputerViewModel computerVM in SelectedComputers)
+            foreach (HostViewModel computerVM in SelectedComputers)
             {
                 removableComputerIds.Add(computerVM.Id);
 
-                if (hostsState.ContainsKey(computerVM.Id))
+                if (_manager.HostsState.ContainsKey(computerVM.Id))
                 {
-                    hostsState[computerVM.Id].Close();
-                    hostsState[computerVM.Id].Dispose();
-                    hostsState.Remove(computerVM.Id);
+                    _manager.HostsState[computerVM.Id].Close();
+                    _manager.HostsState[computerVM.Id].Dispose();
+                    _manager.HostsState.Remove(computerVM.Id);
                 }
             }
 
@@ -237,7 +237,7 @@ namespace BoincManagerWindows.ViewModels
 
         private async void ExecuteConnectComputerCommand()
         {
-            foreach (ComputerViewModel computer in SelectedComputers)
+            foreach (HostViewModel computer in SelectedComputers)
             {
                 if (!computer.Connected)
                 {
@@ -250,7 +250,7 @@ namespace BoincManagerWindows.ViewModels
         {
             if (SelectedComputers != null && SelectedComputers.Count != 0)
             {
-                foreach (ComputerViewModel computer in SelectedComputers)
+                foreach (HostViewModel computer in SelectedComputers)
                 {
                     if (!computer.Connected)
                     {
@@ -265,9 +265,9 @@ namespace BoincManagerWindows.ViewModels
         private async void ExecuteAttachProjectCommand()
         {
             var updateNeeded = false;
-            foreach (ComputerViewModel selectedComputer in SelectedComputers)
+            foreach (HostViewModel selectedComputer in SelectedComputers)
             {
-                AttachToProjectWindow window = new AttachToProjectWindow(hostsState[selectedComputer.Id].RpcClient)
+                AttachToProjectWindow window = new AttachToProjectWindow(_manager.HostsState[selectedComputer.Id].RpcClient)
                 {
                     Owner = Application.Current.MainWindow
                 };
@@ -286,7 +286,7 @@ namespace BoincManagerWindows.ViewModels
         {
             foreach (ProjectViewModel selectedProject in SelectedProjects)
             {
-                await hostsState[selectedProject.ComputerId].RpcClient.PerformProjectOperationAsync(selectedProject.Project, ProjectOperation.Update);
+                await _manager.HostsState[selectedProject.HostId].RpcClient.PerformProjectOperationAsync(selectedProject.Project, ProjectOperation.Update);
             }
 
             await Update();
@@ -303,7 +303,7 @@ namespace BoincManagerWindows.ViewModels
             {
                 if (!selectedProject.Project.Suspended)
                 {
-                    await hostsState[selectedProject.ComputerId].RpcClient.PerformProjectOperationAsync(selectedProject.Project, ProjectOperation.Suspend);
+                    await _manager.HostsState[selectedProject.HostId].RpcClient.PerformProjectOperationAsync(selectedProject.Project, ProjectOperation.Suspend);
                 }
             }
 
@@ -316,7 +316,7 @@ namespace BoincManagerWindows.ViewModels
             {
                 if (!selectedProject.Project.DontRequestMoreWork)
                 {
-                    await hostsState[selectedProject.ComputerId].RpcClient.PerformProjectOperationAsync(selectedProject.Project, ProjectOperation.NoMoreWork);
+                    await _manager.HostsState[selectedProject.HostId].RpcClient.PerformProjectOperationAsync(selectedProject.Project, ProjectOperation.NoMoreWork);
                 }
             }
 
@@ -333,7 +333,7 @@ namespace BoincManagerWindows.ViewModels
 
             foreach (ProjectViewModel selectedProject in SelectedProjects)
             {
-                await hostsState[selectedProject.ComputerId].RpcClient.PerformProjectOperationAsync(selectedProject.Project, ProjectOperation.Reset);
+                await _manager.HostsState[selectedProject.HostId].RpcClient.PerformProjectOperationAsync(selectedProject.Project, ProjectOperation.Reset);
             }
 
             await Update();
@@ -349,7 +349,7 @@ namespace BoincManagerWindows.ViewModels
 
             foreach (ProjectViewModel selectedProject in SelectedProjects)
             {
-                await hostsState[selectedProject.ComputerId].RpcClient.PerformProjectOperationAsync(selectedProject.Project, ProjectOperation.Detach);
+                await _manager.HostsState[selectedProject.HostId].RpcClient.PerformProjectOperationAsync(selectedProject.Project, ProjectOperation.Detach);
             }
 
             await Update();
@@ -359,7 +359,7 @@ namespace BoincManagerWindows.ViewModels
         {
             foreach (TaskViewModel selectedTask in SelectedTasks)
             {
-                if (hostsState[selectedTask.ComputerId].Localhost && selectedTask.RpcResult.GraphicsAvailable)
+                if (_manager.HostsState[selectedTask.HostId].Localhost && selectedTask.RpcResult.GraphicsAvailable)
                 {
                     GraphicsAppLauncher.StartGraphicsAppOrBringToTop(selectedTask.RpcResult.GraphicsExecPath, selectedTask.RpcResult.SlotPath);
                 }
@@ -373,7 +373,7 @@ namespace BoincManagerWindows.ViewModels
 
             foreach (TaskViewModel selectedTask in SelectedTasks)
             {
-                if (hostsState[selectedTask.ComputerId].Localhost && selectedTask.RpcResult.GraphicsAvailable)
+                if (_manager.HostsState[selectedTask.HostId].Localhost && selectedTask.RpcResult.GraphicsAvailable)
                 {
                     return true;
                 }
@@ -388,11 +388,11 @@ namespace BoincManagerWindows.ViewModels
             {
                 if (selectedTask.RpcResult.Suspendable && !selectedTask.RpcResult.Suspended)
                 {
-                    await hostsState[selectedTask.ComputerId].RpcClient.PerformResultOperationAsync(selectedTask.RpcResult, ResultOperation.Suspend);
+                    await _manager.HostsState[selectedTask.HostId].RpcClient.PerformResultOperationAsync(selectedTask.RpcResult, ResultOperation.Suspend);
                 }
                 else if (selectedTask.RpcResult.Suspended)
                 {
-                    await hostsState[selectedTask.ComputerId].RpcClient.PerformResultOperationAsync(selectedTask.RpcResult, ResultOperation.Resume);
+                    await _manager.HostsState[selectedTask.HostId].RpcClient.PerformResultOperationAsync(selectedTask.RpcResult, ResultOperation.Resume);
                 }
             }
 
@@ -427,7 +427,7 @@ namespace BoincManagerWindows.ViewModels
             {
                 if (selectedTask.RpcResult.Abortable)
                 {
-                    await hostsState[selectedTask.ComputerId].RpcClient.PerformResultOperationAsync(selectedTask.RpcResult, ResultOperation.Abort);
+                    await _manager.HostsState[selectedTask.HostId].RpcClient.PerformResultOperationAsync(selectedTask.RpcResult, ResultOperation.Abort);
                 }
             }
             
@@ -454,7 +454,7 @@ namespace BoincManagerWindows.ViewModels
         {
             foreach (TransferViewModel selectedTransfer in SelectedTransfers)
             {
-                await hostsState[selectedTransfer.ComputerId].RpcClient.PerformFileTransferOperationAsync(selectedTransfer.FileTransfer, FileTransferOperation.Retry);
+                await _manager.HostsState[selectedTransfer.HostId].RpcClient.PerformFileTransferOperationAsync(selectedTransfer.FileTransfer, FileTransferOperation.Retry);
             }
 
             await Update();
@@ -475,7 +475,7 @@ namespace BoincManagerWindows.ViewModels
 
             foreach (TransferViewModel selectedTransfer in SelectedTransfers)
             {
-                await hostsState[selectedTransfer.ComputerId].RpcClient.PerformFileTransferOperationAsync(selectedTransfer.FileTransfer, FileTransferOperation.Abort);
+                await _manager.HostsState[selectedTransfer.HostId].RpcClient.PerformFileTransferOperationAsync(selectedTransfer.FileTransfer, FileTransferOperation.Abort);
             }
 
             await Update();
@@ -504,8 +504,15 @@ namespace BoincManagerWindows.ViewModels
 
         public async Task StartBoincManager()
         {
+            // Get host data from database.
+            List<Host> hostsModel;
+            using (var db = new Models.ApplicationDbContext())
+            {
+                hostsModel = db.Host.ToList();
+            }
+
             // Start the Boinc Manager
-            await manager.Start();
+            await _manager.Start(hostsModel);
         }
         
         public async Task ConnectToAllComputers()
@@ -521,7 +528,7 @@ namespace BoincManagerWindows.ViewModels
 #pragma warning restore CS4014
         }
         
-        public async Task Connect(ComputerViewModel computer)
+        public async Task Connect(HostViewModel computer)
         {
             if (string.IsNullOrWhiteSpace(computer.IpAddress) || string.IsNullOrEmpty(computer.Password) || computer.Connected)
             {
@@ -545,7 +552,7 @@ namespace BoincManagerWindows.ViewModels
                     {
                         computer.Status = "Connected. Updating...";
 
-                        hostsState.Add(computer.Id, hostState);
+                        _manager.HostsState.Add(computer.Id, hostState);
 
                         // Updating the hostState Model
                         await hostState.BoincState.UpdateAll();
@@ -666,9 +673,9 @@ namespace BoincManagerWindows.ViewModels
         {            
             if (SelectedComputerInTreeView == null) // No computer selected
             {
-                return hostsState; // All the list
+                return _manager.HostsState; // All the list
             }
-            else if (!hostsState.ContainsKey(SelectedComputerInTreeView.Id)) // Computer not connected, therefore no associated HostState available
+            else if (!_manager.HostsState.ContainsKey(SelectedComputerInTreeView.Id)) // Computer not connected, therefore no associated HostState available
             {
                 return new Dictionary<string, HostState>();
             }
@@ -676,7 +683,7 @@ namespace BoincManagerWindows.ViewModels
             {                
                 return new Dictionary<string, HostState>
                 {
-                    { SelectedComputerInTreeView.Id, hostsState[SelectedComputerInTreeView.Id] }
+                    { SelectedComputerInTreeView.Id, _manager.HostsState[SelectedComputerInTreeView.Id] }
                 };
             }
         }
@@ -690,7 +697,7 @@ namespace BoincManagerWindows.ViewModels
         {
             foreach (Project project in hostState.BoincState.Projects)
             {
-                ProjectViewModel projectViewModel = Projects.FirstOrDefault(pvm => pvm.ComputerId == hostState.Id && pvm.Name == project.ProjectName);
+                ProjectViewModel projectViewModel = Projects.FirstOrDefault(pvm => pvm.HostId == hostState.Id && pvm.Name == project.ProjectName);
                 
                 if (projectViewModel == null)
                 {
@@ -732,7 +739,7 @@ namespace BoincManagerWindows.ViewModels
         {
             foreach (Result result in hostState.BoincState.Results)
             {
-                TaskViewModel taskViewModel = Tasks.FirstOrDefault(tvm => tvm.ComputerId == hostState.Id && tvm.Workunit == result.WorkunitName);
+                TaskViewModel taskViewModel = Tasks.FirstOrDefault(tvm => tvm.HostId == hostState.Id && tvm.Workunit == result.WorkunitName);
 
                 if (taskViewModel == null)
                 {
@@ -774,7 +781,7 @@ namespace BoincManagerWindows.ViewModels
         {
             foreach (FileTransfer fileTransfer in hostState.BoincState.FileTransfers)
             {
-                TransferViewModel transferVM = Transfers.FirstOrDefault(tvm => tvm.ComputerId == hostState.Id && tvm.FileName == fileTransfer.Name);
+                TransferViewModel transferVM = Transfers.FirstOrDefault(tvm => tvm.HostId == hostState.Id && tvm.FileName == fileTransfer.Name);
 
                 if (transferVM == null)
                 {

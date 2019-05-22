@@ -2,8 +2,7 @@
 {
     public static class Constants
     {
-        public const string HostsFile = "hosts.xml";
-
+        public const string SqlightConnectionString = "Data Source=BoincManager.db";
         public const int BoincDefaultPort = 31416;
     }
 }

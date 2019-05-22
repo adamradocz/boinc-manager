@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BoincManager.Models;
 using BoincManagerWeb.Models;
@@ -20,7 +17,6 @@ namespace BoincManagerWeb.Pages.Hosts
         {
             _context = context;
             _manager = manager;
-            _manager.CurrentUpdateScope = BoincManager.Manager.UpdateScope.None;
         }
 
         [BindProperty]

@@ -6,7 +6,7 @@ namespace BoincManagerWindows.ViewModels
     {
         private string name;
         public string Name { get => name; set => SetProperty(ref name, value); }
-        public ObservableCollection<ComputerViewModel> Members { get; set; }
+        public ObservableCollection<HostViewModel> Members { get; set; }
 
         public ComputerGorupViewModel(string name)
         {

@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
 using BoincManager.Models;
-using BoincManagerWeb.Models;
+using System.Linq;
 
 namespace BoincManagerWeb.Pages.Hosts
 {
@@ -14,14 +9,16 @@ namespace BoincManagerWeb.Pages.Hosts
     {
         public readonly BoincManager.Manager _manager;
 
+        public List<HostState> Hosts { get; set; }
+
         public IndexModel(BoincManager.Manager manager)
         {
             _manager = manager;
-            _manager.CurrentUpdateScope = BoincManager.Manager.UpdateScope.Hosts;
         }
 
         public void OnGet()
         {
+            Hosts = _manager.HostsState.Values.ToList();
         }
 
     }

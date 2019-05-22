@@ -1,78 +1,59 @@
 ﻿using System.Collections.Generic;
-using BoincRpc;
+using BoincManager.Models;
 
 namespace BoincManagerWindows.ViewModels
 {
-    class ProjectViewModel : BaseViewModel, IFilterableViewModel
+    class ProjectViewModel : BoincManager.ViewModels.ProjectViewModel, IFilterableViewModel
     {
-        public string ComputerId { get; }
-        public string ComputerName { get; private set; }
-
         string name;
-        public string Name
+        public override string Name
         {
             get { return name; }
-            private set { SetProperty(ref name, value); }
+            protected set { SetProperty(ref name, value); }
         }
 
         string username;
-        public string Username
+        public override string Username
         {
             get { return username; }
-            private set { SetProperty(ref username, value); }
+            protected set { SetProperty(ref username, value); }
         }
 
         string team;
-        public string Team
+        public override string Team
         {
             get { return team; }
-            private set { SetProperty(ref team, value); }
+            protected set { SetProperty(ref team, value); }
         }
 
         string credit;
-        public string Credit
+        public override string Credit
         {
             get { return credit; }
-            private set { SetProperty(ref credit, value); }
+            protected set { SetProperty(ref credit, value); }
         }
 
         string averageCredit;
-        public string AverageCredit
+        public override string AverageCredit
         {
             get { return averageCredit; }
-            private set { SetProperty(ref averageCredit, value); }
+            protected set { SetProperty(ref averageCredit, value); }
         }       
 
         string status;
-        public string Status
+        public override string Status
         {
             get { return status; }
-            private set { SetProperty(ref status, value); }
+            protected set { SetProperty(ref status, value); }
         }
 
-        public Project Project { get; private set; }
-
-        public ProjectViewModel(string computerId, string computerName)
+        public ProjectViewModel(HostState hostState) : base(hostState)
         {
-            ComputerId = computerId;
-            ComputerName = computerName;
-        }
-
-        public void Update(Project project)
-        {
-            Project = project;
-
-            Name = project.ProjectName;
-            Username = project.UserName;
-            Team = project.TeamName;
-            Credit = project.UserTotalCredit.ToString("N2");
-            AverageCredit = project.UserAverageCredit.ToString("N2");
-            Status = BoincManager.Statuses.GetProjectStatus(project);
         }
 
         public IEnumerable<string> GetContentsForFiltering()
         {
-            yield return ComputerName;
+            yield return HostName;
             yield return Name;
             yield return Username;
             yield return Team;
@@ -83,7 +64,7 @@ namespace BoincManagerWindows.ViewModels
 
         public static IEnumerable<string> GetLiveFilteringProperties()
         {
-            yield return nameof(ComputerName);
+            yield return nameof(HostName);
             yield return nameof(Name);
             yield return nameof(Username);
             yield return nameof(Team);

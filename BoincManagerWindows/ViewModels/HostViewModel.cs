@@ -1,5 +1,4 @@
 ﻿using BoincManager.Models;
-using BoincManager.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -7,7 +6,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace BoincManagerWindows.ViewModels
 {
-    class ComputerViewModel : HostViewModel, IFilterableViewModel
+    class HostViewModel : BoincManager.ViewModels.HostViewModel, IFilterableViewModel
     {
         private string name;
         public override string Name { get => name; protected set => SetProperty(ref name, value); }
@@ -36,7 +35,7 @@ namespace BoincManagerWindows.ViewModels
         private string status;
         public override string Status { get => status; set => SetProperty(ref status, value); }
 
-        public ComputerViewModel(Host hostModel) : base (hostModel)
+        public HostViewModel(Host hostModel) : base (hostModel)
         {
         }
 

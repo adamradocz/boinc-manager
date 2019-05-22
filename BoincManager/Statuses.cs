@@ -7,18 +7,6 @@ namespace BoincManager
 {
     public static class Statuses
     {
-        public static async Task<string> GetHostStatus(HostState hostState)
-        {
-            StringBuilder status = new StringBuilder();
-            status.Append("Connected. ");
-            
-            string newerVersion = await hostState.RpcClient.GetNewerVersionAsync();
-            if (!string.IsNullOrEmpty(newerVersion))
-                status.Append($"BOINC {newerVersion} is available for download on {hostState.Name}.");
-
-            return status.ToString().TrimEnd(' ');
-        }
-
         /// <summary>
         /// Get the status of a project.
         /// </summary>

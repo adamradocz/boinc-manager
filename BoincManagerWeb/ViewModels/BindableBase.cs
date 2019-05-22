@@ -2,7 +2,7 @@
 using System.Runtime.CompilerServices;
 
 // From: https://www.danrigby.com/2015/09/12/inotifypropertychanged-the-net-4-6-way/
-namespace BoincManager.ViewModels
+namespace BoincManagerWindows.ViewModels
 {
     /// <summary>
     ///     Implementation of <see cref="INotifyPropertyChanged" /> to simplify models.

@@ -1,93 +1,72 @@
 ﻿using System.Collections.Generic;
-using BoincRpc;
+using BoincManager.Models;
 
 namespace BoincManagerWindows.ViewModels
 {
-    class TransferViewModel : BaseViewModel, IFilterableViewModel
+    class TransferViewModel : BoincManager.ViewModels.TransferViewModel, IFilterableViewModel
     {
-        public string ComputerId { get; }
-        public string ComputerName { get; private set; }
-
         string project;
-        public string Project
+        public override string Project
         {
             get { return project; }
-            private set { SetProperty(ref project, value); }
+            protected set { SetProperty(ref project, value); }
         }
 
         string fileName;
-        public string FileName
+        public override string FileName
         {
             get { return fileName; }
-            private set { SetProperty(ref fileName, value); }
+            protected set { SetProperty(ref fileName, value); }
         }
 
         double progress;
-        public double Progress
+        public override double Progress
         {
             get { return progress; }
-            private set { SetProperty(ref progress, value); }
+            protected set { SetProperty(ref progress, value); }
         }
 
         string fileSize;
-        public string FileSize {
+        public override string FileSize {
             get { return fileSize; }
-            private set { SetProperty(ref fileSize, value); }
+            protected set { SetProperty(ref fileSize, value); }
         }
 
         string transferRate;
-        public string TransferRate
+        public override string TransferRate
         {
             get { return transferRate; }
-            private set { SetProperty(ref transferRate, value); }
+            protected set { SetProperty(ref transferRate, value); }
         }
 
         string elapsedTime;
-        public string ElapsedTime
+        public override string ElapsedTime
         {
             get { return elapsedTime; }
-            private set { SetProperty(ref elapsedTime, value); }
+            protected set { SetProperty(ref elapsedTime, value); }
         }
 
         string timeRemaining;
-        public string TimeRemaining
+        public override string TimeRemaining
         {
             get { return timeRemaining; }
-            private set { SetProperty(ref timeRemaining, value); }
+            protected set { SetProperty(ref timeRemaining, value); }
         }
 
         string status;
-        public string Status
+        public override string Status
         {
             get { return status; }
-            private set { SetProperty(ref status, value); }
+            protected set { SetProperty(ref status, value); }
         }
 
-        public FileTransfer FileTransfer { get; private set; }
-
-        public TransferViewModel(string computerId, string computerName)
+        public TransferViewModel(HostState hostState) : base(hostState)
         {
-            ComputerId = computerId;
-            ComputerName = computerName;
         }
-
-        public void Update(FileTransfer fileTransfer)
-        {
-            FileTransfer = fileTransfer;
-
-            Project = fileTransfer.ProjectName;
-            FileName = fileTransfer.Name;
-            Progress = FileTransfer.NumberOfBytes > 0 ? fileTransfer.BytesTransferred / FileTransfer.NumberOfBytes : 0;
-            FileSize = BoincManager.Utils.ConvertBytesToFileSize(fileTransfer.NumberOfBytes);
-            TransferRate = FileTransfer.TransferActive ? $"{BoincManager.Utils.ConvertBytesToFileSize(fileTransfer.TransferSpeed)} /s" : null;
-            ElapsedTime = BoincManager.Utils.ConvertDuration(fileTransfer.TimeSoFar);
-            TimeRemaining = FileTransfer.TransferActive ? BoincManager.Utils.GetTimeRemaining(fileTransfer) : null;
-            Status = BoincManager.Statuses.GetTransferStatus(fileTransfer);
-        }
-
+        
         public IEnumerable<string> GetContentsForFiltering()
         {
-            yield return ComputerName;
+            yield return HostName;
             yield return Project;
             yield return FileName;
             yield return FileSize;
@@ -99,7 +78,7 @@ namespace BoincManagerWindows.ViewModels
 
         public static IEnumerable<string> GetLiveFilteringProperties()
         {
-            yield return nameof(ComputerName);
+            yield return nameof(HostName);
             yield return nameof(Project);
             //yield return nameof(TransferRate);
             //yield return nameof(ElapsedTime);

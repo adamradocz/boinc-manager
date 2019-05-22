@@ -1,4 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc.RazorPages;
+﻿using BoincManager.Models;
+using BoincManagerWeb.ViewModels;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace BoincManagerWeb.Pages.Projects
 {
@@ -6,15 +10,36 @@ namespace BoincManagerWeb.Pages.Projects
     {
         public readonly BoincManager.Manager _manager;
 
+        public List<ProjectViewModel> Projects { get; set; }
+
         public IndexModel(BoincManager.Manager manager)
         {
             _manager = manager;
-            _manager.CurrentUpdateScope = BoincManager.Manager.UpdateScope.Projects;
         }
 
-        public void OnGet()
+        public async Task OnGetAsync()
         {
-            
+            Projects = await GetProjects(_manager.HostsState.Values);
+        }
+
+        private async Task<List<ProjectViewModel>> GetProjects(IEnumerable<HostState> hostsState)
+        {
+            List<ProjectViewModel> projects = new List<ProjectViewModel>();
+
+            foreach (var hostState in hostsState)
+            {
+                if (hostState.Connected)
+                {
+                    await hostState.BoincState.UpdateProjects();
+
+                    foreach (var project in hostState.BoincState.Projects)
+                    {
+                        projects.Add(new ProjectViewModel(hostState, project));
+                    }
+                }
+            }
+
+            return projects;
         }
 
     }

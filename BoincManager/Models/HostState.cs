@@ -1,6 +1,8 @@
-﻿using BoincManager.ViewModels;
-using BoincRpc;
+﻿using BoincRpc;
 using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace BoincManager.Models
 {
@@ -10,9 +12,6 @@ namespace BoincManager.Models
     public class HostState : IDisposable
     {
         bool disposed = false;
-
-        public RpcClient RpcClient { get; }
-        public BoincState BoincState { get; }
 
         public int Id { get; }
         public string Name { get; set; }
@@ -33,15 +32,83 @@ namespace BoincManager.Models
         public bool Localhost { get; private set; }
         public bool Authorized { get; set; }
 
-        public HostState(HostViewModel hostVm)
+        public string BoincVersion => Connected
+                    ? $"{BoincState.CoreClientState.CoreClientMajorVersion}.{BoincState.CoreClientState.CoreClientMinorVersion}.{BoincState.CoreClientState.CoreClientReleaseVersion}"
+                    : string.Empty;
+        public string OperatingSystem => Connected ? BoincState.CoreClientState.HostInfo.OSName : string.Empty;
+        public bool Connected { get; private set; }
+        public string Status { get; set; }
+
+        public RpcClient RpcClient { get; }
+        public BoincState BoincState { get; }
+
+        public HostState(Host host)
         {
+            Id = host.Id;
+            Name = host.Name;
+            IpAddress = host.IpAddress;
+            Port = host.Port;
+            Password = host.Password;
+
             RpcClient = new RpcClient();
             BoincState = new BoincState(RpcClient);
-
-            Id = hostVm.Id;
-            Name = hostVm.Name;
         }
-        
+
+        public async Task Connect()
+        {
+            if (string.IsNullOrWhiteSpace(IpAddress) || string.IsNullOrEmpty(Password) || Connected)
+            {
+                return;
+            }
+
+            Status = $"Connecting...";
+
+            try
+            {
+                // Connecting to host
+                await RpcClient.ConnectAsync(IpAddress, Port);
+                Authorized = await RpcClient.AuthorizeAsync(Password);
+
+                if (Authorized)
+                {
+                    Connected = true;
+                    Status = "Connected. Updating...";
+
+                    await BoincState.UpdateAll();
+                    Status = await GetHostStatus();
+                }
+                else
+                {
+                    Status = "Authorization error.";
+                }
+
+            }
+            catch (Exception e)
+            {
+                Status = $"Error connecting. {e.Message}";
+            }
+        }
+
+        public async Task<string> GetHostStatus()
+        {
+            StringBuilder status = new StringBuilder();
+            status.Append("Connected. ");
+
+            string newerVersion = await RpcClient.GetNewerVersionAsync();
+            if (!string.IsNullOrEmpty(newerVersion))
+                status.Append($"BOINC {newerVersion} is available for download on {Name}.");
+
+            return status.ToString().TrimEnd(' ');
+        }
+
+        public void Update(Host host)
+        {
+            Name = host.Name;
+            IpAddress = host.IpAddress;
+            Port = host.Port;
+            Password = host.Password;
+        }
+
         public void Close()
         {
             RpcClient.Close();

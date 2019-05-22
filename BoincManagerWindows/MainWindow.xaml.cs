@@ -31,7 +31,7 @@ namespace BoincManagerWindows
         {
             // Constructor is too early for setting these properties.
             computersDataGrid.Items.IsLiveFiltering = true;
-            foreach (string propertie in ComputerViewModel.GetLiveFilteringProperties())
+            foreach (string propertie in HostViewModel.GetLiveFilteringProperties())
             {
                 computersDataGrid.Items.LiveFilteringProperties.Add(propertie);
             }
@@ -101,9 +101,9 @@ namespace BoincManagerWindows
 
         private async void ComputersTreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
-            if (computersTreeView.SelectedItem is ComputerViewModel)
+            if (computersTreeView.SelectedItem is HostViewModel)
             {
-                viewModel.SelectedComputerInTreeView = (ComputerViewModel)computersTreeView.SelectedItem;
+                viewModel.SelectedComputerInTreeView = (HostViewModel)computersTreeView.SelectedItem;
             }
             else
             {

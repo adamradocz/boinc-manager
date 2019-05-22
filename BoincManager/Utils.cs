@@ -1,5 +1,4 @@
-﻿using BoincManager.Models;
-using BoincRpc;
+﻿using BoincRpc;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -7,7 +6,6 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
-using System.Xml.Serialization;
 
 namespace BoincManager
 {
@@ -111,5 +109,6 @@ namespace BoincManager
                     }
                 }));            
         }
+
     }
 }
