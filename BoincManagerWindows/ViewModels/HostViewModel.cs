@@ -6,37 +6,50 @@ using System.ComponentModel.DataAnnotations;
 
 namespace BoincManagerWindows.ViewModels
 {
-    class HostViewModel : BoincManager.ViewModels.HostViewModel, IFilterableViewModel
+    class HostViewModel : BindableBase, IFilterableViewModel
     {
+        public int Id { get; }
+
         private string name;
-        public override string Name { get => name; protected set => SetProperty(ref name, value); }
+        public string Name { get => name; private set => SetProperty(ref name, value); }
 
         private string ipAddress;
-        public override string IpAddress { get => ipAddress; protected set => SetProperty(ref ipAddress, value); }
+        public string IpAddress { get => ipAddress; private set => SetProperty(ref ipAddress, value); }
 
         private int port;
         [Range(0, 65535, ErrorMessage = "Value for {0} must be between {1} and {2}.")]
-        public override int Port { get => port; protected set => SetProperty(ref port, value); }
+        public int Port { get => port; private set => SetProperty(ref port, value); }
 
         private string password;
-        [Category("Security")]
-        [PasswordPropertyText(true)]
-        public override string Password { get => password; protected set => SetProperty(ref password, value); }
+        public string Password { get => password; private set => SetProperty(ref password, value); }
 
         private string boincVersion;
-        public override string BoincVersion { get => boincVersion; protected set => SetProperty(ref boincVersion, value); }
+        public string BoincVersion { get => boincVersion; private set => SetProperty(ref boincVersion, value); }
 
         private string operatingSystem;
-        public override string OperatingSystem { get => operatingSystem; protected set => SetProperty(ref operatingSystem, value); }
+        public string OperatingSystem { get => operatingSystem; private set => SetProperty(ref operatingSystem, value); }
         
         private bool connected;
-        public override bool Connected { get => connected; protected set => SetProperty(ref connected, value); }
+        public bool Connected { get => connected; private set => SetProperty(ref connected, value); }
 
         private string status;
-        public override string Status { get => status; set => SetProperty(ref status, value); }
+        public string Status { get => status; set => SetProperty(ref status, value); }
 
-        public HostViewModel(Host hostModel) : base (hostModel)
+        public HostViewModel(Host host)
         {
+            Id = host.Id;
+            Name = host.Name;
+            IpAddress = host.IpAddress;
+            Port = host.Port;
+            Password = host.Password;
+        }
+
+        public void Update(string name, string ipAddress, int port, string password)
+        {
+            Name = name;
+            IpAddress = ipAddress;
+            Port = port;
+            Password = password;
         }
 
         public IEnumerable<string> GetContentsForFiltering()

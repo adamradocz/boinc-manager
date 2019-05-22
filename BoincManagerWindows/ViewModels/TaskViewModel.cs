@@ -1,82 +1,126 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
+using BoincManager;
 using BoincManager.Models;
+using BoincRpc;
 
 namespace BoincManagerWindows.ViewModels
 {
-    class TaskViewModel : BoincManager.ViewModels.TaskViewModel, IFilterableViewModel
+    class TaskViewModel : BindableBase, IFilterableViewModel
     {
+        public int HostId { get; }
+        public string HostName { get; }
+
         string project;
-        public override string Project
+        public string Project
         {
             get { return project; }
-            protected set { SetProperty(ref project, value); }
+            private set { SetProperty(ref project, value); }
         }
 
         string application;
-        public override string Application
+        public string Application
         {
             get { return application; }
-            protected set { SetProperty(ref application, value); }
+            private set { SetProperty(ref application, value); }
         }
 
         string workunit;
-        public override string Workunit
+        public string Workunit
         {
             get { return workunit; }
-            protected set { SetProperty(ref workunit, value); }
+            private set { SetProperty(ref workunit, value); }
         }
 
         double progress;
-        public override double Progress
+        public double Progress
         {
             get { return progress; }
-            protected set { SetProperty(ref progress, value); }
+            private set { SetProperty(ref progress, value); }
         }
 
         string elapsedTime;
-        public override string ElapsedTime
+        public string ElapsedTime
         {
             get { return elapsedTime; }
-            protected set { SetProperty(ref elapsedTime, value); }
+            private set { SetProperty(ref elapsedTime, value); }
         }
 
         string cpuTime;
-        public override string CpuTime
+        public string CpuTime
         {
             get { return cpuTime; }
-            protected set { SetProperty(ref cpuTime, value); }
+            private set { SetProperty(ref cpuTime, value); }
         }
 
         string cpuTimeRemaining;
-        public override string CpuTimeRemaining
+        public string CpuTimeRemaining
         {
             get { return cpuTimeRemaining; }
-            protected set { SetProperty(ref cpuTimeRemaining, value); }
+            private set { SetProperty(ref cpuTimeRemaining, value); }
         }
 
         string lastCheckpoint;
-        public override string LastCheckpoint
+        public string LastCheckpoint
         {
             get { return lastCheckpoint; }
-            protected set { SetProperty(ref lastCheckpoint, value); }
+            private set { SetProperty(ref lastCheckpoint, value); }
         }
 
         string deadline;
-        public override string Deadline
+        public string Deadline
         {
             get { return deadline; }
-            protected set { SetProperty(ref deadline, value); }
+            private set { SetProperty(ref deadline, value); }
         }
 
         string status;
-        public override string Status
+        public string Status
         {
             get { return status; }
-            protected set { SetProperty(ref status, value); }
-        }      
+            private set { SetProperty(ref status, value); }
+        }
 
-        public TaskViewModel(HostState hostState) : base(hostState)
+        public Result RpcResult { get; private set; }
+        public Project RpcProject { get; private set; }
+        public Workunit RpcWorkunit { get; private set; }
+        public BoincRpc.App RpcApp { get; private set; }
+        public AppVersion RpcAppVersion { get; private set; }
+        
+        public TaskViewModel(HostState hostState)
         {
+            HostId = hostState.Id;
+            HostName = hostState.Name;
+        }
+
+        public void Update(Result result, HostState hostState)
+        {
+            RpcProject = hostState.BoincState.Projects?.FirstOrDefault(p => p.MasterUrl == result.ProjectUrl);
+            RpcWorkunit = hostState.BoincState.Workunits?.FirstOrDefault(w => w.ProjectUrl == RpcProject?.MasterUrl && w.Name == result.WorkunitName);
+            RpcApp = hostState.BoincState.Apps?.FirstOrDefault(a => a.ProjectUrl == RpcProject?.MasterUrl && a.Name == RpcWorkunit?.AppName);
+
+            //RpcAppVersion = result.VersionNumber != 0
+            //    ? boincState.AppVersions?.FirstOrDefault(av => av.ProjectUrl == result.ProjectUrl && av.AppName == RpcApp?.Name && av.VersionNumber == result.VersionNumber && av.PlanClass == result.PlanClass)
+            //    : boincState.AppVersions?.FirstOrDefault(av => av.ProjectUrl == result.ProjectUrl && av.AppName == RpcApp?.Name && av.VersionNumber == RpcWorkunit?.VersionNumber);
+
+            if (RpcProject == null || RpcWorkunit == null || RpcApp == null/* || RpcAppVersion == null*/)
+            {
+                Status = Statuses.GetTaskStatus(result, RpcProject, hostState.BoincState);
+                return;
+            }
+
+            RpcResult = result;
+
+            Project = RpcProject.ProjectName;
+            Application = RpcApp.UserFriendlyName;
+            Workunit = result.WorkunitName;
+            Progress = result.ReadyToReport ? 1.0 : result.FractionDone;
+            ElapsedTime = Utils.ConvertDuration(result.ElapsedTime);
+            CpuTime = Utils.ConvertDuration(result.CurrentCpuTime);
+            CpuTimeRemaining = Utils.ConvertDuration(result.EstimatedCpuTimeRemaining);
+            LastCheckpoint = Utils.ConvertDuration(result.CurrentCpuTime - result.CheckpointCpuTime);
+            Deadline = Utils.ConvertDateTime(result.ReportDeadline);
+            Status = Statuses.GetTaskStatus(result, RpcProject, hostState.BoincState);
         }
         
         public IEnumerable<string> GetContentsForFiltering()

@@ -310,7 +310,7 @@
                         <TextBlock Text=")" Foreground="Blue" />
                     </StackPanel>
                 </HierarchicalDataTemplate>
-                <DataTemplate DataType="{x:Type viewmodels:ComputerViewModel}">
+                <DataTemplate DataType="{x:Type viewmodels:HostViewModel}">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="{Binding Name}" />
                     </StackPanel>

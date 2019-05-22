@@ -14,13 +14,9 @@ using BoincRpc;
 
 namespace BoincManagerWindows.ViewModels
 {
-    class MainViewModel : BoincManager.ViewModels.BindableBase
+    class MainViewModel : BindableBase
     {
         private readonly BoincManager.Manager _manager = new BoincManager.Manager();
-
-        private static readonly object lockObject = new object(); // lockObject for EnableCollectionSynchronization method. Info: http://www.jonathanantoine.com/2011/09/24/wpf-4-5-part-7-accessing-collections-on-non-ui-threads/
-        
-        //private readonly Dictionary<string, HostState> hostsState = new Dictionary<string, HostState>(); // Key is the Id of the host/computer
 
         public List<ComputerGorupViewModel> ComputerGroups { get; }
         public ObservableCollection<HostViewModel> Computers { get; }
@@ -194,8 +190,7 @@ namespace BoincManagerWindows.ViewModels
 
         private void ExecuteAddComputerCommand()
         {
-            Computers.Add(new HostViewModel(id, "New Computer", string.Empty, BoincManager.Constants.BoincDefaultPort, string.Empty));
-            _manager.AddHost(new Ho)
+            //Computers.Add(new HostViewModel(id, "New Computer", string.Empty, BoincManager.Constants.BoincDefaultPort, string.Empty));
         }
 
         private void ExecuteRemoveComputerCommand()
@@ -208,7 +203,7 @@ namespace BoincManagerWindows.ViewModels
                 return;
 
             // Remove the selected computers from Model
-            List<string> removableComputerIds = new List<string>();
+            List<int> removableComputerIds = new List<int>();
             foreach (HostViewModel computerVM in SelectedComputers)
             {
                 removableComputerIds.Add(computerVM.Id);
@@ -241,7 +236,7 @@ namespace BoincManagerWindows.ViewModels
             {
                 if (!computer.Connected)
                 {
-                    await Connect(computer);
+                    await _manager.HostsState[computer.Id].Connect();
                 }
             }
         }
@@ -504,6 +499,8 @@ namespace BoincManagerWindows.ViewModels
 
         public async Task StartBoincManager()
         {
+            status = "Connecting...";
+
             // Get host data from database.
             List<Host> hostsModel;
             using (var db = new Models.ApplicationDbContext())
@@ -513,22 +510,17 @@ namespace BoincManagerWindows.ViewModels
 
             // Start the Boinc Manager
             await _manager.Start(hostsModel);
-        }
-        
-        public async Task ConnectToAllComputers()
-        {
-            status = "Connecting...";
 
-            // Connect to all the computers
-            await BoincManager.Utils.ParallelForEachAsync(Computers, Connect);
-            //foreach (var computer in Computers) await Connect(computer);
+            // Update the Views
+            await Update();
 
 #pragma warning disable CS4014
-            BoincInfoUpdateLoop(CancellationToken.None);
+            StartBoincInfoUpdateLoop(CancellationToken.None);
 #pragma warning restore CS4014
         }
-        
-        public async Task Connect(HostViewModel computer)
+
+        /*
+        public async Task Connect(HostState computer)
         {
             if (string.IsNullOrWhiteSpace(computer.IpAddress) || string.IsNullOrEmpty(computer.Password) || computer.Connected)
             {
@@ -580,8 +572,9 @@ namespace BoincManagerWindows.ViewModels
                 computer.Status = $"Error connecting. {e.Message}";
             }
         }
-        
-        private async Task BoincInfoUpdateLoop(CancellationToken cancellationToken)
+        */
+
+        private async Task StartBoincInfoUpdateLoop(CancellationToken cancellationToken)
         {
             while (true)
             {
@@ -598,29 +591,16 @@ namespace BoincManagerWindows.ViewModels
         {
             Status = "Updating...";
 
-            // Enable synchronization with a collection that changes from different threads. The collection has to be syncronized because of the ParallelForEachAsync.
-            // (Exception will be thrown when an item's source has changed from another thread and DataGrid doesn't receive a notification (CollectionChanged event) about ItemsSource being changed.)
-            switch (CurrentTabPage)
-            {             
-                case 1: // Projects tab
-                    BindingOperations.EnableCollectionSynchronization(Projects, lockObject);
-                    break;
-                case 2: // Tasks tab
-                    BindingOperations.EnableCollectionSynchronization(Tasks, lockObject);
-                    break;
-                case 3: // Transfers tab
-                    BindingOperations.EnableCollectionSynchronization(Transfers, lockObject);
-                    break;
-                case 5: // Messages tab
-                    BindingOperations.EnableCollectionSynchronization(Messages, lockObject);
-                    break;
-            }
-
             var filteredHosts = GetFilteredHosts();
-            await BoincManager.Utils.ParallelForEachAsync(filteredHosts.Values, UpdateParallel); // Update in parallel
-            //foreach (var hostState in filteredHosts.Values) await UpdateParallel(hostState);
+            // TODO - The Parallel update is not working because something is not thread-safe
+            //await BoincManager.Utils.ParallelForEachAsync(filteredHosts.Values, GetNewBoincInfo); // Update in parallel
+            foreach (var hostState in filteredHosts.Values)
+            {
+                //await GetNewBoincInfo(hostState);
+            }
             
-            switch (CurrentTabPage)
+            // Remove outdated info
+            /*switch (CurrentTabPage)
             {                
                 case 1: // Projects tab
                     RemoveOutdatedProjectViewModels(filteredHosts);
@@ -633,12 +613,12 @@ namespace BoincManagerWindows.ViewModels
                     break;
                 case 5: // Messages tab
                     break;
-            }
+            }*/
             
             Status = string.Empty;
         }
 
-        private async Task UpdateParallel(HostState hostState)
+        private async Task GetNewBoincInfo(HostState hostState)
         {
             try
             {
@@ -669,19 +649,19 @@ namespace BoincManagerWindows.ViewModels
             }
         }
 
-        private Dictionary<string, HostState> GetFilteredHosts()
-        {            
+        private Dictionary<int, HostState> GetFilteredHosts()
+        {
             if (SelectedComputerInTreeView == null) // No computer selected
             {
                 return _manager.HostsState; // All the list
             }
-            else if (!_manager.HostsState.ContainsKey(SelectedComputerInTreeView.Id)) // Computer not connected, therefore no associated HostState available
+            else if (!_manager.HostsState[SelectedComputerInTreeView.Id].Connected) // Computer is not connected
             {
-                return new Dictionary<string, HostState>();
+                return new Dictionary<int, HostState>();
             }
             else // The selected computer
             {                
-                return new Dictionary<string, HostState>
+                return new Dictionary<int, HostState>
                 {
                     { SelectedComputerInTreeView.Id, _manager.HostsState[SelectedComputerInTreeView.Id] }
                 };
@@ -701,7 +681,7 @@ namespace BoincManagerWindows.ViewModels
                 
                 if (projectViewModel == null)
                 {
-                    projectViewModel = new ProjectViewModel(hostState.Id, hostState.Name);
+                    projectViewModel = new ProjectViewModel(hostState);
                     projectViewModel.Update(project);
                     Projects.Add(projectViewModel);
                 }
@@ -712,7 +692,7 @@ namespace BoincManagerWindows.ViewModels
             }
         }
 
-        private void RemoveOutdatedProjectViewModels(Dictionary<string, HostState> hostsState)
+        private void RemoveOutdatedProjectViewModels(Dictionary<int, HostState> hostsState)
         {
             var allProjects = new List<Project>();
             foreach (var hostState in hostsState)
@@ -743,18 +723,18 @@ namespace BoincManagerWindows.ViewModels
 
                 if (taskViewModel == null)
                 {
-                    taskViewModel = new TaskViewModel(hostState.Id, hostState.Name);
-                    taskViewModel.Update(result, hostState.BoincState);
+                    taskViewModel = new TaskViewModel(hostState);
+                    taskViewModel.Update(result, hostState);
                     Tasks.Add(taskViewModel);
                 }
                 else
                 {
-                    taskViewModel.Update(result, hostState.BoincState);
+                    taskViewModel.Update(result, hostState);
                 }
             }
         }
 
-        private void RemoveOutdatedTaskViewModels(Dictionary<string, HostState> hostsState)
+        private void RemoveOutdatedTaskViewModels(Dictionary<int, HostState> hostsState)
         {
             var allTasks = new List<Result>();
             foreach (var hostState in hostsState)
@@ -785,7 +765,7 @@ namespace BoincManagerWindows.ViewModels
 
                 if (transferVM == null)
                 {
-                    transferVM = new TransferViewModel(hostState.Id, hostState.Name);
+                    transferVM = new TransferViewModel(hostState);
                     transferVM.Update(fileTransfer);
                     Transfers.Add(transferVM);
                 }
@@ -796,7 +776,7 @@ namespace BoincManagerWindows.ViewModels
             }
         }
 
-        private void RemoveOutdatedTransferViewModels(Dictionary<string, HostState> hostsState)
+        private void RemoveOutdatedTransferViewModels(Dictionary<int, HostState> hostsState)
         {
             var allFileTransfers = new List<FileTransfer>();
             foreach (var hostState in hostsState)
@@ -819,8 +799,8 @@ namespace BoincManagerWindows.ViewModels
             var newMessages = await hostState.BoincState.GetNewMessages();
             foreach (Message newMessage in newMessages)
             {
-                MessageViewModel message = new MessageViewModel(hostState.Id);
-                message.Update(newMessage, hostState.Name);
+                MessageViewModel message = new MessageViewModel(hostState);
+                message.Update(newMessage);
                 Messages.Add(message);
             }            
         }

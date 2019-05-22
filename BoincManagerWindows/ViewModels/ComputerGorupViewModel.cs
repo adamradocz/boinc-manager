@@ -2,7 +2,7 @@
 
 namespace BoincManagerWindows.ViewModels
 {
-    class ComputerGorupViewModel : BaseViewModel
+    class ComputerGorupViewModel : BindableBase
     {
         private string name;
         public string Name { get => name; set => SetProperty(ref name, value); }

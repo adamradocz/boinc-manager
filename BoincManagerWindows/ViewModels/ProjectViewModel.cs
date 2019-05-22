@@ -1,54 +1,75 @@
 ﻿using System.Collections.Generic;
+using BoincManager;
 using BoincManager.Models;
+using BoincRpc;
 
 namespace BoincManagerWindows.ViewModels
 {
-    class ProjectViewModel : BoincManager.ViewModels.ProjectViewModel, IFilterableViewModel
+    class ProjectViewModel : BindableBase, IFilterableViewModel
     {
+        public int HostId { get; }
+        public string HostName { get; }
+
         string name;
-        public override string Name
+        public string Name
         {
             get { return name; }
-            protected set { SetProperty(ref name, value); }
+            private set { SetProperty(ref name, value); }
         }
 
         string username;
-        public override string Username
+        public string Username
         {
             get { return username; }
-            protected set { SetProperty(ref username, value); }
+            private set { SetProperty(ref username, value); }
         }
 
         string team;
-        public override string Team
+        public string Team
         {
             get { return team; }
-            protected set { SetProperty(ref team, value); }
+            private set { SetProperty(ref team, value); }
         }
 
         string credit;
-        public override string Credit
+        public string Credit
         {
             get { return credit; }
-            protected set { SetProperty(ref credit, value); }
+            private set { SetProperty(ref credit, value); }
         }
 
         string averageCredit;
-        public override string AverageCredit
+        public string AverageCredit
         {
             get { return averageCredit; }
-            protected set { SetProperty(ref averageCredit, value); }
+            private set { SetProperty(ref averageCredit, value); }
         }       
 
         string status;
-        public override string Status
+        public string Status
         {
             get { return status; }
-            protected set { SetProperty(ref status, value); }
+            private set { SetProperty(ref status, value); }
         }
 
-        public ProjectViewModel(HostState hostState) : base(hostState)
+        public Project Project { get; private set; }
+
+        public ProjectViewModel(HostState hostState)
         {
+            HostId = hostState.Id;
+            HostName = hostState.Name;
+        }
+
+        public void Update(Project project)
+        {
+            Project = project;
+
+            Name = project.ProjectName;
+            Username = project.UserName;
+            Team = project.TeamName;
+            Credit = project.UserTotalCredit.ToString("N2");
+            AverageCredit = project.UserAverageCredit.ToString("N2");
+            Status = Statuses.GetProjectStatus(project);
         }
 
         public IEnumerable<string> GetContentsForFiltering()

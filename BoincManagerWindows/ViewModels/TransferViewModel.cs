@@ -1,67 +1,90 @@
 ﻿using System.Collections.Generic;
+using BoincManager;
 using BoincManager.Models;
+using BoincRpc;
 
 namespace BoincManagerWindows.ViewModels
 {
-    class TransferViewModel : BoincManager.ViewModels.TransferViewModel, IFilterableViewModel
+    class TransferViewModel : BindableBase, IFilterableViewModel
     {
+        public int HostId { get; }
+        public string HostName { get; }
+
         string project;
-        public override string Project
+        public string Project
         {
             get { return project; }
-            protected set { SetProperty(ref project, value); }
+            private set { SetProperty(ref project, value); }
         }
 
         string fileName;
-        public override string FileName
+        public string FileName
         {
             get { return fileName; }
-            protected set { SetProperty(ref fileName, value); }
+            private set { SetProperty(ref fileName, value); }
         }
 
         double progress;
-        public override double Progress
+        public double Progress
         {
             get { return progress; }
-            protected set { SetProperty(ref progress, value); }
+            private set { SetProperty(ref progress, value); }
         }
 
         string fileSize;
-        public override string FileSize {
+        public string FileSize {
             get { return fileSize; }
-            protected set { SetProperty(ref fileSize, value); }
+            private set { SetProperty(ref fileSize, value); }
         }
 
         string transferRate;
-        public override string TransferRate
+        public string TransferRate
         {
             get { return transferRate; }
-            protected set { SetProperty(ref transferRate, value); }
+            private set { SetProperty(ref transferRate, value); }
         }
 
         string elapsedTime;
-        public override string ElapsedTime
+        public string ElapsedTime
         {
             get { return elapsedTime; }
-            protected set { SetProperty(ref elapsedTime, value); }
+            private set { SetProperty(ref elapsedTime, value); }
         }
 
         string timeRemaining;
-        public override string TimeRemaining
+        public string TimeRemaining
         {
             get { return timeRemaining; }
-            protected set { SetProperty(ref timeRemaining, value); }
+            private set { SetProperty(ref timeRemaining, value); }
         }
 
         string status;
-        public override string Status
+        public string Status
         {
             get { return status; }
-            protected set { SetProperty(ref status, value); }
+            private set { SetProperty(ref status, value); }
         }
 
-        public TransferViewModel(HostState hostState) : base(hostState)
+        public FileTransfer FileTransfer { get; private set; }
+
+        public TransferViewModel(HostState hostState)
         {
+            HostId = hostState.Id;
+            HostName = hostState.Name;
+        }
+
+        public void Update(FileTransfer fileTransfer)
+        {
+            FileTransfer = fileTransfer;
+
+            Project = fileTransfer.ProjectName;
+            FileName = fileTransfer.Name;
+            Progress = fileTransfer.NumberOfBytes > 0 ? fileTransfer.BytesTransferred / fileTransfer.NumberOfBytes : 0;
+            FileSize = Utils.ConvertBytesToFileSize(fileTransfer.NumberOfBytes);
+            TransferRate = fileTransfer.TransferActive ? $"{Utils.ConvertBytesToFileSize(fileTransfer.TransferSpeed)} /s" : string.Empty;
+            ElapsedTime = Utils.ConvertDuration(fileTransfer.TimeSoFar);
+            TimeRemaining = fileTransfer.TransferActive ? Utils.GetTimeRemaining(fileTransfer) : string.Empty;
+            Status = Statuses.GetTransferStatus(fileTransfer);
         }
         
         public IEnumerable<string> GetContentsForFiltering()
