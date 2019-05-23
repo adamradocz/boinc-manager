@@ -22,7 +22,7 @@ namespace BoincManagerWeb.Pages.Hosts
                 return NotFound();
             }
 
-            Host = _manager.HostsState[id.GetValueOrDefault()];
+            Host = _manager.GetHostState(id.GetValueOrDefault());
 
             if (Host == null)
             {

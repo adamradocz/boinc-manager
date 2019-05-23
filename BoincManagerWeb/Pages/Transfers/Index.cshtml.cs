@@ -20,7 +20,7 @@ namespace BoincManagerWeb.Pages.Transfers
 
         public async Task OnGetAsync()
         {
-            Transfers = await GetTransfersAsync(_manager.HostsState.Values);
+            Transfers = await GetTransfersAsync(_manager.GetAllHostState());
         }
 
         private async Task<List<TransferViewModel>> GetTransfersAsync(IEnumerable<HostState> hostsState)

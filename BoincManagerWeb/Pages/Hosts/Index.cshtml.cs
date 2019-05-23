@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using BoincManager.Models;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq;
 
 namespace BoincManagerWeb.Pages.Hosts
 {
@@ -20,25 +20,19 @@ namespace BoincManagerWeb.Pages.Hosts
 
         public void OnGet()
         {
-            Hosts = _manager.HostsState.Values.ToList();
+            Hosts = _manager.GetAllHostState().ToList();
         }
 
         public async Task<IActionResult> OnPostConnectAsync(int id)
         {
-            if (_manager.HostsState.ContainsKey(id))
-            {
-                await _manager.Connect(_manager.HostsState[id]);
-            }
+            await _manager.Connect(id);
 
             return RedirectToPage();
         }
 
         public IActionResult OnPostDisconnect(int id)
         {
-            if (_manager.HostsState.ContainsKey(id))
-            {
-                _manager.Disconnect(_manager.HostsState[id]);
-            }
+            _manager.Disconnect(id);
 
             return RedirectToPage();
         }

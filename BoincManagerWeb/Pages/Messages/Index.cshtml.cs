@@ -19,7 +19,8 @@ namespace BoincManagerWeb.Pages.Messages
 
         public async Task OnGetAsync()
         {
-            Messages = await GetMessages(_manager.HostsState.Values);
+            var hostStates = _manager.GetAllHostState();
+            Messages = await GetMessages(hostStates);
         }
 
         private async Task<List<MessageViewModel>> GetMessages(IEnumerable<HostState> hostsState)

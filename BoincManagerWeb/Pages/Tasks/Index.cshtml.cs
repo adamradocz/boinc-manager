@@ -19,7 +19,8 @@ namespace BoincManagerWeb.Pages.Tasks
 
         public async Task OnGetAsync()
         {
-            Tasks = await GetTasks(_manager.HostsState.Values);
+            var hostStates = _manager.GetAllHostState();
+            Tasks = await GetTasks(hostStates);
         }
 
         private async Task<List<TaskViewModel>> GetTasks(IEnumerable<HostState> hostsState)
