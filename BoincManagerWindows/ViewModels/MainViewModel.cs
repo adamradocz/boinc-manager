@@ -561,7 +561,7 @@ namespace BoincManagerWindows.ViewModels
                 Computers.Add(new HostViewModel(hostState));
             }            
 
-            // Update the Views
+            // Update the View (on the visible tab only)
             await Update();
 
 #pragma warning disable CS4014
