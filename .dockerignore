@@ -9,7 +9,7 @@
 **/.toolstarget
 Dockerfile
 LICENSE
-*.md
+**/*.md
 
 # Other BoincManager projects which are don't needed
 BoincManagerWindows
