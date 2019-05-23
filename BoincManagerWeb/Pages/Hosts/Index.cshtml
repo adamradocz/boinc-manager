@@ -8,7 +8,7 @@
 <h1>Hosts</h1>
 
 <p>
-    <a asp-page="Create">Create New</a>
+    <a asp-page="Add">Add Host</a>
 </p>
 <table class="table">
     <thead>
@@ -64,9 +64,21 @@
                 @Html.DisplayFor(modelItem => item.Status)
             </td>
             <td>
-                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+                @if (item.Connected)
+                {
+                    <form method="post" asp-page-handler="Disconnect" asp-route-id="@item.Id">
+                        <input type="submit" value="Disconnect" class="btn btn-danger btn-sm" />
+                    </form>
+                }
+                else
+                {
+                    <form method="post" asp-page-handler="Connect" asp-route-id="@item.Id">
+                        <input type="submit" value="Connect" class="btn btn-success btn-sm" />
+                    </form>
+                }
+                <a asp-page="./Edit" asp-route-id="@item.Id" class="btn btn-primary btn-sm">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.Id" class="btn btn-primary btn-sm">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm">Delete</a>
             </td>
         </tr>
         }

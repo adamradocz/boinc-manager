@@ -6,12 +6,15 @@ using BoincManagerWeb.Models;
 
 namespace BoincManagerWeb.Pages.Hosts
 {
-    public class CreateModel : PageModel
+    public class AddModel : PageModel
     {
         private readonly ApplicationDbContext _context;
         private readonly BoincManager.Manager _manager;
 
-        public CreateModel(ApplicationDbContext context, BoincManager.Manager manager)
+        [BindProperty]
+        public Host Host { get; set; }
+
+        public AddModel(ApplicationDbContext context, BoincManager.Manager manager)
         {
             _context = context;
             _manager = manager;
@@ -21,9 +24,6 @@ namespace BoincManagerWeb.Pages.Hosts
         {
             return Page();
         }
-
-        [BindProperty]
-        public Host Host { get; set; }
 
         public async Task<IActionResult> OnPostAsync()
         {

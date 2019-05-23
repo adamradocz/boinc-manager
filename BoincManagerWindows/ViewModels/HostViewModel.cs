@@ -1,7 +1,6 @@
 ﻿using BoincManager.Models;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace BoincManagerWindows.ViewModels
@@ -11,17 +10,20 @@ namespace BoincManagerWindows.ViewModels
         public int Id { get; }
 
         private string name;
-        public string Name { get => name; private set => SetProperty(ref name, value); }
+        public string Name { get => name; set => SetProperty(ref name, value); }
 
         private string ipAddress;
-        public string IpAddress { get => ipAddress; private set => SetProperty(ref ipAddress, value); }
+        public string IpAddress { get => ipAddress; set => SetProperty(ref ipAddress, value); }
 
         private int port;
         [Range(0, 65535, ErrorMessage = "Value for {0} must be between {1} and {2}.")]
-        public int Port { get => port; private set => SetProperty(ref port, value); }
+        public int Port { get => port; set => SetProperty(ref port, value); }
 
         private string password;
-        public string Password { get => password; private set => SetProperty(ref password, value); }
+        public string Password { get => password; set => SetProperty(ref password, value); }
+
+        private bool autoConnect;
+        public bool AutoConnect { get => autoConnect; set => SetProperty(ref autoConnect, value); }
 
         private string boincVersion;
         public string BoincVersion { get => boincVersion; private set => SetProperty(ref boincVersion, value); }
@@ -35,21 +37,24 @@ namespace BoincManagerWindows.ViewModels
         private string status;
         public string Status { get => status; set => SetProperty(ref status, value); }
 
-        public HostViewModel(Host host)
+        public HostViewModel(HostState hostState)
         {
-            Id = host.Id;
-            Name = host.Name;
-            IpAddress = host.IpAddress;
-            Port = host.Port;
-            Password = host.Password;
+            Id = hostState.Id;
+
+            Update(hostState);
         }
 
-        public void Update(string name, string ipAddress, int port, string password)
+        public void Update(HostState hostState)
         {
-            Name = name;
-            IpAddress = ipAddress;
-            Port = port;
-            Password = password;
+            Name = hostState.Name;
+            IpAddress = hostState.IpAddress;
+            Port = hostState.Port;
+            Password = hostState.Password;
+            AutoConnect = hostState.AutoConnect;
+            BoincVersion = hostState.BoincVersion;
+            OperatingSystem = hostState.OperatingSystem;
+            Connected = hostState.Connected;
+            Status = hostState.Status;
         }
 
         public IEnumerable<string> GetContentsForFiltering()

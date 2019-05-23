@@ -12,10 +12,11 @@ namespace BoincManagerWeb.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Name = table.Column<string>(nullable: true),
-                    IpAddress = table.Column<string>(nullable: true),
+                    Name = table.Column<string>(nullable: false),
+                    IpAddress = table.Column<string>(nullable: false),
                     Port = table.Column<int>(nullable: false),
-                    Password = table.Column<string>(nullable: true)
+                    Password = table.Column<string>(nullable: false),
+                    AutoConnect = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {

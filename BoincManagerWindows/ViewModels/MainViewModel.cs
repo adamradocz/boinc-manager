@@ -7,9 +7,9 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Data;
 using System.Windows.Input;
 using BoincManager.Models;
+using BoincManagerWindows.Models;
 using BoincRpc;
 
 namespace BoincManagerWindows.ViewModels
@@ -57,6 +57,7 @@ namespace BoincManagerWindows.ViewModels
         public ICommand AddComputerCommand { get; }
         public ICommand RemoveComputerCommand { get; }
         public ICommand ConnectComputerCommand { get; }
+        public ICommand DisconnectComputerCommand { get; }
 
         // Project tab
         public ICommand AttachProjectCommand { get; }
@@ -98,6 +99,7 @@ namespace BoincManagerWindows.ViewModels
             AddComputerCommand = new RelayCommand(ExecuteAddComputerCommand);
             RemoveComputerCommand = new RelayCommand(ExecuteRemoveComputerCommand, IsComputerSelected);
             ConnectComputerCommand = new RelayCommand(ExecuteConnectComputerCommand, CanExecuteConnectComputerCommand);
+            DisconnectComputerCommand = new RelayCommand(ExecuteDisconnectComputerCommand, CanExecuteDisconnectComputerCommand);
 
             // Projects tab
             AttachProjectCommand = new RelayCommand(ExecuteAttachProjectCommand, IsComputerSelected);
@@ -188,12 +190,20 @@ namespace BoincManagerWindows.ViewModels
             return SelectedComputers != null && SelectedComputers.Count != 0;
         }
 
-        private void ExecuteAddComputerCommand()
+        private async void ExecuteAddComputerCommand()
         {
-            //Computers.Add(new HostViewModel(id, "New Computer", string.Empty, BoincManager.Constants.BoincDefaultPort, string.Empty));
-        }
+            var host = new Host("New host", "192.168.0.100", "11235");
+            using (var db = new ApplicationDbContext())
+            {
+                db.Host.Add(host);
+                await db.SaveChangesAsync();
+            }
 
-        private void ExecuteRemoveComputerCommand()
+            await _manager.AddHost(host);
+            Computers.Add(new HostViewModel(_manager.HostsState[host.Id]));
+        }
+        
+        private async void ExecuteRemoveComputerCommand()
         {
             string messageBoxText = SelectedComputers.Count == 1
                 ? string.Format("Removing computer {0}. Are you sure?", ((HostViewModel)SelectedComputers[0]).Name)
@@ -204,16 +214,22 @@ namespace BoincManagerWindows.ViewModels
 
             // Remove the selected computers from Model
             List<int> removableComputerIds = new List<int>();
-            foreach (HostViewModel computerVM in SelectedComputers)
+            using (var db = new ApplicationDbContext())
             {
-                removableComputerIds.Add(computerVM.Id);
-
-                if (_manager.HostsState.ContainsKey(computerVM.Id))
+                foreach (HostViewModel computerVM in SelectedComputers)
                 {
-                    _manager.HostsState[computerVM.Id].Close();
-                    _manager.HostsState[computerVM.Id].Dispose();
-                    _manager.HostsState.Remove(computerVM.Id);
+                    _manager.RemoveHost(computerVM.Id);
+
+                    var removableHost = await db.Host.FindAsync(computerVM.Id);
+                    if (removableHost != null)
+                    {
+                        db.Host.Remove(removableHost);
+                    }
+                    
+                    removableComputerIds.Add(computerVM.Id);
                 }
+
+                await db.SaveChangesAsync();
             }
 
             // Remove the selected computers from ViewModel
@@ -236,9 +252,11 @@ namespace BoincManagerWindows.ViewModels
             {
                 if (!computer.Connected)
                 {
-                    await _manager.HostsState[computer.Id].Connect();
+                    await _manager.Connect(_manager.HostsState[computer.Id]);
                 }
             }
+
+            await Update();
         }
 
         private bool CanExecuteConnectComputerCommand()
@@ -248,6 +266,35 @@ namespace BoincManagerWindows.ViewModels
                 foreach (HostViewModel computer in SelectedComputers)
                 {
                     if (!computer.Connected)
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        private async void ExecuteDisconnectComputerCommand()
+        {
+            foreach (HostViewModel computer in SelectedComputers)
+            {
+                if (computer.Connected)
+                {
+                    _manager.Disconnect(_manager.HostsState[computer.Id]);
+                }
+            }
+
+            await Update();
+        }
+
+        private bool CanExecuteDisconnectComputerCommand()
+        {
+            if (SelectedComputers != null && SelectedComputers.Count != 0)
+            {
+                foreach (HostViewModel computer in SelectedComputers)
+                {
+                    if (computer.Connected)
                     {
                         return true;
                     }
@@ -502,14 +549,20 @@ namespace BoincManagerWindows.ViewModels
             status = "Connecting...";
 
             // Get host data from database.
-            List<Host> hostsModel;
-            using (var db = new Models.ApplicationDbContext())
+            List<Host> hosts;
+            using (var db = new ApplicationDbContext())
             {
-                hostsModel = db.Host.ToList();
+                hosts = db.Host.ToList();
             }
 
             // Start the Boinc Manager
-            await _manager.Start(hostsModel);
+            await _manager.Start(hosts);
+
+            // Initialize Hosts
+            foreach (var hostState in _manager.HostsState.Values)
+            {
+                Computers.Add(new HostViewModel(hostState));
+            }            
 
             // Update the Views
             await Update();
@@ -518,61 +571,6 @@ namespace BoincManagerWindows.ViewModels
             StartBoincInfoUpdateLoop(CancellationToken.None);
 #pragma warning restore CS4014
         }
-
-        /*
-        public async Task Connect(HostState computer)
-        {
-            if (string.IsNullOrWhiteSpace(computer.IpAddress) || string.IsNullOrEmpty(computer.Password) || computer.Connected)
-            {
-                return;
-            }
-
-            computer.Status = $"Connecting...";
-
-            try
-            {
-                HostState hostState = new HostState(computer.Id, computer.Name);
-
-                // Connecting to host
-                await hostState.RpcClient.ConnectAsync(computer.IpAddress, computer.Port);
-                hostState.Authorized = await hostState.RpcClient.AuthorizeAsync(computer.Password);
-
-                if (hostState.Authorized)
-                {                    
-                    // Since the ObservableCollections is created on UI thread, it can only be modified from UI thread and not from other threads.
-                    await Application.Current.Dispatcher.Invoke(async delegate
-                    {
-                        computer.Status = "Connected. Updating...";
-
-                        _manager.HostsState.Add(computer.Id, hostState);
-
-                        // Updating the hostState Model
-                        await hostState.BoincState.UpdateAll();
-
-                        // Updating the ComputerViewModel
-                        await computer.FirstUpdateOnConnect(hostState);
-
-                        
-                        UpdateProjectViewModels(hostState);
-                        UpdateTaskViewModels(hostState);
-                        UpdateTransferViewModels(hostState);
-                        await UpdateMessages(hostState);
-                    },
-                    System.Windows.Threading.DispatcherPriority.Normal);
-                    
-                }
-                else
-                {
-                    computer.Status = "Authorization error.";
-                }
-
-            }
-            catch (Exception e)
-            {
-                computer.Status = $"Error connecting. {e.Message}";
-            }
-        }
-        */
 
         private async Task StartBoincInfoUpdateLoop(CancellationToken cancellationToken)
         {
@@ -601,7 +599,7 @@ namespace BoincManagerWindows.ViewModels
             
             // Remove outdated info
             switch (CurrentTabPage)
-            {                
+            {
                 case 1: // Projects tab
                     RemoveOutdatedProjectViewModels(filteredHosts);
                     break;
@@ -624,6 +622,9 @@ namespace BoincManagerWindows.ViewModels
             {
                 switch (CurrentTabPage)
                 {
+                    case 0: // Hosts tab
+                        UpdateHostsViewModels(hostState);
+                        break;
                     case 1: // Projects tab
                         await UpdateProjects(hostState);
                         UpdateProjectViewModels(hostState);
@@ -666,6 +667,12 @@ namespace BoincManagerWindows.ViewModels
                     { SelectedComputerInTreeView.Id, _manager.HostsState[SelectedComputerInTreeView.Id] }
                 };
             }
+        }
+
+        private void UpdateHostsViewModels(HostState hostState)
+        {
+            HostViewModel hostViewModel = Computers.FirstOrDefault(hVm => hVm.Id == hostState.Id);
+            hostViewModel.Update(hostState);
         }
 
         private async Task UpdateProjects(HostState hostState)

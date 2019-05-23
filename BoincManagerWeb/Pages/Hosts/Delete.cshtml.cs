@@ -51,7 +51,7 @@ namespace BoincManagerWeb.Pages.Hosts
                 _context.Host.Remove(Host);
                 await _context.SaveChangesAsync();
 
-                _manager.RemoveHost(Host);
+                _manager.RemoveHost(Host.Id);
             }
 
             return RedirectToPage("./Index");

@@ -191,6 +191,12 @@
                             <TextBlock Text="Connect"/>
                         </StackPanel>
                     </Button>
+                    <Button Command="{Binding DisconnectComputerCommand}">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="Resources\cancel.png" Margin="0,0,5,0"/>
+                            <TextBlock Text="Disconnect"/>
+                        </StackPanel>
+                    </Button>
                     <Button>
                         <StackPanel Orientation="Horizontal">
                             <Image Source="Resources\information.png" Margin="0,0,5,0"/>
@@ -347,6 +353,7 @@
                         <DataGridTextColumn Header="Address" Binding="{Binding Path=IpAddress}"/>
                         <DataGridTextColumn Header="Port" Binding="{Binding Path=Port}"/>
                         <DataGridTextColumn Header="Password" Binding="{Binding Path=Password}"/>
+                        <DataGridTextColumn Header="Auto Connect" Binding="{Binding Path=AutoConnect}"/>
                         <DataGridTextColumn Header="Boinc Version" Binding="{Binding Path=BoincVersion}" IsReadOnly="True"/>
                         <DataGridTextColumn Header="Operating System" Binding="{Binding Path=OperatingSystem}" IsReadOnly="True"/>
                         <DataGridTextColumn Header="Status" Binding="{Binding Path=Status}" IsReadOnly="True"/>

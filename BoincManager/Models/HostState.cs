@@ -31,12 +31,11 @@ namespace BoincManager.Models
         public bool AutoConnect { get; set; }
         public bool Localhost { get; private set; }
         public bool Authorized { get; set; }
-
         public string BoincVersion => Connected
                     ? $"{BoincState.CoreClientState.CoreClientMajorVersion}.{BoincState.CoreClientState.CoreClientMinorVersion}.{BoincState.CoreClientState.CoreClientReleaseVersion}"
                     : string.Empty;
         public string OperatingSystem => Connected ? BoincState.CoreClientState.HostInfo.OSName : string.Empty;
-        public bool Connected { get; private set; }
+        public bool Connected { get; set; }
         public string Status { get; set; }
 
         public RpcClient RpcClient { get; }
@@ -45,49 +44,19 @@ namespace BoincManager.Models
         public HostState(Host host)
         {
             Id = host.Id;
-            Name = host.Name;
-            IpAddress = host.IpAddress;
-            Port = host.Port;
-            Password = host.Password;
-            AutoConnect = host.AutoConnect;
+            Update(host);
 
             RpcClient = new RpcClient();
             BoincState = new BoincState(RpcClient);
         }
 
-        public async Task Connect()
+        public void Update(Host host)
         {
-            if (string.IsNullOrWhiteSpace(IpAddress) || string.IsNullOrEmpty(Password) || Connected)
-            {
-                return;
-            }
-
-            Status = $"Connecting...";
-
-            try
-            {
-                // Connecting to host
-                await RpcClient.ConnectAsync(IpAddress, Port);
-                Authorized = await RpcClient.AuthorizeAsync(Password);
-
-                if (Authorized)
-                {
-                    Connected = true;
-                    Status = "Connected. Updating...";
-
-                    await BoincState.UpdateAll();
-                    Status = await GetHostStatus();
-                }
-                else
-                {
-                    Status = "Authorization error.";
-                }
-
-            }
-            catch (Exception e)
-            {
-                Status = $"Error connecting. {e.Message}";
-            }
+            Name = host.Name;
+            IpAddress = host.IpAddress;
+            Port = host.Port;
+            Password = host.Password;
+            AutoConnect = host.AutoConnect;
         }
 
         public async Task<string> GetHostStatus()
@@ -100,14 +69,6 @@ namespace BoincManager.Models
                 status.Append($"BOINC {newerVersion} is available for download on {Name}.");
 
             return status.ToString().TrimEnd(' ');
-        }
-
-        public void Update(Host host)
-        {
-            Name = host.Name;
-            IpAddress = host.IpAddress;
-            Port = host.Port;
-            Password = host.Password;
         }
 
         public void Close()

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using BoincManager.Models;
 
@@ -23,25 +24,76 @@ namespace BoincManager
             // await Utils.ParallelForEachAsync(hosts, AddHost); // Connect to all the hosts in parallel, instead of sequential order
         }
 
+        public async Task Connect(HostState hostState)
+        {
+            if (string.IsNullOrWhiteSpace(hostState.IpAddress) || string.IsNullOrEmpty(hostState.Password) || hostState.Connected)
+            {
+                return;
+            }
+
+            hostState.Status = $"Connecting...";
+
+            try
+            {
+                // Connecting to host
+                await hostState.RpcClient.ConnectAsync(hostState.IpAddress, hostState.Port);
+                hostState.Authorized = await hostState.RpcClient.AuthorizeAsync(hostState.Password);
+
+                if (hostState.Authorized)
+                {
+                    hostState.Connected = true;
+                    hostState.Status = "Connected. Updating...";
+
+                    await hostState.BoincState.UpdateAll();
+                    hostState.Status = await hostState.GetHostStatus();
+                }
+                else
+                {
+                    hostState.Status = "Authorization error.";
+                }
+
+            }
+            catch (Exception e)
+            {
+                hostState.Status = $"Error connecting. {e.Message}";
+            }
+        }
+
+        public void Disconnect(HostState hostState)
+        {
+            if (!hostState.Connected)
+            {
+                return;
+            }
+
+            hostState.Status = string.Empty;
+
+            if (HostsState.ContainsKey(hostState.Id))
+            {
+                HostsState[hostState.Id].Close();
+                HostsState[hostState.Id].Connected = false;
+            }
+        }
+
         public async Task AddHost(Host host)
         {
             var hostState = new HostState(host);
 
             if (hostState.AutoConnect)
             {
-                await hostState.Connect();
+                await Connect(hostState);
             }
             
             HostsState.Add(host.Id, hostState);
         }
 
-        public void RemoveHost(Host hostModel)
+        public void RemoveHost(int hostId)
         {
-            if (HostsState.ContainsKey(hostModel.Id))
+            if (HostsState.ContainsKey(hostId))
             {
-                HostsState[hostModel.Id].Close();
-                HostsState[hostModel.Id].Dispose();
-                HostsState.Remove(hostModel.Id);
+                HostsState[hostId].Close();
+                HostsState[hostId].Dispose();
+                HostsState.Remove(hostId);
             }
         }
 
