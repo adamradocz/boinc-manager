@@ -36,7 +36,7 @@ namespace BoincManagerWindows.ViewModels
         public int CurrentTabPage
         {
             get { return currentTabPage; }
-            private set { SetProperty(ref currentTabPage, value); }
+            set { SetProperty(ref currentTabPage, value); }
         }
 
         public HostViewModel SelectedComputerInTreeView { get; set; }
@@ -596,11 +596,11 @@ namespace BoincManagerWindows.ViewModels
             //await BoincManager.Utils.ParallelForEachAsync(filteredHosts.Values, GetNewBoincInfo); // Update in parallel
             foreach (var hostState in filteredHosts.Values)
             {
-                //await GetNewBoincInfo(hostState);
+                await GetNewBoincInfo(hostState);
             }
             
             // Remove outdated info
-            /*switch (CurrentTabPage)
+            switch (CurrentTabPage)
             {                
                 case 1: // Projects tab
                     RemoveOutdatedProjectViewModels(filteredHosts);
@@ -613,7 +613,7 @@ namespace BoincManagerWindows.ViewModels
                     break;
                 case 5: // Messages tab
                     break;
-            }*/
+            }
             
             Status = string.Empty;
         }

@@ -1,9 +1,9 @@
 ﻿using BoincManagerWindows.ViewModels;
 using BoincRpc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Diagnostics;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -25,6 +25,12 @@ namespace BoincManagerWindows
             DataContext = viewModel;
 
             messagesDataGrid.ItemContainerGenerator.StatusChanged += MessagesDataGrid_ItemContainerGenerator_StatusChanged;
+
+            // Make sure the database is created and up to date at the start of the application.
+            using (var db = new Models.ApplicationDbContext())
+            {
+                db.Database.Migrate();
+            }            
         }
 
         private async void Window_Loaded(object sender, RoutedEventArgs e)
