@@ -19,5 +19,9 @@ namespace BoincManager.Models
         [Required]
         [DataType(DataType.Password)]
         public string Password { get; set; }
+
+        [Required]
+        public bool AutoConnect { get; set; } = true;
+
     }
 }

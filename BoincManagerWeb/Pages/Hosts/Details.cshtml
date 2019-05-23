@@ -24,6 +24,12 @@
             @Html.DisplayFor(model => model.Host.IpAddress):@Html.DisplayFor(model => model.Host.Port)
         </dd>
         <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Host.AutoConnect)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Host.AutoConnect)
+        </dd>
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Host.Connected)
         </dt>
         <dd class="col-sm-10">

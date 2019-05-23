@@ -35,6 +35,11 @@
                 <span asp-validation-for="Host.Password" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="Host.AutoConnect" class="control-label"></label>
+                <input asp-for="Host.AutoConnect" class="form-control" />
+                <span asp-validation-for="Host.AutoConnect" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>

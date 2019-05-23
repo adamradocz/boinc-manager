@@ -23,6 +23,10 @@
                 @Html.DisplayNameFor(model => model.Hosts[0].Port)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.Hosts[0].AutoConnect)
+            </th>
+            <th>
+            <th>
                 @Html.DisplayNameFor(model => model.Hosts[0].BoincVersion)
             </th>
             <th>
@@ -46,6 +50,9 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Port)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AutoConnect)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.BoincVersion)

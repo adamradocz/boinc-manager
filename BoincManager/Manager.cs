@@ -26,7 +26,12 @@ namespace BoincManager
         public async Task AddHost(Host host)
         {
             var hostState = new HostState(host);
-            await hostState.Connect();
+
+            if (hostState.AutoConnect)
+            {
+                await hostState.Connect();
+            }
+            
             HostsState.Add(host.Id, hostState);
         }
 

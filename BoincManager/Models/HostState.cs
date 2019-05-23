@@ -28,6 +28,7 @@ namespace BoincManager.Models
 
         public int Port { get; set; }
         public string Password { get; set; }
+        public bool AutoConnect { get; set; }
         public bool Localhost { get; private set; }
         public bool Authorized { get; set; }
 
@@ -48,6 +49,7 @@ namespace BoincManager.Models
             IpAddress = host.IpAddress;
             Port = host.Port;
             Password = host.Password;
+            AutoConnect = host.AutoConnect;
 
             RpcClient = new RpcClient();
             BoincState = new BoincState(RpcClient);
