@@ -8,19 +8,16 @@ namespace BoincManagerWindows.ViewModels
     {
         public int HostId { get; }
         public string HostName { get; }
-        public string Project { get; private set; }
-        public string Date { get; private set; }
-        public string Message { get; private set; }
-        public string Priority { get; private set; }
+        public string Project { get; }
+        public string Date { get; }
+        public string Message { get; }
+        public string Priority { get; }
 
-        public MessageViewModel(HostState hostState)
+        public MessageViewModel(HostState hostState, Message message)
         {
             HostId = hostState.Id;
             HostName = hostState.Name;
-        }
-        
-        public void Update(Message message)
-        {
+
             Project = message.Project;
             Date = message.Timestamp.ToLocalTime().ToString("g");
             Message = message.Body;

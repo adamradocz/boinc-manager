@@ -800,12 +800,10 @@ namespace BoincManagerWindows.ViewModels
 
         private async Task UpdateMessages(HostState hostState)
         {
-            var newMessages = await hostState.BoincState.GetNewMessages();
-            foreach (Message newMessage in newMessages)
+            var messages = await hostState.BoincState.GetNewMessages();
+            foreach (Message message in messages)
             {
-                MessageViewModel message = new MessageViewModel(hostState);
-                message.Update(newMessage);
-                Messages.Add(message);
+                Messages.Add(new MessageViewModel(hostState, message));
             }            
         }
     }
