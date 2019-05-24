@@ -6,5 +6,40 @@
 
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div>
+<div>
+    <h4>Host Info</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Model.MachineName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Model.MachineName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Model.WorkingSet)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Model.WorkingSet)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Model.OSDescription)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Model.OSDescription)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Model.OSArchitecture)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Model.OSArchitecture)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Model.FrameworkDescription)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Model.FrameworkDescription)
+        </dd>
+    </dl>
 </div>

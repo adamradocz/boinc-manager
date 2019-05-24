@@ -1,17 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using BoincManagerWeb.ViewModels;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace BoincManagerWeb.Pages
 {
     public class IndexModel : PageModel
     {
+        public IndexViewModel Model { get; set; }
+
         public void OnGet()
         {
-
+            Model = new IndexViewModel();
         }
     }
 }
