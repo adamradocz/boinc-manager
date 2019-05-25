@@ -14,16 +14,16 @@ namespace BoincManager.Models
 
         [Required]
         [Range(0, 65535)]
-        public int Port { get; set; }
+        public int Port { get; set; } = Constants.BoincDefaultPort;
 
         [Required]
         [DataType(DataType.Password)]
         public string Password { get; set; }
 
         [Required]
-        public bool AutoConnect { get; set; }
+        public bool AutoConnect { get; set; } = true;
 
-        // To make model binding possible, the class must have a public default constructor.
+        // To make model binding possible in ASP.NET, the class must have a public default constructor.
         public Host()
         {
 
