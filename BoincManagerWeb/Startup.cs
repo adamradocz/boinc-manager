@@ -66,7 +66,7 @@ namespace BoincManagerWeb
 
             app.UseSignalR(routes =>
             {
-                routes.MapHub<BoincInfoHub>("/chatHub");
+                routes.MapHub<BoincInfoHub>("/boincinfoHub");
             });
 
             app.UseRouting();

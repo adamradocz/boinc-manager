@@ -1,6 +1,6 @@
 ﻿"use strict";
 
-var connection = new signalR.HubConnectionBuilder().withUrl("/chatHub").build();
+var connection = new signalR.HubConnectionBuilder().withUrl("/boincinfoHub").build();
 
 connection.on("ReceiveMessage", function (message, userNumber) {
     var msg = message.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");

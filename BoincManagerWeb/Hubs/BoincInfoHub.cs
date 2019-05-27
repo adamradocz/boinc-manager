@@ -49,7 +49,5 @@ namespace BoincManagerWeb.Hubs
         {
             await Clients.All.SendAsync("ReceiveMessage", message, _connections.Count);
         }
-
-
     }
 }
