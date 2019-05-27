@@ -66,7 +66,7 @@ namespace BoincManagerWeb
 
             app.UseSignalR(routes =>
             {
-                routes.MapHub<BoincInfoHub>("/boincinfoHub");
+                routes.MapHub<BoincInfoHub>("/boincInfoHub");
             });
 
             app.UseRouting();
