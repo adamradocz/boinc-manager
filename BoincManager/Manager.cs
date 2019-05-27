@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using BoincManager.Models;
-using System.Linq;
 
 namespace BoincManager
 {
@@ -17,6 +16,8 @@ namespace BoincManager
 
         private readonly CancellationTokenSource _cancellationTokenSource;
         private CancellationToken _cancellationToken;
+
+        public int updateNumber = 0;
 
         public bool IsRunning { get; set; }
 
@@ -45,23 +46,24 @@ namespace BoincManager
             IsRunning = true;
             await ConnectAll();
 
-            _cancellationToken = _cancellationTokenSource.Token;
-            await StartUpdateLoop(_cancellationToken);
+            await StartUpdateLoop();
         }
         
-        private async Task StartUpdateLoop(CancellationToken token)
+        private async Task StartUpdateLoop()
         {
-            while (!token.IsCancellationRequested)
+            _cancellationToken = _cancellationTokenSource.Token;
+            while (!_cancellationToken.IsCancellationRequested)
             {
                 await Update();
 
-                // The 'Delay' method should be at bottom, otherwise the 'Update' method would be called one mroe time unnecessarily, when cancellation is requested.
+                // The 'Delay' method should be at bottom, otherwise the 'Update' method would be called one more time unnecessarily, when cancellation is requested.
                 await Task.Delay(2000);
             }
         }
 
         private async Task Update()
         {
+            updateNumber++;
             // TODO - Update in prallel
             // TODO - Update only the Viewed tabs (is that possible?)
             foreach (var hostState in _hostStates.Values)
@@ -156,7 +158,7 @@ namespace BoincManager
                 Disconnect(hostId);
             }
         }
-
+        
         public void Stop()
         {
             if (!IsRunning)

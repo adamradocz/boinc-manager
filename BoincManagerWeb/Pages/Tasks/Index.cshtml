@@ -7,7 +7,7 @@
 
 <h1>Tasks</h1>
 
-<table class="table">
+<table class="table" id="tasksTable">
     <thead class="thead-light">
         <tr>
             <th>
@@ -42,40 +42,64 @@
     <tbody>
         @foreach (var item in Model.Tasks)
         {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.HostName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Project)
-            </td>
-            <td>
-                @{
-                    var progress = Math.Round(item.Progress * 100, 1);
-                    <div class="progress">
-                        <div class="progress-bar" style="width:@progress%">@progress%</div>
-                    </div>
-                }
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Status)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ElapsedTime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.LastCheckpoint)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Deadline)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Application)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Workunit)
-            </td>
-        </tr>
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.HostName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Project)
+                </td>
+                <td>
+                    @{
+                        <div class="progress">
+                            <div class="progress-bar" style="width:@item.Progress%">@item.Progress%</div>
+                        </div>
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Status)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ElapsedTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LastCheckpoint)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Deadline)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Application)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Workunit)
+                </td>
+            </tr>
         }
     </tbody>
 </table>
+
+
+<div class="container">
+    <div class="row">&nbsp;</div>
+    <div class="row">
+        <div class="col-6">&nbsp;</div>
+        <div class="col-6">
+            Message...<input type="text" id="messageInput" />
+            <input type="button" id="sendButton" value="Send Message" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <hr />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-6">&nbsp;</div>
+        <div class="col-6">
+            <ul id="messagesList"></ul>
+        </div>
+    </div>
+</div>
+<script src="~/lib/signalr/dist/browser/signalr.js"></script>
+<script src="~/js/boincinfo.js"></script>

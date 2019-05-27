@@ -1,7 +1,9 @@
 ﻿using BoincManager.Models;
 using BoincManagerWeb.ViewModels;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace BoincManagerWeb.Pages.Tasks
 {
