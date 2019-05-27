@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 namespace BoincManager.Models
 {
     /// <summary>
-    /// Contains all the data, the RpcClient and the BoincState of the connected host.
+    /// This class acts as a data cache. Contains all the data, the RpcClient and the BoincState of the host.
     /// </summary>
     public class HostState : IDisposable
     {

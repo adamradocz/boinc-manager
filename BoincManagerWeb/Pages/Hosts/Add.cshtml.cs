@@ -35,7 +35,7 @@ namespace BoincManagerWeb.Pages.Hosts
             _context.Host.Add(Host);
             await _context.SaveChangesAsync();
 
-            await _manager.AddHost(Host);
+            _manager.AddHost(Host);
 
             return RedirectToPage("./Index");
         }

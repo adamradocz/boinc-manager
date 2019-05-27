@@ -1,110 +1,243 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using BoincManager.Models;
+using System.Linq;
 
 namespace BoincManager
 {
-    public class Manager
+    public class Manager : IDisposable
     {
+        bool disposed = false;
+
         // Key is the host's Id
-        private readonly Dictionary<int, HostState> _hostStates;
+        private readonly ConcurrentDictionary<int, HostState> _hostStates;
+
+        private readonly CancellationTokenSource _cancellationTokenSource;
+        private CancellationToken _cancellationToken;
+
+        public bool IsRunning { get; set; }
 
         public Manager()
         {
-            _hostStates = new Dictionary<int, HostState>();
+            _hostStates = new ConcurrentDictionary<int, HostState>();
+            _cancellationTokenSource = new CancellationTokenSource();
         }
 
-        public HostState GetHostState(int id)
+        public void Initialize(IEnumerable<Host> hosts)
         {
-            return _hostStates[id];
-        }
-
-        public IEnumerable<HostState> GetAllHostState()
-        {
-            return _hostStates.Values;
-        }
-
-        public async Task Start(IList<Host> hosts)
-        {
-            // Connect to all the hosts stored in the database.
+            // Initialize the Dictionary. Add all the hosts stored in the database.
             foreach (var host in hosts)
             {
-                await AddHost(host);
+                AddHost(host);
             }
+            // TODO - Connect in parallel
             // await Utils.ParallelForEachAsync(hosts, AddHost); // Connect to all the hosts in parallel, instead of sequential order
+        }
+
+        public async Task Start()
+        {
+            if (IsRunning)
+                return;
+
+            IsRunning = true;
+            await ConnectAll();
+
+            _cancellationToken = _cancellationTokenSource.Token;
+            await StartUpdateLoop(_cancellationToken);
+        }
+        
+        private async Task StartUpdateLoop(CancellationToken token)
+        {
+            while (!token.IsCancellationRequested)
+            {
+                await Update();
+
+                // The 'Delay' method should be at bottom, otherwise the 'Update' method would be called one mroe time unnecessarily, when cancellation is requested.
+                await Task.Delay(2000);
+            }
+        }
+
+        private async Task Update()
+        {
+            // TODO - Update in prallel
+            // TODO - Update only the Viewed tabs (is that possible?)
+            foreach (var hostState in _hostStates.Values)
+            {
+                if (hostState.Connected)
+                {
+                    await hostState.BoincState.UpdateProjects();
+                    await hostState.BoincState.UpdateResults(); // Tasks
+                    await hostState.BoincState.UpdateFileTransfers();
+                    await hostState.BoincState.UpdateMessages();
+                }
+            }
         }
 
         public async Task Connect(int hostId)
         {
-
-            if (string.IsNullOrWhiteSpace(_hostStates[hostId].IpAddress) || string.IsNullOrEmpty(_hostStates[hostId].Password) || _hostStates[hostId].Connected)
-            {
+            var found = _hostStates.TryGetValue(hostId, out HostState hostState);
+            if (!found)
                 return;
-            }
 
-            _hostStates[hostId].Status = $"Connecting...";
+            if (hostState.Connected || string.IsNullOrWhiteSpace(hostState.IpAddress) || string.IsNullOrEmpty(hostState.Password))
+                return;
+
+            hostState.Status = $"Connecting...";
 
             try
             {
                 // Connecting to host
-                await _hostStates[hostId].RpcClient.ConnectAsync(_hostStates[hostId].IpAddress, _hostStates[hostId].Port);
-                _hostStates[hostId].Authorized = await _hostStates[hostId].RpcClient.AuthorizeAsync(_hostStates[hostId].Password);
+                await hostState.RpcClient.ConnectAsync(hostState.IpAddress, hostState.Port);
+                hostState.Authorized = await hostState.RpcClient.AuthorizeAsync(hostState.Password);
 
-                if (_hostStates[hostId].Authorized)
+                if (hostState.Authorized)
                 {
-                    _hostStates[hostId].Connected = true;
-                    _hostStates[hostId].Status = "Connected. Updating...";
+                    hostState.Connected = true;
+                    hostState.Status = "Connected. Updating...";
 
-                    await _hostStates[hostId].BoincState.UpdateAll();
-                    _hostStates[hostId].Status = await _hostStates[hostId].GetHostStatus();
+                    await hostState.BoincState.UpdateAll();
+                    hostState.Status = await hostState.GetHostStatus();
                 }
                 else
                 {
-                    _hostStates[hostId].Status = "Authorization error.";
+                    hostState.Status = "Authorization error.";
                 }
 
             }
             catch (Exception e)
             {
-                _hostStates[hostId].Status = $"Error connecting. {e.Message}";
+                hostState.Status = $"Error connecting. {e.Message}";
+            }
+        }
+
+        // TODO - Paralell
+        public async Task ConnectAll(bool onlyHostsWithAutoConnect = true)
+        {
+            // Connect to all hosts where AutoConnect property is set to TRUE.
+            if (onlyHostsWithAutoConnect)
+            {
+                foreach (var hostState in _hostStates.Values)
+                {
+                    if (hostState.AutoConnect)
+                    {
+                        await Connect(hostState.Id);
+                    }
+                }
+
+            }
+            else // Connect to all hosts
+            {
+                foreach (var hostId in _hostStates.Keys)
+                {
+                    await Connect(hostId);
+                }
             }
         }
 
         public void Disconnect(int hostId)
         {
-            if (_hostStates.ContainsKey(hostId) && _hostStates[hostId].Connected)
+            var found = _hostStates.TryGetValue(hostId, out HostState hostState);
+            if (found && hostState.Connected)
             {
-                _hostStates[hostId].Status = string.Empty;
-                _hostStates[hostId].Close();
-                _hostStates[hostId].Connected = false;
-            }            
+                hostState.Status = string.Empty;
+                hostState.Close();
+                hostState.Connected = false;
+            }
+        }
+        
+        // TODO - Paralell
+        public void DisconnectAll()
+        {
+            foreach (var hostId in _hostStates.Keys)
+            {
+                Disconnect(hostId);
+            }
         }
 
-        public async Task AddHost(Host host)
+        public void Stop()
         {
-            var hostState = new HostState(host);
-            _hostStates.Add(host.Id, hostState);
+            if (!IsRunning)
+                return;
 
-            if (hostState.AutoConnect)
-            {
-                await Connect(hostState.Id);
-            }            
+            IsRunning = false;
+            _cancellationTokenSource.Cancel();
+
+            DisconnectAll();
+        }
+
+        public void AddHost(Host host)
+        {
+            _hostStates.TryAdd(host.Id, new HostState(host));
         }
 
         public void RemoveHost(int hostId)
         {
-            if (_hostStates.ContainsKey(hostId))
+            var found = _hostStates.TryGetValue(hostId, out HostState hostState);
+            if (found)
             {
-                _hostStates[hostId].Close();
-                _hostStates[hostId].Dispose();
-                _hostStates.Remove(hostId);
+                hostState.Close();
+                hostState.Dispose();
             }
+
+            _hostStates.TryRemove(hostId, out _);
         }
 
         public void UpdateHost(Host host)
         {
-            _hostStates[host.Id].Update(host);
+            var found = _hostStates.TryGetValue(host.Id, out HostState hostState);
+            if (found)
+            {
+                hostState.Update(host);
+            }
+        }
+
+        public HostState GetHostState(int id)
+        {
+            _hostStates.TryGetValue(id, out HostState hostState);
+
+            return hostState;
+        }
+
+        public IEnumerable<HostState> GetAllHostStates()
+        {
+            return _hostStates.Values;
+        }
+        
+        // TODO - Paralell
+        public void Close()
+        {
+            if (IsRunning)
+            {
+                IsRunning = false;
+                _cancellationTokenSource.Cancel();
+            }
+
+            foreach (var hostId in _hostStates.Keys)
+            {
+                RemoveHost(hostId);
+            }
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposed)
+                return;
+
+            if (disposing)
+            {
+                _cancellationTokenSource.Dispose();
+            }
+
+            disposed = true;
         }
     }
 }

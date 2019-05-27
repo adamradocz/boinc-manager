@@ -1,8 +1,7 @@
 ﻿using BoincManager.Models;
 using BoincManagerWeb.ViewModels;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+using System.Collections.Generic; 
 
 namespace BoincManagerWeb.Pages.Messages
 {
@@ -17,22 +16,19 @@ namespace BoincManagerWeb.Pages.Messages
             _manager = manager;
         }
 
-        public async Task OnGetAsync()
+        public void OnGet()
         {
-            var hostStates = _manager.GetAllHostState();
-            Messages = await GetMessages(hostStates);
+            Messages = GetMessages(_manager.GetAllHostStates());
         }
 
-        private async Task<List<MessageViewModel>> GetMessages(IEnumerable<HostState> hostsState)
+        private List<MessageViewModel> GetMessages(IEnumerable<HostState> hostStates)
         {
-            List<MessageViewModel> messagesVm = new List<MessageViewModel>();
-
-            foreach (var hostState in hostsState)
+            var messagesVm = new List<MessageViewModel>();
+            foreach (var hostState in hostStates)
             {
                 if (hostState.Connected)
                 {
-                    var messages = await hostState.BoincState.GetNewMessages();
-                    foreach (var message in messages)
+                    foreach (var message in hostState.BoincState.Messages)
                     {
                         messagesVm.Add(new MessageViewModel(hostState, message));
                     }

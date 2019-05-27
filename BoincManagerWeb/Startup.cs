@@ -10,6 +10,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using BoincManagerWeb.Models;
+using BoincManagerWeb.Hubs;
+using System.Threading;
+using Microsoft.AspNetCore.SignalR.Client;
 
 namespace BoincManagerWeb
 {
@@ -35,8 +38,9 @@ namespace BoincManagerWeb
             services.AddRazorPages()
                 .AddNewtonsoftJson();
 
-            services.AddDbContext<ApplicationDbContext>(options =>
-                    options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<ApplicationDbContext>(options => options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddSignalR();
 
             services.AddSingleton<BoincManager.Manager>();
         }
@@ -60,6 +64,11 @@ namespace BoincManagerWeb
 
             app.UseCookiePolicy();
 
+            app.UseSignalR(routes =>
+            {
+                routes.MapHub<BoincInfoHub>("/chatHub");
+            });
+
             app.UseRouting();
 
             app.UseAuthorization();
@@ -73,7 +82,8 @@ namespace BoincManagerWeb
             context.Database.Migrate();
 
             // Start the Boinc Manager
-            manager.Start(context.Host.ToList());
+            manager.Initialize(context.Host.ToList());
+            manager.Start();
         }
     }
 }

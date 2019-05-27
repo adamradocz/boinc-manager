@@ -41,5 +41,41 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Model.FrameworkDescription)
         </dd>
+        <dt class="col-sm-2">
+            SignalR
+        </dt>
+        <dd class="col-sm-10">
+            <span id="signalRInfo"></span>
+        </dd>
+        <dt class="col-sm-2">
+            Number of visitors on the page
+        </dt>
+        <dd class="col-sm-10">
+            <span id="userNumber"></span>
+        </dd>
     </dl>
 </div>
+
+<div class="container">
+    <div class="row">&nbsp;</div>
+    <div class="row">
+        <div class="col-6">&nbsp;</div>
+        <div class="col-6">
+            Message...<input type="text" id="messageInput" />
+            <input type="button" id="sendButton" value="Send Message" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <hr />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-6">&nbsp;</div>
+        <div class="col-6">
+            <ul id="messagesList"></ul>
+        </div>
+    </div>
+</div>
+<script src="~/lib/signalr/dist/browser/signalr.js"></script>
+<script src="~/js/boincinfo.js"></script>

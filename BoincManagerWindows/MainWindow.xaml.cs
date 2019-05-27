@@ -14,15 +14,18 @@ namespace BoincManagerWindows
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window, IDisposable
     {
-        private readonly MainViewModel viewModel = new MainViewModel();
+        bool disposed = false;
+
+        private readonly MainViewModel _viewModel;
 
         public MainWindow()
         {
             InitializeComponent();
 
-            DataContext = viewModel;
+            _viewModel = new MainViewModel();
+            DataContext = _viewModel;
 
             messagesDataGrid.ItemContainerGenerator.StatusChanged += MessagesDataGrid_ItemContainerGenerator_StatusChanged;
 
@@ -60,7 +63,7 @@ namespace BoincManagerWindows
                 transfersDataGrid.Items.LiveFilteringProperties.Add(propertie);
             }            
             
-            await viewModel.StartBoincManager();
+            await _viewModel.StartBoincManager();
         }
 
         private void MessagesDataGrid_ItemContainerGenerator_StatusChanged(object sender, EventArgs e)
@@ -69,7 +72,7 @@ namespace BoincManagerWindows
             {
                 messagesDataGrid.ItemContainerGenerator.StatusChanged -= MessagesDataGrid_ItemContainerGenerator_StatusChanged;
 
-                messagesDataGrid.ScrollIntoView(viewModel.Messages.LastOrDefault());
+                messagesDataGrid.ScrollIntoView(_viewModel.Messages.LastOrDefault());
             }
         }
 
@@ -105,43 +108,43 @@ namespace BoincManagerWindows
             webMenuItem.Visibility = Visibility.Visible;
         }
 
-        private async void ComputersTreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        private void ComputersTreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
             if (computersTreeView.SelectedItem is HostViewModel)
             {
-                viewModel.SelectedComputerInTreeView = (HostViewModel)computersTreeView.SelectedItem;
+                _viewModel.SelectedComputerInTreeView = (HostViewModel)computersTreeView.SelectedItem;
             }
             else
             {
-                viewModel.SelectedComputerInTreeView = null;
+                _viewModel.SelectedComputerInTreeView = null;
             }
 
-            await viewModel.Update();
+            _viewModel.Update();
         }
 
         private void ComputersDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            viewModel.SelectedComputers = computersDataGrid.SelectedItems;
+            _viewModel.SelectedComputers = computersDataGrid.SelectedItems;
         }
         
         private void ProjectsDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            viewModel.SelectedProjects = projectsDataGrid.SelectedItems;
+            _viewModel.SelectedProjects = projectsDataGrid.SelectedItems;
         }
 
         private void TasksDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            viewModel.SelectedTasks = tasksDataGrid.SelectedItems;
+            _viewModel.SelectedTasks = tasksDataGrid.SelectedItems;
         }
 
         private void TransfersDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            viewModel.SelectedTransfers = transfersDataGrid.SelectedItems;
+            _viewModel.SelectedTransfers = transfersDataGrid.SelectedItems;
         }
 
         private void MessagesDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            viewModel.SelectedMessages = messagesDataGrid.SelectedItems;
+            _viewModel.SelectedMessages = messagesDataGrid.SelectedItems;
         }
 
         private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -211,5 +214,28 @@ namespace BoincManagerWindows
             }
         }
 
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            _viewModel.Close();
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposed)
+                return;
+
+            if (disposing)
+            {
+                _viewModel.Dispose();
+            }
+
+            disposed = true;
+        }
     }
 }

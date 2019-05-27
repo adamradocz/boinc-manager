@@ -13,10 +13,14 @@ namespace BoincManagerWindows.ViewModels
         public string Message { get; }
         public string Priority { get; }
 
+        public Message RpcMessage { get; private set; }
+
         public MessageViewModel(HostState hostState, Message message)
         {
             HostId = hostState.Id;
             HostName = hostState.Name;
+
+            RpcMessage = message;
 
             Project = message.Project;
             Date = message.Timestamp.ToLocalTime().ToString("g");

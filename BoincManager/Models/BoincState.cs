@@ -6,7 +6,7 @@ namespace BoincManager.Models
 {
     public class BoincState
     {
-        readonly RpcClient rpcClient;
+        private readonly RpcClient RpcClient;
 
         public CoreClientStatus CoreClientStatus { get; private set; }
         public CoreClientState CoreClientState { get; private set; }
@@ -15,18 +15,23 @@ namespace BoincManager.Models
         public IReadOnlyList<App> Apps { get; private set; }
         public IReadOnlyList<AppVersion> AppVersions { get; private set; }
         public IReadOnlyList<Workunit> Workunits { get; private set; }
+        
+        // Tasks
         public IReadOnlyList<Result> Results { get; private set; }
         public IReadOnlyList<FileTransfer> FileTransfers { get; private set; }
+
+        public List<Message> Messages { get; private set; }
 
         private int lastMessageNumber = 0;
 
         public BoincState(RpcClient rpcClient)
         {
-            this.rpcClient = rpcClient;
+            RpcClient = rpcClient;
+            Messages = new List<Message>();
         }
 
         /// <summary>
-        /// Update the CoreClientState(Projects/Apps/AppVersions/Workunits/Results), CoreClientStatus, FileTransfers
+        /// Update the CoreClientState(Projects/Apps/AppVersions/Workunits/Results), CoreClientStatus, FileTransfers, Messages
         /// </summary>
         /// <returns></returns>
         public async Task UpdateAll()
@@ -34,11 +39,12 @@ namespace BoincManager.Models
             await UpdateCoreClientStatus();
             await UpdateCoreClientState();
             await UpdateFileTransfers();
+            await UpdateMessages();
         }
 
         public async Task UpdateCoreClientStatus()
         {
-            CoreClientStatus = await rpcClient.GetCoreClientStatusAsync();
+            CoreClientStatus = await RpcClient.GetCoreClientStatusAsync();
         }
 
         /// <summary>
@@ -47,36 +53,35 @@ namespace BoincManager.Models
         /// <returns></returns>
         public async Task UpdateCoreClientState()
         {
-            CoreClientState = await rpcClient.GetStateAsync();
+            CoreClientState = await RpcClient.GetStateAsync();
 
             Projects = CoreClientState.Projects;
             Apps = CoreClientState.Apps;
             AppVersions = CoreClientState.AppVersions;
             Workunits = CoreClientState.Workunits;
-            Results = CoreClientState.Results;
+            Results = CoreClientState.Results;            
         }
 
         public async Task UpdateProjects()
         {
-            Projects = await rpcClient.GetProjectStatusAsync();
+            Projects = await RpcClient.GetProjectStatusAsync();
         }
 
         public async Task UpdateResults()
         {
-            Results = await rpcClient.GetResultsAsync();
+            Results = await RpcClient.GetResultsAsync();
         }
 
         public async Task UpdateFileTransfers()
         {
-            FileTransfers = await rpcClient.GetFileTransfersAsync();
+            FileTransfers = await RpcClient.GetFileTransfersAsync();
         }
 
-        public async Task<Message[]> GetNewMessages()
+        public async Task UpdateMessages()
         {
-            Message[] newMessages = await rpcClient.GetMessagesAsync(lastMessageNumber);
+            Message[] newMessages = await RpcClient.GetMessagesAsync(lastMessageNumber);
             lastMessageNumber += newMessages.Length;
-        
-            return newMessages;
-        }
+            Messages.AddRange(newMessages);
+        }   
     }
 }

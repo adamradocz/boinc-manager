@@ -20,7 +20,7 @@ namespace BoincManagerWeb.Pages.Hosts
 
         public void OnGet()
         {
-            Hosts = _manager.GetAllHostState().ToList();
+            Hosts = _manager.GetAllHostStates().ToList();
         }
 
         public async Task<IActionResult> OnPostConnectAsync(int id)

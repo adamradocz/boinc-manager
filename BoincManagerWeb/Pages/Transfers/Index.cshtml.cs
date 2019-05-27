@@ -1,9 +1,7 @@
 ﻿using BoincManager.Models;
 using BoincManagerWeb.ViewModels;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace BoincManagerWeb.Pages.Transfers
 {
@@ -18,26 +16,23 @@ namespace BoincManagerWeb.Pages.Transfers
             _manager = manager;
         }
 
-        public async Task OnGetAsync()
+        public void OnGet()
         {
-            Transfers = await GetTransfersAsync(_manager.GetAllHostState());
+            Transfers = GetTransfers(_manager.GetAllHostStates());
         }
 
-        private async Task<List<TransferViewModel>> GetTransfersAsync(IEnumerable<HostState> hostsState)
+        private List<TransferViewModel> GetTransfers(IEnumerable<HostState> hostStates)
         {
-            List<TransferViewModel> transfers = new List<TransferViewModel>();
-
-            foreach (var hostState in hostsState)
+            var transfers = new List<TransferViewModel>();
+            foreach (var hostState in hostStates)
             {
                 if (hostState.Connected)
                 {
-                    await hostState.BoincState.UpdateFileTransfers();
-
                     foreach (var fileTransfer in hostState.BoincState.FileTransfers)
                     {
                         transfers.Add(new TransferViewModel(hostState, fileTransfer));
                     }
-                }
+                }                
             }
 
             return transfers;

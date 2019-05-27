@@ -2,7 +2,6 @@
 using BoincManagerWeb.ViewModels;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace BoincManagerWeb.Pages.Tasks
 {
@@ -17,27 +16,23 @@ namespace BoincManagerWeb.Pages.Tasks
             _manager = manager;
         }
 
-        public async Task OnGetAsync()
+        public void OnGet()
         {
-            var hostStates = _manager.GetAllHostState();
-            Tasks = await GetTasks(hostStates);
+            Tasks = GetTasks(_manager.GetAllHostStates());
         }
 
-        private async Task<List<TaskViewModel>> GetTasks(IEnumerable<HostState> hostsState)
+        private List<TaskViewModel> GetTasks(IEnumerable<HostState> hostStates)
         {
-            List<TaskViewModel> tasks = new List<TaskViewModel>();
-
-            foreach (var hostState in hostsState)
+            var tasks = new List<TaskViewModel>();
+            foreach (var hostState in hostStates)
             {
                 if (hostState.Connected)
                 {
-                    await hostState.BoincState.UpdateResults();
-
                     foreach (var result in hostState.BoincState.Results)
                     {
                         tasks.Add(new TaskViewModel(hostState, result));
                     }
-                }
+                }                
             }
 
             return tasks;
