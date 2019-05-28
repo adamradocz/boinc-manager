@@ -1,15 +1,20 @@
-.dockerignore
-.env
+# Directories
 .git
-.gitignore
 .vs
 .vscode
-*/bin
-*/obj
+**/bin
+**/obj
+**/out
 **/.toolstarget
-Dockerfile
-LICENSE
-**/*.md
 
-# Other BoincManager projects which are don't needed
+# Not Boinc Manager Web releated projects
 BoincManagerWindows
+
+# Files
+.dockerignore
+.env
+.gitignore
+Dockerfile*
+LICENSE
+**/*.db
+**/*.md
