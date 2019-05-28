@@ -1,5 +1,5 @@
 # boinc-manager
-.NET Core implementation of the BOINC Manager
+.NET Core implementation of a cross-platform BOINC Manager
 
 ## Development requirements
 - [Visual Studio 2019](https://visualstudio.microsoft.com/vs/preview/)
