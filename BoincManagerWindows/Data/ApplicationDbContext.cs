@@ -9,7 +9,7 @@ namespace BoincManagerWindows.Models
         
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlite(BoincManager.Constants.SqlightConnectionString);
+            optionsBuilder.UseSqlite($"Data Source={BoincManager.Utils.GetDatabasePath(true)}");
         }
     }
 }

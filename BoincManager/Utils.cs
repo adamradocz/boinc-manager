@@ -10,7 +10,20 @@ using System.Threading.Tasks;
 namespace BoincManager
 {
     public static class Utils
-    {   
+    {
+        public static string GetDatabasePath(bool withFileName)
+        {
+            var applicationDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+            string databasePath = Path.Combine(applicationDataPath, Constants.ApplicationName, Constants.DatabaseSubfolder);
+
+            if (withFileName)
+            {
+                databasePath = Path.Combine(databasePath, Constants.DatabaseFileName);
+            }
+
+            return databasePath;
+        }
+
         public static string GetLocalhostGuiRpcPassword()
         {
             string filePath = string.Empty;

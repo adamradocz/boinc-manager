@@ -14,6 +14,7 @@ using BoincManagerWeb.Hubs;
 using System.Threading;
 using Microsoft.AspNetCore.SignalR.Client;
 using System.IO;
+using Microsoft.Data.Sqlite;
 
 namespace BoincManagerWeb
 {
@@ -81,10 +82,10 @@ namespace BoincManagerWeb
             });
 
             // Make sure the database is created and up to date at the start of the application.
-            var databasePath = Path.Combine(env.ContentRootPath, BoincManager.Constants.DatabaseSubfolder);
-            if (!Directory.Exists(databasePath))
+            var databaseFilePath = Path.Combine(env.ContentRootPath, BoincManager.Constants.DatabaseSubfolder);
+            if (!Directory.Exists(databaseFilePath))
             {
-               Directory.CreateDirectory(databasePath);
+               Directory.CreateDirectory(databaseFilePath);
             }            
             context.Database.Migrate();
 
