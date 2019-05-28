@@ -13,6 +13,7 @@ using BoincManagerWeb.Models;
 using BoincManagerWeb.Hubs;
 using System.Threading;
 using Microsoft.AspNetCore.SignalR.Client;
+using System.IO;
 
 namespace BoincManagerWeb
 {
@@ -47,7 +48,7 @@ namespace BoincManagerWeb
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ApplicationDbContext context, BoincManager.Manager manager, ViewDataProcessor viewDataManager)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ApplicationDbContext context, BoincManager.Manager manager)
         {
             if (env.IsDevelopment())
             {
@@ -80,6 +81,11 @@ namespace BoincManagerWeb
             });
 
             // Make sure the database is created and up to date at the start of the application.
+            var databasePath = Path.Combine(env.ContentRootPath, BoincManager.Constants.DatabaseSubfolder);
+            if (!Directory.Exists(databasePath))
+            {
+               Directory.CreateDirectory(databasePath);
+            }            
             context.Database.Migrate();
 
             // Start the Boinc Manager
