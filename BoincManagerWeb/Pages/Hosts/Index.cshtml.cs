@@ -1,15 +1,15 @@
 ﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using BoincManager.Models;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using BoincManager.Models;
 using System.Linq;
 
 namespace BoincManagerWeb.Pages.Hosts
 {
     public class IndexModel : PageModel
     {
-        public readonly BoincManager.Manager _manager;
+        private readonly BoincManager.Manager _manager;
 
         public List<HostState> Hosts { get; set; }
 

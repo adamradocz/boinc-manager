@@ -2,16 +2,7 @@
 
 var connection = new signalR.HubConnectionBuilder().withUrl("/boincInfoHub").build();
 
-connection.on("ReceiveMessage", function (message, userNumber) {
-    var msg = message.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-    var encodedMsg = msg;
-    var li = document.createElement("li");
-    li.textContent = encodedMsg;
-    document.getElementById("messagesList").appendChild(li);
-    document.getElementById("userNumber").textContent = userNumber;
-});
-
-connection.on("ReceiveTasks", function (tasks, updateNumber, isRunning) {
+connection.on("ReceiveTasks", function (tasks) {
     var table = document.getElementById("tasksTable");
     table.getElementsByTagName("tbody")[0].remove();
 
@@ -21,7 +12,7 @@ connection.on("ReceiveTasks", function (tasks, updateNumber, isRunning) {
         var tr = document.createElement("tr");
 
         var tdHostName = document.createElement("td");
-        tdHostName.textContent = tasks[i].hostName + updateNumber + isRunning;
+        tdHostName.textContent = tasks[i].hostName;
 
         var tdProject = document.createElement("td");
         tdProject.textContent = tasks[i].project;
@@ -73,32 +64,11 @@ connection.on("ReceiveTasks", function (tasks, updateNumber, isRunning) {
 });
 
 connection.start().then(function () {
-    //var spanSigalRInfo = document.getElementById("signalRInfo");
-    //spanSigalRInfo.textContent = "Connected";
-    //spanSigalRInfo.style = "color:green";
-
-    var encodedMsg = "Connected";
-    var li = document.createElement("li");
-    li.textContent = encodedMsg;
-    document.getElementById("messagesList").appendChild(li);
-
-
-
+    setInterval(updateLoop, 1000);
 }).catch(function (err) {
     return console.error(err.toString());
 });
-/*
-document.getElementById("sendButton").addEventListener("click", function (event) {
-    var message = document.getElementById("messageInput").value;
-    connection.invoke("SendMessage", message).catch(function (err) {
-        return console.error(err.toString());
-    });
-    event.preventDefault();
-});*/
 
-document.getElementById("sendButton").addEventListener("click", function (event) {
-    connection.invoke("GetTasks").catch(function (err) {
-        return console.error(err.toString());
-    });
-    event.preventDefault();
-});
+function updateLoop() {
+    connection.invoke("GetTasks");
+}

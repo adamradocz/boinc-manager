@@ -43,10 +43,11 @@ namespace BoincManagerWeb
             services.AddSignalR();
 
             services.AddSingleton<BoincManager.Manager>();
+            services.AddSingleton<ViewDataProcessor>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ApplicationDbContext context, BoincManager.Manager manager)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ApplicationDbContext context, BoincManager.Manager manager, ViewDataProcessor viewDataManager)
         {
             if (env.IsDevelopment())
             {

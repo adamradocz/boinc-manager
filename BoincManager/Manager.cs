@@ -17,9 +17,9 @@ namespace BoincManager
         private readonly CancellationTokenSource _cancellationTokenSource;
         private CancellationToken _cancellationToken;
 
-        public int updateNumber = 0;
+        public int updates = 0;
 
-        public bool IsRunning { get; set; }
+        public bool IsRunning { get; private set; }
 
         public Manager()
         {
@@ -63,7 +63,7 @@ namespace BoincManager
 
         private async Task Update()
         {
-            updateNumber++;
+            updates++;
             // TODO - Update in prallel
             // TODO - Update only the Viewed tabs (is that possible?)
             foreach (var hostState in _hostStates.Values)

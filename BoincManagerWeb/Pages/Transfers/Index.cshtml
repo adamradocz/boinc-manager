@@ -7,7 +7,7 @@
 
 <h1>Transfers</h1>
 
-<table class="table">
+<table class="table" id="transfersTable">
     <thead class="thead-light">
         <tr>
             <th>
@@ -42,40 +42,42 @@
     <tbody>
         @foreach (var item in Model.Transfers)
         {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.HostName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Project)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FileName)
-            </td>
-            <td>
-                @{
-                    var progress = Math.Round(item.Progress * 100, 1);
-                    <div class="progress">
-                        <div class="progress-bar" style="width:@progress%">@progress%</div>
-                    </div>
-                }
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FileSize)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TransferRate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ElapsedTime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TimeRemaining)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Status)
-            </td>
-        </tr>
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.HostName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Project)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FileName)
+                </td>
+                <td>
+                    @{
+                        <div class="progress">
+                            <div class="progress-bar" style="width:@item.Progress%">@item.Progress%</div>
+                        </div>
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FileSize)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TransferRate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ElapsedTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TimeRemaining)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Status)
+                </td>
+            </tr>
         }
     </tbody>
 </table>
+
+<script src="~/lib/signalr/dist/browser/signalr.js"></script>
+<script src="~/js/transfersPage.js"></script>

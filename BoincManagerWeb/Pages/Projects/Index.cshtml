@@ -7,7 +7,7 @@
 
 <h1>Projects</h1>
 
-<table class="table">
+<table class="table" id="projectsTable">
     <thead class="thead-light">
         <tr>
             <th>
@@ -36,29 +36,32 @@
     <tbody>
         @foreach (var item in Model.Projects)
         {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.HostName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Username)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Team)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Credit)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AverageCredit)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Status)
-            </td>
-        </tr>
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.HostName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Username)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Team)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Credit)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AverageCredit)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Status)
+                </td>
+            </tr>
         }
     </tbody>
 </table>
+
+<script src="~/lib/signalr/dist/browser/signalr.js"></script>
+<script src="~/js/projectsPage.js"></script>

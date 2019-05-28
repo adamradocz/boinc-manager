@@ -10,7 +10,8 @@
 <p>
     <a asp-page="Add" class="btn btn-primary">Add Host</a>
 </p>
-<table class="table">
+
+<table class="table" id="hostsTable">
     <thead class="thead-light">
         <tr>
             <th>
@@ -42,48 +43,48 @@
     <tbody>
         @foreach (var item in Model.Hosts)
         {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IpAddress)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Port)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AutoConnect)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.BoincVersion)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.OperatingSystem)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Status)
-            </td>
-            <td>                
-                @if (item.Connected)
-                {
-                    <form method="post" asp-page-handler="Disconnect" asp-route-id="@item.Id">
-                        <input type="submit" value="Disconnect" class="btn btn-danger btn-sm" />
-                        <a asp-page="./Details" asp-route-id="@item.Id" class="btn btn-info btn-sm">Details</a>
-                        <a asp-page="./Edit" asp-route-id="@item.Id" class="btn btn-primary btn-sm">Edit</a>
-                        <a asp-page="./Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm">Delete</a>
-                    </form>                    
-                }
-                else
-                {
-                    <form method="post" asp-page-handler="Connect" asp-route-id="@item.Id">
-                        <input type="submit" value="Connect" class="btn btn-success btn-sm" />
-                        <a asp-page="./Edit" asp-route-id="@item.Id" class="btn btn-primary btn-sm">Edit</a>
-                        <a asp-page="./Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm">Delete</a>
-                    </form>
-                }                
-            </td>
-        </tr>
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IpAddress)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Port)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AutoConnect)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BoincVersion)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.OperatingSystem)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Status)
+                </td>
+                <td>
+                    @if (item.Connected)
+                    {
+                        <form method="post" asp-page-handler="Disconnect" asp-route-id="@item.Id">
+                            <input type="submit" value="Disconnect" class="btn btn-danger btn-sm" />
+                            <a asp-page="./Details" asp-route-id="@item.Id" class="btn btn-info btn-sm">Details</a>
+                            <a asp-page="./Edit" asp-route-id="@item.Id" class="btn btn-primary btn-sm">Edit</a>
+                            <a asp-page="./Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm">Delete</a>
+                        </form>
+                    }
+                    else
+                    {
+                        <form method="post" asp-page-handler="Connect" asp-route-id="@item.Id">
+                            <input type="submit" value="Connect" class="btn btn-success btn-sm" />
+                            <a asp-page="./Edit" asp-route-id="@item.Id" class="btn btn-primary btn-sm">Edit</a>
+                            <a asp-page="./Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm">Delete</a>
+                        </form>
+                    }
+                </td>
+            </tr>
         }
     </tbody>
 </table>

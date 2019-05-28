@@ -7,7 +7,7 @@
 
 <h1>Messages</h1>
 
-<table class="table">
+<table class="table" id="messagesTable">
     <thead class="thead-light">
         <tr>
             <th>
@@ -21,7 +21,7 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Messages[0].Message)
-            </th>            
+            </th>
         </tr>
     </thead>
     <tbody>
@@ -36,7 +36,7 @@
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Date)
-                </td>                
+                </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Message)
                 </td>
@@ -44,3 +44,6 @@
         }
     </tbody>
 </table>
+
+<script src="~/lib/signalr/dist/browser/signalr.js"></script>
+<script src="~/js/messagesPage.js"></script>
