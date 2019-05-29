@@ -11,6 +11,19 @@ namespace BoincManager
 {
     public static class Utils
     {
+        /// <summary>
+        /// Makes sure everything is ready to run the Application
+        /// </summary>
+        /// <param name="databasePath"></param>
+        public static void InitializeApplication(string databasePath)
+        {
+            // Make sure that the directory for Application Data and the database is exist.
+            if (!Directory.Exists(databasePath))
+            {
+                Directory.CreateDirectory(databasePath);
+            }
+        }
+
         public static string GetDatabasePath(bool withFileName)
         {
             var applicationDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);

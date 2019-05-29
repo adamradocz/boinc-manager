@@ -30,12 +30,8 @@ namespace BoincManagerWindows
 
             messagesDataGrid.ItemContainerGenerator.StatusChanged += MessagesDataGrid_ItemContainerGenerator_StatusChanged;
 
-            // Make sure the database is created and up to date at the start of the application.            
-            var databasePath = BoincManager.Utils.GetDatabasePath(false);
-            if (!Directory.Exists(databasePath))
-            {
-                Directory.CreateDirectory(databasePath);
-            }
+            // Initialize the application
+            BoincManager.Utils.InitializeApplication(BoincManager.Utils.GetDatabasePath(false));
             using (var db = new Models.ApplicationDbContext())
             {
                 db.Database.Migrate();

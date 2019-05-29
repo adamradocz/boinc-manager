@@ -81,12 +81,11 @@ namespace BoincManagerWeb
                 endpoints.MapRazorPages();
             });
 
-            // Make sure the database is created and up to date at the start of the application.
+            // Initialize the Application
             var databaseFilePath = Path.Combine(env.ContentRootPath, BoincManager.Constants.DatabaseSubfolder);
-            if (!Directory.Exists(databaseFilePath))
-            {
-               Directory.CreateDirectory(databaseFilePath);
-            }            
+            BoincManager.Utils.InitializeApplication(databaseFilePath);
+
+            // Make sure the database is created and up to date at the start of the application.
             context.Database.Migrate();
 
             // Start the Boinc Manager
