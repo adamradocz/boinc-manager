@@ -16,7 +16,7 @@ The following command runs the BoincManagerWeb Docker container:
 docker run -d \
   --name boinc-manager-web \
   --net=host \
-  -v /opt/appdata/boinc-manager-web:/app \
+  -v /opt/appdata/boinc-manager-web:/app/BoincManager \
   adamradocz/boinc-manager-web
 ```
 
@@ -35,7 +35,7 @@ services:
     restart: always
     network_mode: host
     volumes:
-      - /opt/appdata/boinc-manager-web:/app
+      - /opt/appdata/boinc-manager-web:/app/BoincManager
 ```
 
 ### More Info
