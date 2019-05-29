@@ -21,7 +21,6 @@ FROM mcr.microsoft.com/dotnet/core/aspnet:3.0-alpine
 ENV XDG_CONFIG_HOME="/app"
 
 WORKDIR /app
-VOLUME /app/BoincManager
 EXPOSE 80
 EXPOSE 443
 
