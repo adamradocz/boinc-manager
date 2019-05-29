@@ -36,7 +36,6 @@ namespace BoincManagerWeb
                 options.CheckConsentNeeded = context => true;
             });
 
-
             services.AddRazorPages()
                 .AddNewtonsoftJson();
 

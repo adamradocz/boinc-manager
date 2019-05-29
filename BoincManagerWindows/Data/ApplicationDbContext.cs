@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.IO;
 
 namespace BoincManagerWindows.Models
 {
@@ -9,7 +10,7 @@ namespace BoincManagerWindows.Models
         
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlite($"Data Source={BoincManager.Utils.GetDatabasePath(true)}");
+            optionsBuilder.UseSqlite($"Data Source={Path.Combine(BoincManager.Utils.GetDatabaseFolderPath(), BoincManager.Constants.DatabaseFileName)}");
         }
     }
 }

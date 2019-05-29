@@ -17,24 +17,16 @@ namespace BoincManager
         /// <param name="databasePath"></param>
         public static void InitializeApplication(string databasePath)
         {
-            // Make sure that the directory for Application Data and the database is exist.
-            if (!Directory.Exists(databasePath))
-            {
-                Directory.CreateDirectory(databasePath);
-            }
+            // Ensure the directory and all its parents exist. If it exist, it'll do nothing.
+            Directory.CreateDirectory(databasePath);
         }
 
-        public static string GetDatabasePath(bool withFileName)
+        public static string GetDatabaseFolderPath()
         {
-            var applicationDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-            string databasePath = Path.Combine(applicationDataPath, Constants.ApplicationName, Constants.DatabaseSubfolder);
-
-            if (withFileName)
-            {
-                databasePath = Path.Combine(databasePath, Constants.DatabaseFileName);
-            }
-
-            return databasePath;
+            return Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                Constants.ApplicationName,
+                Constants.DatabaseSubfolder);
         }
 
         public static string GetLocalhostGuiRpcPassword()
