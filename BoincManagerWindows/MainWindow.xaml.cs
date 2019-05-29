@@ -3,7 +3,6 @@ using BoincRpc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -30,11 +29,10 @@ namespace BoincManagerWindows
 
             messagesDataGrid.ItemContainerGenerator.StatusChanged += MessagesDataGrid_ItemContainerGenerator_StatusChanged;
 
-            // Initialize the application
-            BoincManager.Utils.InitializeApplication(BoincManager.Utils.GetApplicationDataFolderPath());
-            using (var db = new Models.ApplicationDbContext())
+            // Initialize the application            
+            using (var context = new BoincManager.Models.ApplicationDbContext())
             {
-                db.Database.Migrate();
+                BoincManager.Utils.InitializeApplication(BoincManager.Utils.GetApplicationDataFolderPath(), context);
             }            
         }
 

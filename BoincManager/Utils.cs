@@ -1,4 +1,6 @@
-﻿using BoincRpc;
+﻿using BoincManager.Models;
+using BoincRpc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -12,13 +14,16 @@ namespace BoincManager
     public static class Utils
     {
         /// <summary>
-        /// Ensure everything is ready to run the Application
+        /// Ensure everything is set to run the Application
         /// </summary>
         /// <param name="databaseFolderPath"></param>
-        public static void InitializeApplication(string databaseFolderPath)
+        public static void InitializeApplication(string databaseFolderPath, ApplicationDbContext context)
         {
             // Ensure the directory and all its parents exist. If it exist, it'll do nothing.
             Directory.CreateDirectory(databaseFolderPath);
+
+            // Ensure the database is created and up to date at the start of the application
+            context.Database.Migrate();
         }
 
         public static string GetApplicationDataFolderPath()

@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace BoincManagerWeb.Migrations
+namespace BoincManager.Migrations
 {
     public partial class InitialCreate : Migration
     {

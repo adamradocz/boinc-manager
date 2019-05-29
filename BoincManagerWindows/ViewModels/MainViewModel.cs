@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using BoincManager.Models;
-using BoincManagerWindows.Models;
 using BoincRpc;
 
 namespace BoincManagerWindows.ViewModels

@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using BoincManager.Models;
-using BoincManagerWeb.Models;
 
 namespace BoincManagerWeb.Pages.Hosts
 {

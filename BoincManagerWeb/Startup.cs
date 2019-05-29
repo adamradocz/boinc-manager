@@ -9,7 +9,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using BoincManagerWeb.Models;
+using BoincManager;
+using BoincManager.Models;
 using BoincManagerWeb.Hubs;
 using System.Threading;
 using Microsoft.AspNetCore.SignalR.Client;
@@ -39,20 +40,16 @@ namespace BoincManagerWeb
             services.AddRazorPages()
                 .AddNewtonsoftJson();
 
-            var builder = new SqliteConnectionStringBuilder
-            {
-                DataSource = Path.Combine(BoincManager.Utils.GetApplicationDataFolderPath(), BoincManager.Constants.DatabaseFileName)
-            };
-            services.AddDbContext<ApplicationDbContext>(options => options.UseSqlite(builder.ConnectionString));
-
+            
             services.AddSignalR();
 
-            services.AddSingleton<BoincManager.Manager>();
+            services.AddSingleton<ApplicationDbContext>();
+            services.AddSingleton<Manager>();
             services.AddSingleton<ViewDataProcessor>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ApplicationDbContext context, BoincManager.Manager manager)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env,ApplicationDbContext context, Manager manager)
         {
             if (env.IsDevelopment())
             {
@@ -85,10 +82,7 @@ namespace BoincManagerWeb
             });
 
             // Initialize the Application
-            BoincManager.Utils.InitializeApplication(BoincManager.Utils.GetApplicationDataFolderPath());
-
-            // Make sure the database is created and up to date at the start of the application.
-            context.Database.Migrate();
+            Utils.InitializeApplication(Utils.GetApplicationDataFolderPath(), context);            
 
             // Start the Boinc Manager
             manager.Initialize(context.Host.ToList());
