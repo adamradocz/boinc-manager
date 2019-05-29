@@ -24,7 +24,7 @@ docker run -d \
 Access the webui at `https://your-ip`
 
 ### Docker Compose
-You can create the following `docker-compose.yml` file and from within the same directory run the client with `docker-compose up -d` to avoid the longer command from above. 
+You can create the following `docker-compose.yml` file and from within the same directory run the Manager with `docker-compose up -d` to avoid the longer command from above. 
 ```
 version: '2'
 services:
@@ -38,9 +38,66 @@ services:
       - /opt/appdata/boinc-manager-web:/app/BoincManager
 ```
 
+You can run Boinc Client and Manager, then share data between them with the following `docker-compose.yml` file. For more info about the Boinc Client Docker image check out its [official page](https://hub.docker.com/r/boinc/client)
+```
+version: '2'
+services:
+
+  boinc:
+    image: boinc/client
+    container_name: boinc
+    network_mode: host
+    restart: always
+    volumes:
+      - /opt/appdata/boinc:/var/lib/boinc
+    environment:
+      - BOINC_GUI_RPC_PASSWORD=123
+      - BOINC_CMD_LINE_OPTIONS=--allow_remote_gui_rpc
+
+  boinc-manager-web:
+    image: adamradocz/boinc-manager-web
+    container_name: boinc-manager-web
+    restart: always
+    network_mode: host
+    volumes:
+     - /opt/appdata/boinc-manager-web:/app/BoincManager
+    volumes_from:
+      - boinc:ro
+```
+
+For Docker Compose V3:
+```
+version: '3'
+services:
+
+  boinc:
+    image: boinc/client
+    container_name: boinc
+    network_mode: host
+    restart: always
+    volumes:
+      - boinc-data:/var/lib/boinc
+    environment:
+      - BOINC_GUI_RPC_PASSWORD=123
+      - BOINC_CMD_LINE_OPTIONS=--allow_remote_gui_rpc
+
+  boinc-manager-web:
+    image: adamradocz/boinc-manager-web
+    container_name: boinc-manager-web
+    restart: always
+    network_mode: host
+    volumes:
+     - boinc-manager-data:/app/BoincManager
+     - boinc-data:/var/lib/boinc
+
+volumes:
+  boinc-data:
+  boinc-manager-data:
+```
+
 ### More Info
 - How to build it yourself: `docker build -t boinc-manager-web .`
-- Shell access whilst the container is running: `docker exec -it boinc-manager-web /bin/bash`
+- Shell access whilst the container is running: `docker exec -it boinc-manager-web /bin/bash` or `docker exec -it boinc-manager-web /bin/sh`
 - Monitor the logs of the container in realtime: `docker logs -f boinc-manager-web`
 
 ## Development requirements
