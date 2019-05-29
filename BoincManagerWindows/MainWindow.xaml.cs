@@ -31,7 +31,7 @@ namespace BoincManagerWindows
             messagesDataGrid.ItemContainerGenerator.StatusChanged += MessagesDataGrid_ItemContainerGenerator_StatusChanged;
 
             // Initialize the application
-            BoincManager.Utils.InitializeApplication(BoincManager.Utils.GetDatabaseFolderPath());
+            BoincManager.Utils.InitializeApplication(BoincManager.Utils.GetApplicationDataFolderPath());
             using (var db = new Models.ApplicationDbContext())
             {
                 db.Database.Migrate();

@@ -10,7 +10,7 @@ namespace BoincManagerWindows.Models
         
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlite($"Data Source={Path.Combine(BoincManager.Utils.GetDatabaseFolderPath(), BoincManager.Constants.DatabaseFileName)}");
+            optionsBuilder.UseSqlite($"Data Source={Path.Combine(BoincManager.Utils.GetApplicationDataFolderPath(), BoincManager.Constants.DatabaseFileName)}");
         }
     }
 }

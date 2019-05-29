@@ -39,7 +39,11 @@ namespace BoincManagerWeb
             services.AddRazorPages()
                 .AddNewtonsoftJson();
 
-            services.AddDbContext<ApplicationDbContext>(options => options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
+            var builder = new SqliteConnectionStringBuilder
+            {
+                DataSource = Path.Combine(BoincManager.Utils.GetApplicationDataFolderPath(), BoincManager.Constants.DatabaseFileName)
+            };
+            services.AddDbContext<ApplicationDbContext>(options => options.UseSqlite(builder.ConnectionString));
 
             services.AddSignalR();
 
@@ -81,8 +85,7 @@ namespace BoincManagerWeb
             });
 
             // Initialize the Application
-            var databaseFilePath = Path.Combine(env.ContentRootPath, BoincManager.Constants.DatabaseSubfolder);
-            BoincManager.Utils.InitializeApplication(databaseFilePath);
+            BoincManager.Utils.InitializeApplication(BoincManager.Utils.GetApplicationDataFolderPath());
 
             // Make sure the database is created and up to date at the start of the application.
             context.Database.Migrate();

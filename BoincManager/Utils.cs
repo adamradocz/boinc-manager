@@ -12,21 +12,18 @@ namespace BoincManager
     public static class Utils
     {
         /// <summary>
-        /// Makes sure everything is ready to run the Application
+        /// Ensure everything is ready to run the Application
         /// </summary>
-        /// <param name="databasePath"></param>
-        public static void InitializeApplication(string databasePath)
+        /// <param name="databaseFolderPath"></param>
+        public static void InitializeApplication(string databaseFolderPath)
         {
             // Ensure the directory and all its parents exist. If it exist, it'll do nothing.
-            Directory.CreateDirectory(databasePath);
+            Directory.CreateDirectory(databaseFolderPath);
         }
 
-        public static string GetDatabaseFolderPath()
+        public static string GetApplicationDataFolderPath()
         {
-            return Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-                Constants.ApplicationName,
-                Constants.DatabaseSubfolder);
+            return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), Constants.ApplicationName);
         }
 
         public static string GetLocalhostGuiRpcPassword()
