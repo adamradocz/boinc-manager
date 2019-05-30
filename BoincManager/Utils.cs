@@ -14,16 +14,21 @@ namespace BoincManager
     public static class Utils
     {
         /// <summary>
-        /// Ensure everything is set to run the Application
+        /// Ensure everything is set to run the Application.
+        /// - Ensure database folder exists.
+        /// - Ensure the database is created and up to date.
+        /// - Initialize BoincManager
         /// </summary>
         /// <param name="databaseFolderPath"></param>
-        public static void InitializeApplication(string databaseFolderPath, ApplicationDbContext context)
+        public static void InitializeApplication(string databaseFolderPath, ApplicationDbContext context, Manager manager)
         {
             // Ensure the directory and all its parents exist. If it exist, it'll do nothing.
             Directory.CreateDirectory(databaseFolderPath);
 
             // Ensure the database is created and up to date at the start of the application
             context.Database.Migrate();
+            
+            manager.Initialize(context.Host.ToList());
         }
 
         public static string GetApplicationDataFolderPath()

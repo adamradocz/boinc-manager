@@ -26,7 +26,11 @@ namespace BoincManager
             _hostStates = new ConcurrentDictionary<int, HostState>();
             _cancellationTokenSource = new CancellationTokenSource();
         }
-
+        /// <summary>
+        /// Ensure everything is set to run the BoincManager.
+        /// -Load the data from database.
+        /// </summary>
+        /// <param name="hosts"></param>
         public void Initialize(IEnumerable<Host> hosts)
         {
             // Initialize the Dictionary. Add all the hosts stored in the database.

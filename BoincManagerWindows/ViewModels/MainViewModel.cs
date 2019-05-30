@@ -545,17 +545,16 @@ namespace BoincManagerWindows.ViewModels
 
         public async Task StartBoincManager()
         {
-            // Get host data from database.
             status = "Loading database...";
-            List<Host> hosts;
-            using (var db = new ApplicationDbContext())
+
+            // Initialize the application
+            using (var context = new ApplicationDbContext())
             {
-                hosts = db.Host.ToList();
+                BoincManager.Utils.InitializeApplication(BoincManager.Utils.GetApplicationDataFolderPath(), context, _manager);
             }
 
             // Start the Boinc Manager
-            status = "Connecting...";
-            _manager.Initialize(hosts);
+            status = "Connecting...";            
             _manager.Start();
 
             // Initialize the View

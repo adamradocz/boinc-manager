@@ -82,10 +82,9 @@ namespace BoincManagerWeb
             });
 
             // Initialize the Application
-            Utils.InitializeApplication(Utils.GetApplicationDataFolderPath(), context);            
+            Utils.InitializeApplication(Utils.GetApplicationDataFolderPath(), context, manager);            
 
-            // Start the Boinc Manager
-            manager.Initialize(context.Host.ToList());
+            // Start the Boinc Manager            
             manager.Start();
         }
     }

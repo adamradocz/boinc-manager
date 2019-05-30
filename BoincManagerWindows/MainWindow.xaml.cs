@@ -28,12 +28,6 @@ namespace BoincManagerWindows
             DataContext = _viewModel;
 
             messagesDataGrid.ItemContainerGenerator.StatusChanged += MessagesDataGrid_ItemContainerGenerator_StatusChanged;
-
-            // Initialize the application            
-            using (var context = new BoincManager.Models.ApplicationDbContext())
-            {
-                BoincManager.Utils.InitializeApplication(BoincManager.Utils.GetApplicationDataFolderPath(), context);
-            }            
         }
 
         private async void Window_Loaded(object sender, RoutedEventArgs e)
