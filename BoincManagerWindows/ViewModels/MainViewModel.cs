@@ -554,7 +554,7 @@ namespace BoincManagerWindows.ViewModels
             }
 
             // Start the Boinc Manager
-            status = "Connecting...";            
+            status = "Connecting...";
             _manager.Start();
 
             // Initialize the View

@@ -27,8 +27,23 @@ namespace BoincManager
 
             // Ensure the database is created and up to date at the start of the application
             context.Database.Migrate();
-            
-            manager.Initialize(context.Host.ToList());
+
+            // If the database is empty, add localhost to it.
+            var hosts = context.Host.ToList();
+            if (hosts.Count == 0)
+            {
+                var localhostPassword = GetLocalhostGuiRpcPassword();
+                if(!string.IsNullOrEmpty(localhostPassword))
+                {
+                    var host = new Host("Localhost", "localhost", localhostPassword);
+                    context.Add(host);
+                    context.SaveChanges();
+                    hosts.Add(host);
+                }
+            }
+
+            // Initialize the BoincManager
+            manager.Initialize(hosts);
         }
 
         public static string GetApplicationDataFolderPath()

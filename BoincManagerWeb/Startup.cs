@@ -84,7 +84,7 @@ namespace BoincManagerWeb
             // Initialize the Application
             Utils.InitializeApplication(Utils.GetApplicationDataFolderPath(), context, manager);            
 
-            // Start the Boinc Manager            
+            // Start the Boinc Manager
             manager.Start();
         }
     }
