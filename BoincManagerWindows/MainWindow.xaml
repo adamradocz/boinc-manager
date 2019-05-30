@@ -353,7 +353,7 @@
                         <DataGridTextColumn Header="Address" Binding="{Binding Path=IpAddress}"/>
                         <DataGridTextColumn Header="Port" Binding="{Binding Path=Port}"/>
                         <DataGridTextColumn Header="Password" Binding="{Binding Path=Password}"/>
-                        <DataGridTextColumn Header="Auto Connect" Binding="{Binding Path=AutoConnect}"/>
+                        <DataGridCheckBoxColumn Header="Auto Connect" Binding="{Binding Path=AutoConnect}"/>
                         <DataGridTextColumn Header="Boinc Version" Binding="{Binding Path=BoincVersion}" IsReadOnly="True"/>
                         <DataGridTextColumn Header="Operating System" Binding="{Binding Path=OperatingSystem}" IsReadOnly="True"/>
                         <DataGridTextColumn Header="Status" Binding="{Binding Path=Status}" IsReadOnly="True"/>
