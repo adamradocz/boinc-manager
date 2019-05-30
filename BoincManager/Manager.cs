@@ -42,6 +42,12 @@ namespace BoincManager
             // await Utils.ParallelForEachAsync(hosts, AddHost); // Connect to all the hosts in parallel, instead of sequential order
         }
 
+        /// <summary>
+        /// Start the BoincManager.
+        /// Connect to all the host with the AutoConnect property turned on.
+        /// Start a background process to get the latest updates from the Boinc Client in every X seconds.
+        /// </summary>
+        /// <returns></returns>
         public async Task Start()
         {
             if (IsRunning)
@@ -82,6 +88,11 @@ namespace BoincManager
             }
         }
 
+        /// <summary>
+        /// Connect to a host.
+        /// </summary>
+        /// <param name="hostId">Host ID.</param>
+        /// <returns></returns>
         public async Task Connect(int hostId)
         {
             var found = _hostStates.TryGetValue(hostId, out HostState hostState);
@@ -143,6 +154,10 @@ namespace BoincManager
             }
         }
 
+        /// <summary>
+        /// Disconnect a host.
+        /// </summary>
+        /// <param name="hostId">Host ID.</param>
         public void Disconnect(int hostId)
         {
             var found = _hostStates.TryGetValue(hostId, out HostState hostState);
@@ -163,6 +178,11 @@ namespace BoincManager
             }
         }
         
+        /// <summary>
+        /// Stop the BoincManager:
+        /// Stop the background process which is get the update from the Boinc Client.
+        /// Disconnect all the hosts.
+        /// </summary>
         public void Stop()
         {
             if (!IsRunning)
