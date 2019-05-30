@@ -38,7 +38,7 @@ namespace BoincManager
                     var host = new Host("Localhost", "localhost", localhostPassword);
                     context.Add(host);
                     context.SaveChanges();
-                    hosts.Add(host);
+                    hosts = context.Host.ToList();
                 }
             }
 
