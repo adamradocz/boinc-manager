@@ -21,7 +21,7 @@ docker run -d \
 ```
 
 ### Application Setup
-Access the webui at `https://your-ip`
+Access the webui at `http://your-ip:8000`
 
 ### Docker Compose
 You can create the following `docker-compose.yml` file and from within the same directory run the Manager with `docker-compose up -d` to avoid the longer command from above. 
