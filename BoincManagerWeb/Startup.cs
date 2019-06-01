@@ -1,21 +1,16 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using BoincManager;
 using BoincManager.Models;
 using BoincManagerWeb.Hubs;
-using System.Threading;
-using Microsoft.AspNetCore.SignalR.Client;
 using System.IO;
-using Microsoft.Data.Sqlite;
 
 namespace BoincManagerWeb
 {
@@ -39,7 +34,6 @@ namespace BoincManagerWeb
 
             services.AddRazorPages()
                 .AddNewtonsoftJson();
-
             
             services.AddSignalR();
 
