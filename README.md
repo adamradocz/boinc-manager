@@ -109,10 +109,8 @@ volumes:
 
 ### How to add HTTPS Certificate
 Info about [Hosting ASP.NET Core Images with Docker over HTTPS](https://github.com/dotnet/dotnet-docker/blob/master/samples/aspnetapp/aspnetcore-docker-https.md)
-
-| Parameter | Function |
-| :----: | --- |
-| `ASPNETCORE_URLS` | Https port |
-| `ASPNETCORE_HTTPS_PORT` | Http port (required for http validation only) |
-| `ASPNETCORE_Kestrel__Certificates__Default__Password` | for UserID - see below for explanation |
-| `ASPNETCORE_Kestrel__Certificates__Default__Path` | for GroupID - see below for explanation |
+Required environment variables have to be set:
+- `ASPNETCORE_URLS`
+- `ASPNETCORE_Kestrel__Certificates__Default__Password`
+- `ASPNETCORE_Kestrel__Certificates__Default__Path`
+- `ASPNETCORE_HTTPS_PORT` (Optional)
