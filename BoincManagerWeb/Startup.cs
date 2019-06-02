@@ -11,6 +11,8 @@ using BoincManager;
 using BoincManager.Models;
 using BoincManagerWeb.Hubs;
 using System.IO;
+using Microsoft.AspNetCore.DataProtection;
+using System.Security.Cryptography.X509Certificates;
 
 namespace BoincManagerWeb
 {
@@ -26,6 +28,17 @@ namespace BoincManagerWeb
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // From:
+            // - https://docs.microsoft.com/en-us/aspnet/core/security/data-protection/configuration/overview?view=aspnetcore-3.0
+            // - https://github.com/dotnet/dotnet-docker/blob/master/samples/aspnetapp/aspnetcore-docker-https.md
+            if (string.Equals(Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER"), "true", StringComparison.OrdinalIgnoreCase) &&
+                !string.IsNullOrEmpty(Environment.GetEnvironmentVariable("ASPNETCORE_Kestrel__Certificates__Default__Path")))
+            {
+                services.AddDataProtection()
+                .PersistKeysToFileSystem(new DirectoryInfo(Utils.GetApplicationDataFolderPath()))
+                .ProtectKeysWithCertificate(new X509Certificate2(Environment.GetEnvironmentVariable("ASPNETCORE_Kestrel__Certificates__Default__Path"), Environment.GetEnvironmentVariable("ASPNETCORE_Kestrel__Certificates__Default__Password"), X509KeyStorageFlags.MachineKeySet));
+            }
+
             services.Configure<CookiePolicyOptions>(options =>
             {
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.

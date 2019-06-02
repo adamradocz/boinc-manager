@@ -15,7 +15,7 @@ The following command runs the BoincManagerWeb Docker container:
 ```
 docker run -d \
   --name boinc-manager-web \
-  --net=host \
+  -p "8000:80" \
   -v /opt/appdata/boinc-manager-web:/app/BoincManager \
   adamradocz/boinc-manager-web
 ```
@@ -26,21 +26,22 @@ Access the webui at `http://your-ip:8000`
 ### Docker Compose
 You can create the following `docker-compose.yml` file and from within the same directory run the Manager with `docker-compose up -d` to avoid the longer command from above. 
 ```
-version: '2'
+version: "2"
 services:
 
   boinc-manager-web:
     image: adamradocz/boinc-manager-web
     container_name: boinc-manager-web
     restart: always
-    network_mode: host
+	ports:
+      - "8000:80"
     volumes:
       - /opt/appdata/boinc-manager-web:/app/BoincManager
 ```
 
 You can run Boinc Client and Manager, then share data between them with the following `docker-compose.yml` file. For more info about the Boinc Client Docker image check out its [official page](https://hub.docker.com/r/boinc/client)
 ```
-version: '2'
+version: "2"
 services:
 
   boinc:
@@ -58,7 +59,8 @@ services:
     image: adamradocz/boinc-manager-web
     container_name: boinc-manager-web
     restart: always
-    network_mode: host
+	ports:
+      - "8000:80"
     volumes:
      - /opt/appdata/boinc-manager-web:/app/BoincManager
     volumes_from:
@@ -67,7 +69,7 @@ services:
 
 For Docker Compose V3:
 ```
-version: '3'
+version: "3"
 services:
 
   boinc:
@@ -85,10 +87,11 @@ services:
     image: adamradocz/boinc-manager-web
     container_name: boinc-manager-web
     restart: always
-    network_mode: host
+	ports:
+      - "8000:80"
     volumes:
-     - boinc-manager-data:/app/BoincManager
-     - boinc-data:/var/lib/boinc
+      - boinc-manager-data:/app/BoincManager
+      - boinc-data:/var/lib/boinc
 
 volumes:
   boinc-data:
@@ -103,3 +106,13 @@ volumes:
 ## Development requirements
 - [Visual Studio 2019](https://visualstudio.microsoft.com/vs/preview/)
 - [.NET Core 3.0 Runtime and SDK](https://dotnet.microsoft.com/download/dotnet-core/3.0)
+
+### How to add HTTPS Certificate
+Info about [Hosting ASP.NET Core Images with Docker over HTTPS](https://github.com/dotnet/dotnet-docker/blob/master/samples/aspnetapp/aspnetcore-docker-https.md)
+
+| Parameter | Function |
+| :----: | --- |
+| `ASPNETCORE_URLS` | Https port |
+| `ASPNETCORE_HTTPS_PORT` | Http port (required for http validation only) |
+| `ASPNETCORE_Kestrel__Certificates__Default__Password` | for UserID - see below for explanation |
+| `ASPNETCORE_Kestrel__Certificates__Default__Path` | for GroupID - see below for explanation |
