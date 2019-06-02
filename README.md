@@ -33,7 +33,7 @@ services:
     image: adamradocz/boinc-manager-web
     container_name: boinc-manager-web
     restart: always
-	ports:
+    ports:
       - "8000:80"
     volumes:
       - /opt/appdata/boinc-manager-web:/app/BoincManager
@@ -47,19 +47,20 @@ services:
   boinc:
     image: boinc/client
     container_name: boinc
-    network_mode: host
     restart: always
-    volumes:
-      - /opt/appdata/boinc:/var/lib/boinc
     environment:
       - BOINC_GUI_RPC_PASSWORD=123
       - BOINC_CMD_LINE_OPTIONS=--allow_remote_gui_rpc
+    ports:
+      - "31416:31416"
+    volumes:
+      - /opt/appdata/boinc:/var/lib/boinc
 
   boinc-manager-web:
     image: adamradocz/boinc-manager-web
     container_name: boinc-manager-web
     restart: always
-	ports:
+    ports:
       - "8000:80"
     volumes:
      - /opt/appdata/boinc-manager-web:/app/BoincManager
@@ -75,19 +76,20 @@ services:
   boinc:
     image: boinc/client
     container_name: boinc
-    network_mode: host
     restart: always
-    volumes:
-      - boinc-data:/var/lib/boinc
     environment:
       - BOINC_GUI_RPC_PASSWORD=123
       - BOINC_CMD_LINE_OPTIONS=--allow_remote_gui_rpc
+    ports:
+      - "31416:31416"
+    volumes:
+      - boinc-data:/var/lib/boinc
 
   boinc-manager-web:
     image: adamradocz/boinc-manager-web
     container_name: boinc-manager-web
     restart: always
-	ports:
+    ports:
       - "8000:80"
     volumes:
       - boinc-manager-data:/app/BoincManager
