@@ -1,5 +1,6 @@
 # Directories
 .git
+.github
 .vs
 .vscode
 **/bin
