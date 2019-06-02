@@ -16,6 +16,7 @@ BoincManagerWindows
 .env
 .gitignore
 Dockerfile*
+docker-compose.yml
 LICENSE
 **/*.db
 **/*.md
