@@ -39,7 +39,7 @@ services:
       - /opt/appdata/boinc-manager-web:/app/BoincManager
 ```
 
-You can run Boinc Client and Manager, then share data between them with the following `docker-compose.yml` file. For more info about the Boinc Client Docker image check out its [official page](https://hub.docker.com/r/boinc/client)
+You can run Boinc Client and Manager together with the following `docker-compose.yml` file. For more info about the Boinc Client Docker image check out its [official page](https://hub.docker.com/r/boinc/client)
 ```
 version: "2"
 services:
@@ -64,41 +64,8 @@ services:
       - "8000:80"
     volumes:
      - /opt/appdata/boinc-manager-web:/app/BoincManager
-    volumes_from:
-      - boinc:ro
 ```
 
-For Docker Compose V3:
-```
-version: "3"
-services:
-
-  boinc:
-    image: boinc/client
-    container_name: boinc
-    restart: always
-    environment:
-      - BOINC_GUI_RPC_PASSWORD=123
-      - BOINC_CMD_LINE_OPTIONS=--allow_remote_gui_rpc
-    ports:
-      - "31416:31416"
-    volumes:
-      - boinc-data:/var/lib/boinc
-
-  boinc-manager-web:
-    image: adamradocz/boinc-manager-web
-    container_name: boinc-manager-web
-    restart: always
-    ports:
-      - "8000:80"
-    volumes:
-      - boinc-manager-data:/app/BoincManager
-      - boinc-data:/var/lib/boinc
-
-volumes:
-  boinc-data:
-  boinc-manager-data:
-```
 
 ### More Info
 - How to build it yourself: `docker build -t boinc-manager-web .`

@@ -30,7 +30,7 @@ namespace BoincManager
 
             // If the database is empty, add localhost to it.
             var hosts = context.Host.ToList();
-            if (hosts.Count == 0)
+            if (hosts.Count == 0 && !InDocker())
             {
                 var localhostPassword = GetLocalhostGuiRpcPassword();
                 if(!string.IsNullOrEmpty(localhostPassword))
@@ -44,6 +44,11 @@ namespace BoincManager
 
             // Initialize the BoincManager
             manager.Initialize(hosts);
+        }
+
+        public static bool InDocker()
+        {
+            return string.Equals(Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER"), "true", StringComparison.OrdinalIgnoreCase);
         }
 
         public static string GetApplicationDataFolderPath()
