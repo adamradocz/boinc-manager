@@ -8,6 +8,29 @@
 ![Docker Stars](https://img.shields.io/docker/stars/adamradocz/boinc-manager-web.svg)
 ![Docker Cloud Build Status](https://img.shields.io/docker/cloud/build/adamradocz/boinc-manager-web.svg)
 
+## Supported Architectures and Tags
+
+You can specialize the `boinc/client` image with either of the following tags to use one of the specialized container version instead.
+
+### x86-64
+| Tag | Info |
+| :--- | :--- |
+| [`debian`](Dockerfile) | Debian based BOINC Manager. |
+| [`latest`, `alpine`](Dockerfile.alpine) | Alpine based BOINC Manager. |
+
+
+### ARMv7 32-bit
+| Tag | Info |
+| :--- | :--- |
+| [`arm32v7`](Dockerfile) | Debian based BOINC Manager. |
+
+
+### ARMv8 64-bit
+| Tag | Info |
+| :--- | :--- |
+| [`arm64v8`](Dockerfile) | Debian based BOINC Manager. |
+
+
 ### BoincManagerWeb Usage
 
 The following command runs the BoincManagerWeb Docker container:
