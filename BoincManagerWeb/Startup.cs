@@ -49,7 +49,8 @@ namespace BoincManagerWeb
             
             services.AddSignalR();
 
-            services.AddSingleton<ApplicationDbContext>();
+            services.AddScoped<ApplicationDbContext>();
+
             services.AddSingleton<Manager>();
             services.AddSingleton<ViewDataProcessor>();
         }
