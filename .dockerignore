@@ -18,5 +18,9 @@ BoincManagerWindows
 Dockerfile*
 docker-compose.yml
 LICENSE
+**/*.css
+!**/*.min.css
 **/*.db
+**/*.js
+!**/*.min.js
 **/*.md
