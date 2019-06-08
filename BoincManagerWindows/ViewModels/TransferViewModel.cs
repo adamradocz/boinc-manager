@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
 using BoincManager;
 using BoincManager.Models;
+using BoincManager.ViewModels;
 using BoincRpc;
 
 namespace BoincManagerWindows.ViewModels
 {
-    class TransferViewModel : BindableBase, IFilterableViewModel
+    class TransferViewModel : BindableBase, IFilterable
     {
         public int HostId { get; }
         public string HostName { get; }

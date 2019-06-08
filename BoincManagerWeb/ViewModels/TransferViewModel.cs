@@ -1,10 +1,12 @@
 ﻿using BoincManager;
 using BoincManager.Models;
+using BoincManager.ViewModels;
 using BoincRpc;
+using System.Collections.Generic;
 
 namespace BoincManagerWeb.ViewModels
 {
-    public class TransferViewModel
+    public class TransferViewModel : IFilterable
     {
         public int HostId { get; }
         public string HostName { get; }
@@ -32,5 +34,16 @@ namespace BoincManagerWeb.ViewModels
             Status = Statuses.GetTransferStatus(fileTransfer);
         }
 
+        public IEnumerable<string> GetContentsForFiltering()
+        {
+            yield return HostName;
+            yield return Project;
+            yield return FileName;
+            yield return FileSize;
+            yield return TransferRate;
+            yield return ElapsedTime;
+            yield return TimeRemaining;
+            yield return Status;
+        }
     }
 }

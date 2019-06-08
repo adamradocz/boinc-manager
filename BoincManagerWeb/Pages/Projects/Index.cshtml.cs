@@ -9,6 +9,8 @@ namespace BoincManagerWeb.Pages.Projects
         private readonly BoincManager.Manager _manager;
         private readonly ViewDataProcessor _viewDataProcessor;
 
+        public string CurrentFilter { get; set; }
+
         public List<ProjectViewModel> Projects { get; set; }
 
         public IndexModel(BoincManager.Manager manager, ViewDataProcessor viewDataProcessor)
@@ -17,10 +19,10 @@ namespace BoincManagerWeb.Pages.Projects
             _viewDataProcessor = viewDataProcessor;
         }
 
-        public void OnGet()
+        public void OnGet(string searchString)
         {
-            Projects = _viewDataProcessor.GetProjects(_manager.GetAllHostStates());
+            CurrentFilter = searchString;
+            Projects = _viewDataProcessor.GetProjects(_manager.GetAllHostStates(), searchString);           
         }
-
     }
 }

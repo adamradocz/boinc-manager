@@ -11,20 +11,28 @@
     <a asp-page="Add" class="btn btn-primary">Add Host</a>
 </p>
 
-<table class="table" id="hostsTable">
+@await Html.PartialAsync("../Shared/_FilterFromPartial", Model.CurrentFilter)
+
+<table class="table sortable" id="hostsTable">
     <thead class="thead-light">
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Hosts[0].Name)
+                <a asp-page="./Index" asp-route-sortOrder="@Model.NameSort">
+                    @Html.DisplayNameFor(model => model.Hosts[0].Name)
+                </a>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Hosts[0].IpAddress)
+                <a asp-page="./Index" asp-route-sortOrder="@Model.IpAddressSort">
+                    @Html.DisplayNameFor(model => model.Hosts[0].IpAddress)
+                </a>
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Hosts[0].Port)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Hosts[0].AutoConnect)
+                <a asp-page="./Index" asp-route-sortOrder="@Model.AutoConnectSort">
+                    @Html.DisplayNameFor(model => model.Hosts[0].AutoConnect)
+                </a>
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Hosts[0].BoincVersion)
@@ -33,7 +41,9 @@
                 @Html.DisplayNameFor(model => model.Hosts[0].OperatingSystem)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Hosts[0].Status)
+                <a asp-page="./Index" asp-route-sortOrder="@Model.StatusSort">
+                    @Html.DisplayNameFor(model => model.Hosts[0].Status)
+                </a>
             </th>
             <th>
                 <p>Action</p>

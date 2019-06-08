@@ -1,10 +1,12 @@
 ﻿using BoincManager;
 using BoincManager.Models;
+using BoincManager.ViewModels;
 using BoincRpc;
+using System.Collections.Generic;
 
 namespace BoincManagerWeb.ViewModels
 {
-    public class ProjectViewModel
+    public class ProjectViewModel : IFilterable
     {
         public int HostId { get; }
         public string HostName { get; }
@@ -26,6 +28,17 @@ namespace BoincManagerWeb.ViewModels
             Credit = project.UserTotalCredit.ToString("N2");
             AverageCredit = project.UserAverageCredit.ToString("N2");
             Status = Statuses.GetProjectStatus(project);
+        }
+
+        public IEnumerable<string> GetContentsForFiltering()
+        {
+            yield return HostName;
+            yield return Name;
+            yield return Username;
+            yield return Team;
+            yield return Credit;
+            yield return AverageCredit;
+            yield return Status;
         }
     }
 }

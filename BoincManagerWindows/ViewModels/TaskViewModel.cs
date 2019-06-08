@@ -2,11 +2,12 @@
 using System.Linq;
 using BoincManager;
 using BoincManager.Models;
+using BoincManager.ViewModels;
 using BoincRpc;
 
 namespace BoincManagerWindows.ViewModels
 {
-    class TaskViewModel : BindableBase, IFilterableViewModel
+    class TaskViewModel : BindableBase, IFilterable
     {
         public int HostId { get; }
         public string HostName { get; }
@@ -129,7 +130,6 @@ namespace BoincManagerWindows.ViewModels
             yield return Project;
             yield return Application;
             yield return Workunit;
-            //yield return Progress;
             yield return CpuTime;
             yield return CpuTimeRemaining;
             yield return LastCheckpoint;

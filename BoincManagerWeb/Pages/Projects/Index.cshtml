@@ -7,6 +7,8 @@
 
 <h1>Projects</h1>
 
+@await Html.PartialAsync("../Shared/_FilterFromPartial", Model.CurrentFilter)
+
 <table class="table" id="projectsTable">
     <thead class="thead-light">
         <tr>

@@ -9,6 +9,8 @@ namespace BoincManagerWeb.Pages.Messages
         private readonly BoincManager.Manager _manager;
         private readonly ViewDataProcessor _viewDataProcessor;
 
+        public string CurrentFilter { get; set; }
+
         public List<MessageViewModel> Messages { get; set; }
 
         public IndexModel(BoincManager.Manager manager, ViewDataProcessor viewDataProcessor)
@@ -17,9 +19,10 @@ namespace BoincManagerWeb.Pages.Messages
             _viewDataProcessor = viewDataProcessor;
         }
 
-        public void OnGet()
+        public void OnGet(string searchString)
         {
-            Messages = _viewDataProcessor.GetMessages(_manager.GetAllHostStates());
+            CurrentFilter = searchString;
+            Messages = _viewDataProcessor.GetMessages(_manager.GetAllHostStates(), searchString);
         }
 
     }

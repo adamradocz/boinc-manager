@@ -70,5 +70,6 @@ connection.start().then(function () {
 });
 
 function updateLoop() {
-    connection.invoke("GetTransfers");
+    var textSearchString = document.getElementById("searchString");
+    connection.invoke("GetTransfers", textSearchString.value);
 }

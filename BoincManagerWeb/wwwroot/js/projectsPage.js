@@ -53,5 +53,6 @@ connection.start().then(function () {
 });
 
 function updateLoop() {
-    connection.invoke("GetProjects");
+    var textSearchString = document.getElementById("searchString");
+    connection.invoke("GetProjects", textSearchString.value);
 }

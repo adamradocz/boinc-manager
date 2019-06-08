@@ -7,6 +7,8 @@
 
 <h1>Transfers</h1>
 
+@await Html.PartialAsync("../Shared/_FilterFromPartial", Model.CurrentFilter)
+
 <table class="table" id="transfersTable">
     <thead class="thead-light">
         <tr>

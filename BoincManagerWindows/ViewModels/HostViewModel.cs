@@ -1,11 +1,12 @@
 ﻿using BoincManager.Models;
+using BoincManager.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace BoincManagerWindows.ViewModels
 {
-    class HostViewModel : BindableBase, IFilterableViewModel
+    class HostViewModel : BindableBase, IFilterable
     {
         public int Id { get; }
 

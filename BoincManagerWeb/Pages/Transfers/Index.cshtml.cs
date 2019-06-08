@@ -9,6 +9,8 @@ namespace BoincManagerWeb.Pages.Transfers
         private readonly BoincManager.Manager _manager;
         private readonly ViewDataProcessor _viewDataProcessor;
 
+        public string CurrentFilter { get; set; }
+
         public List<TransferViewModel> Transfers { get; set; }
 
         public IndexModel(BoincManager.Manager manager, ViewDataProcessor viewDataProcessor)
@@ -17,9 +19,10 @@ namespace BoincManagerWeb.Pages.Transfers
             _viewDataProcessor = viewDataProcessor;
         }
 
-        public void OnGet()
+        public void OnGet(string searchString)
         {
-            Transfers = _viewDataProcessor.GetTransfers(_manager.GetAllHostStates());
+            CurrentFilter = searchString;
+            Transfers = _viewDataProcessor.GetTransfers(_manager.GetAllHostStates(), searchString);
         }
 
     }

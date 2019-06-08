@@ -9,6 +9,8 @@ namespace BoincManagerWeb.Pages.Tasks
         private readonly BoincManager.Manager _manager;
         private readonly ViewDataProcessor _viewDataProcessor;
 
+        public string CurrentFilter { get; set; }
+
         public List<TaskViewModel> Tasks { get; set; }
 
         public IndexModel(BoincManager.Manager manager, ViewDataProcessor viewDataProcessor)
@@ -17,9 +19,10 @@ namespace BoincManagerWeb.Pages.Tasks
             _viewDataProcessor = viewDataProcessor;
         }
 
-        public void OnGet()
+        public void OnGet(string searchString)
         {
-            Tasks = _viewDataProcessor.GetTasks(_manager.GetAllHostStates());
+            CurrentFilter = searchString;
+            Tasks = _viewDataProcessor.GetTasks(_manager.GetAllHostStates(), searchString);
         }
     }
 }

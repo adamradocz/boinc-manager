@@ -56,24 +56,24 @@ namespace BoincManagerWeb.Hubs
             await Clients.All.SendAsync("ReceiveVisitors", _connections.Count);
         }
 
-        public async Task GetTasks()
+        public async Task GetProjects(string searchString)
         {
-            await Clients.Caller.SendAsync("ReceiveTasks", _viewDataProcessor.GetTasks(_manager.GetAllHostStates()));
+            await Clients.Caller.SendAsync("ReceiveProjects", _viewDataProcessor.GetProjects(_manager.GetAllHostStates(), searchString));
         }
 
-        public async Task GetProjects()
+        public async Task GetTasks(string searchString)
         {
-            await Clients.Caller.SendAsync("ReceiveProjects", _viewDataProcessor.GetProjects(_manager.GetAllHostStates()));
+            await Clients.Caller.SendAsync("ReceiveTasks", _viewDataProcessor.GetTasks(_manager.GetAllHostStates(), searchString));
         }
 
-        public async Task GetTransfers()
+        public async Task GetTransfers(string searchString)
         {
-            await Clients.Caller.SendAsync("ReceiveTransfers", _viewDataProcessor.GetTransfers(_manager.GetAllHostStates()));
+            await Clients.Caller.SendAsync("ReceiveTransfers", _viewDataProcessor.GetTransfers(_manager.GetAllHostStates(), searchString));
         }
 
-        public async Task GetMessages()
+        public async Task GetMessages(string searchString)
         {
-            await Clients.Caller.SendAsync("ReceiveMessages", _viewDataProcessor.GetMessages(_manager.GetAllHostStates()));
+            await Clients.Caller.SendAsync("ReceiveMessages", _viewDataProcessor.GetMessages(_manager.GetAllHostStates(), searchString));
         }
 
     }

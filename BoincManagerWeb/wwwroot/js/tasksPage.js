@@ -70,5 +70,6 @@ connection.start().then(function () {
 });
 
 function updateLoop() {
-    connection.invoke("GetTasks");
+    var textSearchString = document.getElementById("searchString");
+    connection.invoke("GetTasks", textSearchString.value);
 }

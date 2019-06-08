@@ -1,12 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using BoincManager;
 using BoincManager.Models;
+using BoincManager.ViewModels;
 using BoincRpc;
 
 namespace BoincManagerWeb.ViewModels
 {
-    public class TaskViewModel
+    public class TaskViewModel : IFilterable
     {
         public int HostId { get; }
         public string HostName { get; }
@@ -46,6 +48,19 @@ namespace BoincManagerWeb.ViewModels
             LastCheckpoint = Utils.ConvertDuration(result.CurrentCpuTime - result.CheckpointCpuTime);
             Deadline = Utils.ConvertDateTime(result.ReportDeadline);
             Status = Statuses.GetTaskStatus(result, rpcProject, hostState.BoincState);
-        }        
+        }
+
+        public IEnumerable<string> GetContentsForFiltering()
+        {
+            yield return HostName;
+            yield return Project;
+            yield return Application;
+            yield return Workunit;
+            yield return CpuTime;
+            yield return CpuTimeRemaining;
+            yield return LastCheckpoint;
+            yield return Deadline;
+            yield return Status;
+        }
     }
 }

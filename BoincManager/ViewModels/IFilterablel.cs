@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 
-namespace BoincManagerWindows.ViewModels
+namespace BoincManager.ViewModels
 {
-    interface IFilterableViewModel
+    public interface IFilterable
     {
         IEnumerable<string> GetContentsForFiltering();
     }

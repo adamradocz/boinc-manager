@@ -45,5 +45,6 @@ connection.start().then(function () {
 });
 
 function updateLoop() {
-    connection.invoke("GetMessages");
+    var textSearchString = document.getElementById("searchString");
+    connection.invoke("GetMessages", textSearchString.value);
 }
