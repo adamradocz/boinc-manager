@@ -1,6 +1,6 @@
-﻿using BoincManagerWindows.ViewModels;
+﻿using BoincManager.ViewModels;
+using BoincManagerWindows.ViewModels;
 using BoincRpc;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Diagnostics;
 using System.Linq;
@@ -188,7 +188,7 @@ namespace BoincManagerWindows
             {
                 filteredDataGrid.Items.Filter = delegate (object item)
                 {
-                    IFilterableViewModel filterableViewModel = item as IFilterableViewModel;
+                    var filterableViewModel = item as IFilterable;
                     if (filterableViewModel == null)
                         return true;
 
