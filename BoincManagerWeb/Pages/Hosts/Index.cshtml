@@ -11,7 +11,7 @@
     <a asp-page="Add" class="btn btn-primary">Add Host</a>
 </p>
 
-@await Html.PartialAsync("../Shared/_FilterFromPartial", Model.CurrentFilter)
+@await Html.PartialAsync("../Shared/_FilterFormPartial", Model.CurrentFilter)
 
 <table class="table sortable" id="hostsTable">
     <thead class="thead-light">
