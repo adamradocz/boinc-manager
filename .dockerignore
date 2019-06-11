@@ -9,6 +9,7 @@
 **/.toolstarget
 
 # Not Boinc Manager Web releated projects
+BoincManagerMobile
 BoincManagerWindows
 
 # Files
