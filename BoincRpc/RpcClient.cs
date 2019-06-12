@@ -32,16 +32,15 @@ namespace BoincRpc
             if (Connected)
                 throw new InvalidOperationException("RpcClient is already connected. Disconnect first before opening a new connection.");
 
-            Close();
-
             tcpClient = new TcpClient();
 
             return tcpClient.ConnectAsync(host, port);
         }
 
-        public void Close()
+        public void Disconnect()
         {
-            CheckDisposed();
+            if (!Connected)
+                throw new InvalidOperationException("RpcClient is already disconnected.");
 
             if (tcpClient != null)
             {
@@ -68,8 +67,7 @@ namespace BoincRpc
 
             string nonceHash = Utils.GetMD5Hash(nonce + password);
 
-            XElement request2 = new XElement("auth2",
-                new XElement("nonce_hash", nonceHash));
+            XElement request2 = new XElement("auth2", new XElement("nonce_hash", nonceHash));
 
             XElement response2 = await PerformRpcAsync(request2);
 
@@ -1240,9 +1238,11 @@ namespace BoincRpc
             {
                 if (tcpClient != null)
                 {
+                    tcpClient.Close();
                     tcpClient.Dispose();
                     tcpClient = null;
                 }
+
                 if (semaphore != null)
                 {
                     semaphore.Dispose();

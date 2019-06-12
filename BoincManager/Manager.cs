@@ -16,9 +16,7 @@ namespace BoincManager
 
         private CancellationTokenSource _cancellationTokenSource;
         private CancellationToken _cancellationToken;
-
-        public int updates = 0;
-
+        
         public bool IsRunning { get; private set; }
 
         public Manager()
@@ -75,7 +73,6 @@ namespace BoincManager
 
         private async Task Update()
         {
-            updates++;
             // TODO - Update in prallel
             // TODO - Update only the Viewed tabs (is that possible?)
             foreach (var hostState in _hostStates.Values)
@@ -114,7 +111,6 @@ namespace BoincManager
 
                 if (hostState.Authorized)
                 {
-                    hostState.Connected = true;
                     hostState.Status = "Connected. Updating...";
 
                     await hostState.BoincState.UpdateAll();
@@ -166,8 +162,7 @@ namespace BoincManager
             if (found && hostState.Connected)
             {
                 hostState.Status = string.Empty;
-                hostState.Close();
-                hostState.Connected = false;
+                hostState.Disconnect();
             }
         }
         
@@ -182,7 +177,7 @@ namespace BoincManager
         
         /// <summary>
         /// Stop the BoincManager:
-        /// Stop the background process which is get the update from the Boinc Client.
+        /// Stop the background process which gets the update from the Boinc Client.
         /// Disconnect all the hosts.
         /// </summary>
         public void Stop()
@@ -206,7 +201,6 @@ namespace BoincManager
             var found = _hostStates.TryGetValue(hostId, out HostState hostState);
             if (found)
             {
-                hostState.Close();
                 hostState.Dispose();
             }
 
