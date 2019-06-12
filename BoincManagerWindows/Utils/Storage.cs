@@ -5,9 +5,9 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.IO;
 
-namespace BoincManagerWindows.Helpers
+namespace BoincManagerWindows.Utils
 {
-    public static class StorageHelper
+    public static class Storage
     {
         public static DbContextOptions<ApplicationDbContext> GetDbContextOptions()
         {
@@ -19,6 +19,11 @@ namespace BoincManagerWindows.Helpers
             var contextBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
             contextBuilder.UseSqlite(connectionStringBuilder.ConnectionString);
             return contextBuilder.Options;
+        }
+
+        public static string GetAppDataFolderPath()
+        {
+            return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), Constants.ApplicationName);
         }
     }
 }

@@ -33,10 +33,11 @@ namespace BoincManagerWeb
             // From:
             // - https://docs.microsoft.com/en-us/aspnet/core/security/data-protection/configuration/overview?view=aspnetcore-3.0
             // - https://github.com/dotnet/dotnet-docker/blob/master/samples/aspnetapp/aspnetcore-docker-https.md
-            if (Utils.InDocker() && !string.IsNullOrEmpty(Environment.GetEnvironmentVariable("ASPNETCORE_Kestrel__Certificates__Default__Path")))
+            bool inDocker = string.Equals(Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER"), "true", StringComparison.OrdinalIgnoreCase);
+            if (inDocker && !string.IsNullOrEmpty(Environment.GetEnvironmentVariable("ASPNETCORE_Kestrel__Certificates__Default__Path")))
             {
                 services.AddDataProtection()
-                .PersistKeysToFileSystem(new DirectoryInfo(Utils.GetApplicationDataFolderPath()))
+                .PersistKeysToFileSystem(new DirectoryInfo(Utils.Storage.GetAppDataFolderPath()))
                 .ProtectKeysWithCertificate(new X509Certificate2(Environment.GetEnvironmentVariable("ASPNETCORE_Kestrel__Certificates__Default__Path"), Environment.GetEnvironmentVariable("ASPNETCORE_Kestrel__Certificates__Default__Password"), X509KeyStorageFlags.MachineKeySet));
             }
 
@@ -51,7 +52,7 @@ namespace BoincManagerWeb
 
             var builder = new SqliteConnectionStringBuilder
             {
-                DataSource = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), Constants.ApplicationName, Constants.DatabaseFileName)
+                DataSource = Path.Combine(Utils.Storage.GetAppDataFolderPath(), Constants.DatabaseFileName)
             };
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlite(builder.ConnectionString));
 
@@ -95,7 +96,7 @@ namespace BoincManagerWeb
             });
 
             // Initialize the Application
-            Utils.InitializeApplication(Utils.GetApplicationDataFolderPath(), context, manager);            
+            BoincManager.Utils.InitializeApplication(Utils.Storage.GetAppDataFolderPath(), context, manager);            
 
             // Start the Boinc Manager
             manager.Start();

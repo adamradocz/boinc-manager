@@ -81,10 +81,10 @@ namespace BoincManagerWindows.ViewModels
             Project = fileTransfer.ProjectName;
             FileName = fileTransfer.Name;
             Progress = fileTransfer.NumberOfBytes > 0 ? fileTransfer.BytesTransferred / fileTransfer.NumberOfBytes : 0;
-            FileSize = Utils.ConvertBytesToFileSize(fileTransfer.NumberOfBytes);
-            TransferRate = fileTransfer.TransferActive ? $"{Utils.ConvertBytesToFileSize(fileTransfer.TransferSpeed)} /s" : string.Empty;
-            ElapsedTime = Utils.ConvertDuration(fileTransfer.TimeSoFar);
-            TimeRemaining = fileTransfer.TransferActive ? Utils.GetTimeRemaining(fileTransfer) : string.Empty;
+            FileSize = BoincManager.Utils.ConvertBytesToFileSize(fileTransfer.NumberOfBytes);
+            TransferRate = fileTransfer.TransferActive ? $"{BoincManager.Utils.ConvertBytesToFileSize(fileTransfer.TransferSpeed)} /s" : string.Empty;
+            ElapsedTime = BoincManager.Utils.ConvertDuration(fileTransfer.TimeSoFar);
+            TimeRemaining = fileTransfer.TransferActive ? BoincManager.Utils.GetTimeRemaining(fileTransfer) : string.Empty;
             Status = Statuses.GetTransferStatus(fileTransfer);
         }
         

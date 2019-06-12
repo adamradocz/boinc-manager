@@ -116,11 +116,11 @@ namespace BoincManagerWindows.ViewModels
             Application = RpcApp.UserFriendlyName;
             Workunit = result.WorkunitName;
             Progress = result.ReadyToReport ? 1.0 : result.FractionDone;
-            ElapsedTime = Utils.ConvertDuration(result.ElapsedTime);
-            CpuTime = Utils.ConvertDuration(result.CurrentCpuTime);
-            CpuTimeRemaining = Utils.ConvertDuration(result.EstimatedCpuTimeRemaining);
-            LastCheckpoint = Utils.ConvertDuration(result.CurrentCpuTime - result.CheckpointCpuTime);
-            Deadline = Utils.ConvertDateTime(result.ReportDeadline);
+            ElapsedTime = BoincManager.Utils.ConvertDuration(result.ElapsedTime);
+            CpuTime = BoincManager.Utils.ConvertDuration(result.CurrentCpuTime);
+            CpuTimeRemaining = BoincManager.Utils.ConvertDuration(result.EstimatedCpuTimeRemaining);
+            LastCheckpoint = BoincManager.Utils.ConvertDuration(result.CurrentCpuTime - result.CheckpointCpuTime);
+            Deadline = BoincManager.Utils.ConvertDateTime(result.ReportDeadline);
             Status = Statuses.GetTaskStatus(result, RpcProject, hostState.BoincState);
         }
         
