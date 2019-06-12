@@ -29,6 +29,10 @@ namespace BoincManagerWeb.Hubs
             {
                 _manager.Start();
             }
+            else if (_manager.DelayedStopStarted)
+            {
+                _manager.TerminateDelayedStop();
+            }
 
             return base.OnConnectedAsync();
         }
@@ -43,7 +47,8 @@ namespace BoincManagerWeb.Hubs
             // Alternative method, is the lock-free enumerator: concurrentDictionary.Skip(0).Count(), because it uses LINQ
             if (_connections.Count() == 0)
             {
-                _manager.Stop();
+                // Manager stops after 30 seconds
+                _manager.Stop(30000);
             }
 
             return base.OnDisconnectedAsync(exception);

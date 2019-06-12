@@ -35,13 +35,7 @@ namespace BoincManager.Models
                     ? $"{BoincState.CoreClientState.CoreClientMajorVersion}.{BoincState.CoreClientState.CoreClientMinorVersion}.{BoincState.CoreClientState.CoreClientReleaseVersion}"
                     : string.Empty;
         public string OperatingSystem => Connected ? BoincState.CoreClientState.HostInfo.OSName : string.Empty;
-        public bool Connected
-        {
-            get
-            {
-                return RpcClient.Connected;
-            }
-        }
+        public bool Connected { get { return RpcClient.Connected; } }
         public string Status { get; set; }
 
         public RpcClient RpcClient { get; }

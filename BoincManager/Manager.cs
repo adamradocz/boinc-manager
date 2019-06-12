@@ -14,10 +14,15 @@ namespace BoincManager
         // Key is the host's Id
         private readonly ConcurrentDictionary<int, HostState> _hostStates;
 
-        private CancellationTokenSource _cancellationTokenSource;
-        private CancellationToken _cancellationToken;
-        
+        private CancellationTokenSource _updateLoopCancellationTokenSource;
+        private CancellationToken _updateLoopCancellationToken;
+
+        private CancellationTokenSource _delayedStopCancellationTokenSource;
+        private CancellationToken _delayedStopCancellationToken;
+
         public bool IsRunning { get; private set; }
+
+        public bool DelayedStopStarted { get; private set; }
 
         public Manager()
         {
@@ -52,17 +57,17 @@ namespace BoincManager
 
             IsRunning = true;
             
-            _cancellationTokenSource = new CancellationTokenSource();
-            _cancellationToken = _cancellationTokenSource.Token;
+            _updateLoopCancellationTokenSource = new CancellationTokenSource();
+            _updateLoopCancellationToken = _updateLoopCancellationTokenSource.Token;
 
             await ConnectAll();
 
             await StartUpdateLoop();
         }
-        
+
         private async Task StartUpdateLoop()
         {            
-            while (!_cancellationToken.IsCancellationRequested)
+            while (!_updateLoopCancellationToken.IsCancellationRequested)
             {
                 await Update();
 
@@ -186,9 +191,45 @@ namespace BoincManager
                 return;
 
             IsRunning = false;
-            _cancellationTokenSource.Cancel();
+            _updateLoopCancellationTokenSource.Cancel();
 
             DisconnectAll();
+        }
+
+        /// <summary>
+        /// Stop the BoincManager after x milliseconds.
+        /// </summary>
+        /// <param name="millisecondsDelay"></param>
+        /// <returns></returns>
+        public async Task Stop(int millisecondsDelay)
+        {
+            if (DelayedStopStarted)
+                return;
+
+            DelayedStopStarted = true;
+
+            _delayedStopCancellationTokenSource = new CancellationTokenSource();
+            _delayedStopCancellationToken = _delayedStopCancellationTokenSource.Token;
+
+            await Task.Delay(millisecondsDelay);
+
+            if (!_delayedStopCancellationToken.IsCancellationRequested)
+            {
+                Stop();
+                DelayedStopStarted = false;
+            }
+        }
+
+        /// <summary>
+        /// Terminate the delayed Stop()
+        /// </summary>
+        public void TerminateDelayedStop()
+        {
+            if (DelayedStopStarted)
+            {
+                _delayedStopCancellationTokenSource.Cancel();
+                DelayedStopStarted = false;
+            }
         }
 
         public void AddHost(Host host)
@@ -240,11 +281,22 @@ namespace BoincManager
                 return;
 
             if (disposing)
-            {
+            { 
+                if (_delayedStopCancellationTokenSource != null)
+                {
+                    if (DelayedStopStarted)
+                    {
+                        _delayedStopCancellationTokenSource.Cancel();
+                        DelayedStopStarted = false;
+                    }
+
+                    _delayedStopCancellationTokenSource.Dispose();
+                }                
+
                 if (IsRunning)
                 {
                     IsRunning = false;
-                    _cancellationTokenSource.Cancel();
+                    _updateLoopCancellationTokenSource.Cancel();
                 }
 
                 // TODO - Paralell
@@ -253,7 +305,7 @@ namespace BoincManager
                     RemoveHost(hostId);
                 }
 
-                _cancellationTokenSource.Dispose();
+                _updateLoopCancellationTokenSource.Dispose();
             }
 
             disposed = true;
