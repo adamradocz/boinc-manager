@@ -137,8 +137,7 @@ namespace BoincManagerWindows.ViewModels
 
         private void ExecuteCloseCommand()
         {
-            Close();
-
+            Dispose();
             Application.Current.Shutdown();
         }
 
@@ -842,12 +841,6 @@ namespace BoincManagerWindows.ViewModels
             }
         }
 
-        public void Close()
-        {
-            _cancellationTokenSource.Cancel();
-            _manager.Close();
-        }
-
         public void Dispose()
         {
             Dispose(true);
@@ -861,7 +854,9 @@ namespace BoincManagerWindows.ViewModels
 
             if (disposing)
             {
+                _cancellationTokenSource.Cancel();
                 _cancellationTokenSource.Dispose();
+
                 _manager.Dispose();
             }
 

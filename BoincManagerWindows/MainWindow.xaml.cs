@@ -210,7 +210,7 @@ namespace BoincManagerWindows
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            _viewModel.Close();
+            _viewModel.Dispose();
         }
 
         public void Dispose()

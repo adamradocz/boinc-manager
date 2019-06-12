@@ -27,8 +27,7 @@ namespace BoincManagerWeb.Hubs
             // Start the Boinc background update loop if it was stopped
             if (!_manager.IsRunning)
             {
-                // TODO - It can't start again, if it's stopped. After the Start() is called again, it's not updating.
-                //_manager.Start();
+                _manager.Start();
             }
 
             return base.OnConnectedAsync();
@@ -44,8 +43,7 @@ namespace BoincManagerWeb.Hubs
             // Alternative method, is the lock-free enumerator: concurrentDictionary.Skip(0).Count(), because it uses LINQ
             if (_connections.Count() == 0)
             {
-                // TODO - It can't start again, if it's stopped. After the Start() is called again, it's not updating.
-                //_manager.Stop();
+                _manager.Stop();
             }
 
             return base.OnDisconnectedAsync(exception);

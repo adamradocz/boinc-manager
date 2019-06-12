@@ -14,7 +14,7 @@ namespace BoincManager
         // Key is the host's Id
         private readonly ConcurrentDictionary<int, HostState> _hostStates;
 
-        private readonly CancellationTokenSource _cancellationTokenSource;
+        private CancellationTokenSource _cancellationTokenSource;
         private CancellationToken _cancellationToken;
 
         public int updates = 0;
@@ -24,7 +24,6 @@ namespace BoincManager
         public Manager()
         {
             _hostStates = new ConcurrentDictionary<int, HostState>();
-            _cancellationTokenSource = new CancellationTokenSource();
         }
         /// <summary>
         /// Ensure everything is set to run the BoincManager.
@@ -54,14 +53,17 @@ namespace BoincManager
                 return;
 
             IsRunning = true;
+            
+            _cancellationTokenSource = new CancellationTokenSource();
+            _cancellationToken = _cancellationTokenSource.Token;
+
             await ConnectAll();
 
             await StartUpdateLoop();
         }
         
         private async Task StartUpdateLoop()
-        {
-            _cancellationToken = _cancellationTokenSource.Token;
+        {            
             while (!_cancellationToken.IsCancellationRequested)
             {
                 await Update();
@@ -230,22 +232,7 @@ namespace BoincManager
         public IEnumerable<HostState> GetAllHostStates()
         {
             return _hostStates.Values;
-        }
-        
-        // TODO - Paralell
-        public void Close()
-        {
-            if (IsRunning)
-            {
-                IsRunning = false;
-                _cancellationTokenSource.Cancel();
-            }
-
-            foreach (var hostId in _hostStates.Keys)
-            {
-                RemoveHost(hostId);
-            }
-        }
+        }        
 
         public void Dispose()
         {
@@ -260,6 +247,18 @@ namespace BoincManager
 
             if (disposing)
             {
+                if (IsRunning)
+                {
+                    IsRunning = false;
+                    _cancellationTokenSource.Cancel();
+                }
+
+                // TODO - Paralell
+                foreach (var hostId in _hostStates.Keys)
+                {
+                    RemoveHost(hostId);
+                }
+
                 _cancellationTokenSource.Dispose();
             }
 
