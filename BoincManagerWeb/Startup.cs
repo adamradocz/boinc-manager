@@ -13,6 +13,8 @@ using BoincManagerWeb.Hubs;
 using System.IO;
 using Microsoft.AspNetCore.DataProtection;
 using System.Security.Cryptography.X509Certificates;
+using Microsoft.Data.Sqlite;
+using Microsoft.EntityFrameworkCore;
 
 namespace BoincManagerWeb
 {
@@ -46,11 +48,15 @@ namespace BoincManagerWeb
 
             services.AddRazorPages()
                 .AddNewtonsoftJson();
-            
+
+            var builder = new SqliteConnectionStringBuilder
+            {
+                DataSource = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), Constants.ApplicationName, Constants.DatabaseFileName)
+            };
+            services.AddDbContext<ApplicationDbContext>(options => options.UseSqlite(builder.ConnectionString));
+
             services.AddSignalR();
-
-            services.AddScoped<ApplicationDbContext>();
-
+            
             services.AddSingleton<Manager>();
             services.AddSingleton<ViewDataProcessor>();
         }

@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using BoincManager.Models;
+using BoincManagerWindows.Helpers;
 using BoincRpc;
 
 namespace BoincManagerWindows.ViewModels
@@ -190,7 +191,7 @@ namespace BoincManagerWindows.ViewModels
         private async void ExecuteAddComputerCommand()
         {
             var host = new Host("New host", "localhost", "123");
-            using (var db = new ApplicationDbContext())
+            using (var db = new ApplicationDbContext(StorageHelper.GetDbContextOptions()))
             {
                 db.Host.Add(host);
                 await db.SaveChangesAsync();
@@ -211,7 +212,7 @@ namespace BoincManagerWindows.ViewModels
 
             // Remove the selected computers from Model
             List<int> removableComputerIds = new List<int>();
-            using (var db = new ApplicationDbContext())
+            using (var db = new ApplicationDbContext(StorageHelper.GetDbContextOptions()))
             {
                 foreach (HostViewModel computerVM in SelectedComputers)
                 {
@@ -546,9 +547,8 @@ namespace BoincManagerWindows.ViewModels
         public async Task StartBoincManager()
         {
             status = "Loading database...";
-
-            // Initialize the application
-            using (var context = new ApplicationDbContext())
+            // Initialize the application            
+            using (var context = new ApplicationDbContext(StorageHelper.GetDbContextOptions()))
             {
                 BoincManager.Utils.InitializeApplication(BoincManager.Utils.GetApplicationDataFolderPath(), context, _manager);
             }
