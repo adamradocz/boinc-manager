@@ -149,7 +149,7 @@ namespace BoincManagerWindows.ViewModels
             var hostStates = _manager.GetAllHostStates();
             foreach (var hostState in hostStates)
             {
-                if (hostState.Connected && hostState.Localhost)
+                if (hostState.Connected && hostState.IsLocalhost)
                 {
                     await hostState.RpcClient.QuitAsync();
                     break;
@@ -164,7 +164,7 @@ namespace BoincManagerWindows.ViewModels
             var hostStates = _manager.GetAllHostStates();
             foreach (var hostState in hostStates)
             {
-                if (hostState.Connected && hostState.Localhost)
+                if (hostState.Connected && hostState.IsLocalhost)
                 {
                     return true;
                 }
@@ -399,7 +399,7 @@ namespace BoincManagerWindows.ViewModels
         {
             foreach (TaskViewModel selectedTask in SelectedTasks)
             {
-                if (_manager.GetHostState(selectedTask.HostId).Localhost && selectedTask.RpcResult.GraphicsAvailable)
+                if (_manager.GetHostState(selectedTask.HostId).IsLocalhost && selectedTask.RpcResult.GraphicsAvailable)
                 {
                     GraphicsAppLauncher.StartGraphicsAppOrBringToTop(selectedTask.RpcResult.GraphicsExecPath, selectedTask.RpcResult.SlotPath);
                 }
@@ -413,7 +413,7 @@ namespace BoincManagerWindows.ViewModels
 
             foreach (TaskViewModel selectedTask in SelectedTasks)
             {
-                if (_manager.GetHostState(selectedTask.HostId).Localhost && selectedTask.RpcResult.GraphicsAvailable)
+                if (_manager.GetHostState(selectedTask.HostId).IsLocalhost && selectedTask.RpcResult.GraphicsAvailable)
                 {
                     return true;
                 }
@@ -595,7 +595,7 @@ namespace BoincManagerWindows.ViewModels
             //await BoincManager.Utils.ParallelForEachAsync(filteredHosts.Values, GetNewBoincInfo); // Update in parallel
             foreach (var hostState in filteredHosts)
             {
-                GetNewBoincInfo(hostState);
+                GetNewBoincInfo(hostState);                
             }
             
             // Remove outdated info
