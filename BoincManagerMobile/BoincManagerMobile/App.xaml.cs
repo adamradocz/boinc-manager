@@ -27,7 +27,7 @@ namespace BoincManagerMobile
             }
 
             _manager.Start();
-            _manager.AddHost(new Host("Nasy", "192.168.0.100", "123"));
+            _manager.AddHost(new Host("Nasy", "192.168.0.100", "11235"));
             _manager.ConnectAll();
 
             MainPage = new MainPage();
