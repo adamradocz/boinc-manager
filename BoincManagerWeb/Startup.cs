@@ -56,7 +56,7 @@ namespace BoincManagerWeb
             services.AddSignalR();
             
             services.AddSingleton<Manager>();
-            services.AddSingleton<ViewDataProcessor>();
+            services.AddTransient<ViewDataProcessor>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
