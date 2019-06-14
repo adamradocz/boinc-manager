@@ -111,12 +111,15 @@ namespace BoincManager
             try
             {
                 // Connecting to host
+                hostState.InitializeConnection();
                 await hostState.RpcClient.ConnectAsync(hostState.IpAddress, hostState.Port);
                 hostState.Authorized = await hostState.RpcClient.AuthorizeAsync(hostState.Password);
 
                 if (hostState.Authorized)
                 {
                     hostState.Status = "Connected. Updating...";
+
+                    hostState.Connected = true;
 
                     await hostState.BoincState.UpdateAll();
                     hostState.Status = await hostState.GetHostStatus();
@@ -166,8 +169,9 @@ namespace BoincManager
             var found = _hostStates.TryGetValue(hostId, out HostState hostState);
             if (found && hostState.Connected)
             {
+                hostState.Connected = false;                
+                hostState.TerminateConnection();
                 hostState.Status = string.Empty;
-                hostState.Disconnect();
             }
         }
         
@@ -190,10 +194,10 @@ namespace BoincManager
             if (!IsRunning)
                 return;
 
-            IsRunning = false;
             _updateLoopCancellationTokenSource.Cancel();
-
             DisconnectAll();
+
+            IsRunning = false;
         }
 
         /// <summary>
@@ -284,28 +288,23 @@ namespace BoincManager
             { 
                 if (_delayedStopCancellationTokenSource != null)
                 {
-                    if (DelayedStopStarted)
-                    {
-                        _delayedStopCancellationTokenSource.Cancel();
-                        DelayedStopStarted = false;
-                    }
-
+                    TerminateDelayedStop();
                     _delayedStopCancellationTokenSource.Dispose();
                 }                
 
+                // Stop the update loop
                 if (IsRunning)
                 {
                     IsRunning = false;
                     _updateLoopCancellationTokenSource.Cancel();
                 }
+                _updateLoopCancellationTokenSource.Dispose();
 
                 // TODO - Paralell
                 foreach (var hostId in _hostStates.Keys)
                 {
                     RemoveHost(hostId);
                 }
-
-                _updateLoopCancellationTokenSource.Dispose();
             }
 
             disposed = true;

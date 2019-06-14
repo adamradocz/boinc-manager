@@ -22,32 +22,41 @@ namespace BoincManager.Models
             set
             {
                 ipAddress = value;
-                Localhost = ipAddress.Equals("localhost", StringComparison.InvariantCultureIgnoreCase) || ipAddress.Equals("127.0.0.1", StringComparison.InvariantCultureIgnoreCase);
+                IsLocalhost = ipAddress.Equals("localhost", StringComparison.InvariantCultureIgnoreCase) || ipAddress.Equals("127.0.0.1", StringComparison.InvariantCultureIgnoreCase);
             }
         }
 
         public int Port { get; set; }
         public string Password { get; set; }
         public bool AutoConnect { get; set; }
-        public bool Localhost { get; private set; }
+        public bool IsLocalhost { get; private set; }
         public bool Authorized { get; set; }
         public string BoincVersion => Connected
                     ? $"{BoincState.CoreClientState.CoreClientMajorVersion}.{BoincState.CoreClientState.CoreClientMinorVersion}.{BoincState.CoreClientState.CoreClientReleaseVersion}"
                     : string.Empty;
         public string OperatingSystem => Connected ? BoincState.CoreClientState.HostInfo.OSName : string.Empty;
-        public bool Connected { get { return RpcClient.Connected; } }
+
+        private bool connected;
+        public bool Connected
+        {
+            get => connected;
+            set
+            {
+                connected = value;
+
+                if (!connected)
+                    Authorized = false;
+            }
+        }
         public string Status { get; set; }
 
-        public RpcClient RpcClient { get; }
-        public BoincState BoincState { get; }
+        public RpcClient RpcClient { get; private set; }
+        public BoincState BoincState { get; private set; }
 
         public HostState(Host host)
         {
             Id = host.Id;
             Update(host);
-
-            RpcClient = new RpcClient();
-            BoincState = new BoincState(RpcClient);
         }
 
         public void Update(Host host)
@@ -71,12 +80,21 @@ namespace BoincManager.Models
             return status.ToString().TrimEnd(' ');
         }
 
-        public void Disconnect()
+        public void InitializeConnection()
         {
-            if (!Connected)
-                return;
+            RpcClient = new RpcClient();
+            BoincState = new BoincState(RpcClient);
+        }
 
-            RpcClient.Disconnect();
+        public void TerminateConnection()
+        {
+            if (RpcClient != null)
+            {
+                RpcClient.Dispose();
+                RpcClient = null;
+            }
+
+            BoincState = null;
         }
 
         public void Dispose()
