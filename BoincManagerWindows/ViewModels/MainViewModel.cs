@@ -545,10 +545,10 @@ namespace BoincManagerWindows.ViewModels
         public async Task StartBoincManager()
         {
             status = "Loading database...";
-            // Initialize the application            
+            // Initialize the application
             using (var context = new ApplicationDbContext(Utils.Storage.GetDbContextOptions()))
             {
-                BoincManager.Utils.InitializeApplication(Utils.Storage.GetAppDataFolderPath(), context, _manager);
+                BoincManager.Utils.InitializeApplication(context, _manager);
             }
 
             // Start the Boinc Manager

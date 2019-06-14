@@ -13,7 +13,7 @@ namespace BoincManagerWindows.Utils
         {
             var connectionStringBuilder = new SqliteConnectionStringBuilder
             {
-                DataSource = Path.Combine(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), Constants.ApplicationName), Constants.DatabaseFileName)
+                DataSource = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), Constants.ApplicationName, Constants.DatabaseFileName)
             };
 
             var contextBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
@@ -23,7 +23,14 @@ namespace BoincManagerWindows.Utils
 
         public static string GetAppDataFolderPath()
         {
-            return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), Constants.ApplicationName);
+            var appDataFolderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), Constants.ApplicationName);
+
+            if (!Directory.Exists(appDataFolderPath))
+            {
+                Directory.CreateDirectory(appDataFolderPath);
+            }
+
+            return appDataFolderPath;
         }
     }
 }

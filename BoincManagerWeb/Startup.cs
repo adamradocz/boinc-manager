@@ -93,7 +93,7 @@ namespace BoincManagerWeb
             });
 
             // Initialize the Application
-            BoincManager.Utils.InitializeApplication(Utils.Storage.GetAppDataFolderPath(), context, manager);            
+            BoincManager.Utils.InitializeApplication(context, manager);            
 
             // Start the Boinc Manager
             manager.Start();

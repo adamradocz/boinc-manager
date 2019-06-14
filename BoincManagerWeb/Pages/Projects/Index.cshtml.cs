@@ -22,7 +22,7 @@ namespace BoincManagerWeb.Pages.Projects
         public void OnGet(string searchString)
         {
             CurrentFilter = searchString;
-            Projects = _viewDataProcessor.GetProjects(_manager.GetAllHostStates(), searchString);           
+            Projects = _viewDataProcessor.GetProjects(_manager.GetAllHostStates(), searchString);
         }
     }
 }

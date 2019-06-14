@@ -15,7 +15,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BoincManagerMobile.Android"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BoincManagerMobile.iOS", "BoincManagerMobile\BoincManagerMobile.iOS\BoincManagerMobile.iOS.csproj", "{B46D3E73-476E-4FA7-B122-991335E2354D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BoincManagerMobile", "BoincManagerMobile\BoincManagerMobile\BoincManagerMobile.csproj", "{67C4A373-FDAD-4F1F-873F-522275D7231E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BoincManagerMobile", "BoincManagerMobile\BoincManagerMobile\BoincManagerMobile.csproj", "{67C4A373-FDAD-4F1F-873F-522275D7231E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

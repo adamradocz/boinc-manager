@@ -3,12 +3,12 @@ using BoincManagerMobile.iOS.DependencyServices;
 using System;
 using System.IO;
 
-[assembly: Xamarin.Forms.Dependency(typeof(DeviceHelper))]
+[assembly: Xamarin.Forms.Dependency(typeof(FileHelper))]
 namespace BoincManagerMobile.iOS.DependencyServices
 {
-    public class DeviceHelper : IDeviceHelper
+    public class FileHelper : IFileHelper
     {
-        public string GetDatabaseFilePath(string filename)
+        public string GetDatabaseFolderPath()
         {
             string docFolder = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
             string libFolder = Path.Combine(docFolder, "..", "Library", "Database");
@@ -18,7 +18,7 @@ namespace BoincManagerMobile.iOS.DependencyServices
                 Directory.CreateDirectory(libFolder);
             }
 
-            return Path.Combine(libFolder, filename);
+            return libFolder;
         }
     }
 }
