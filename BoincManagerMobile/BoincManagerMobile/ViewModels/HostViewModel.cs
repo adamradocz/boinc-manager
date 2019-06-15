@@ -6,20 +6,37 @@ using System.ComponentModel.DataAnnotations;
 
 namespace BoincManagerMobile.ViewModels
 {
-    public class HostViewModel : IFilterable
+    public class HostViewModel : BaseViewModel, IFilterable
     {
         public int Id { get; }
-        public string Name { get; set; }
-        public string IpAddress { get; set; }
 
+        private string name;
+        public string Name { get => name; set => SetProperty(ref name, value); }
+
+        private string ipAddress;
+        public string IpAddress { get => ipAddress; set => SetProperty(ref ipAddress, value); }
+
+        private int port;
         [Range(0, 65535, ErrorMessage = "Value for {0} must be between {1} and {2}.")]
-        public int Port { get; set; }
-        public string Password { get; set; }
-        public bool AutoConnect { get; set; }
-        public string BoincVersion { get; set; }
-        public string OperatingSystem { get; set; }
-        public bool Connected { get; set; }
-        public string Status { get; set; }
+        public int Port { get => port; set => SetProperty(ref port, value); }
+
+        private string password;
+        public string Password { get => password; set => SetProperty(ref password, value); }
+
+        private bool autoConnect;
+        public bool AutoConnect { get => autoConnect; set => SetProperty(ref autoConnect, value); }
+
+        private string boincVersion;
+        public string BoincVersion { get => boincVersion; private set => SetProperty(ref boincVersion, value); }
+
+        private string operatingSystem;
+        public string OperatingSystem { get => operatingSystem; private set => SetProperty(ref operatingSystem, value); }
+
+        private bool connected;
+        public bool Connected { get => connected; private set => SetProperty(ref connected, value); }
+
+        private string status;
+        public string Status { get => status; set => SetProperty(ref status, value); }
 
         public HostViewModel(HostState hostState)
         {

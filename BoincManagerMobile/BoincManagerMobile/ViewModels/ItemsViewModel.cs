@@ -14,13 +14,13 @@ namespace BoincManagerMobile.ViewModels
 {
     public class ItemsViewModel : BaseViewModel
     {
-        public ObservableCollection<HostViewModel> Items { get; set; }
+        public ObservableCollection<ProjectViewModel> Items { get; set; }
         public Command LoadItemsCommand { get; set; }
 
         public ItemsViewModel()
         {
             Title = "Projects";
-            Items = new ObservableCollection<HostViewModel>();
+            Items = new ObservableCollection<ProjectViewModel>();
                         
             LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());
 
@@ -30,7 +30,8 @@ namespace BoincManagerMobile.ViewModels
                 Items.Add(newItem);
                 await DataStore.AddItemAsync(newItem);
             });*/
-            Items = GetHosts(App._manager.GetAllHostStates(), "");
+            
+            Items = GetProjects(App._manager.GetAllHostStates(), "");
         }
 
         public ObservableCollection<HostViewModel> GetHosts(IEnumerable<HostState> hostStates, string searchString)
@@ -104,7 +105,7 @@ namespace BoincManagerMobile.ViewModels
             {
                 Items.Clear();
                 //var items = await DataStore.GetItemsAsync(true);
-                var items = GetHosts(App._manager.GetAllHostStates(), "");
+                var items = GetProjects(App._manager.GetAllHostStates(), "");
                 foreach (var item in items)
                 {
                     Items.Add(item);
