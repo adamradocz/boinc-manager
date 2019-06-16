@@ -1,9 +1,7 @@
 ﻿using BoincManagerMobile.Models;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
 
 namespace BoincManagerMobile.Views
 {
@@ -21,6 +19,7 @@ namespace BoincManagerMobile.Views
             menuItems = new List<HomeMenuItem>
             {
                 new HomeMenuItem {Id = MenuItemType.Hosts, Title=nameof(MenuItemType.Hosts) },
+                new HomeMenuItem {Id = MenuItemType.Tasks, Title=nameof(MenuItemType.Tasks) },
                 new HomeMenuItem {Id = MenuItemType.About, Title=nameof(MenuItemType.About) }
             };
 

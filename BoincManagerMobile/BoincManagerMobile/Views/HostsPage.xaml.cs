@@ -20,7 +20,7 @@ namespace BoincManagerMobile.Views
             BindingContext = viewModel = new HostsViewModel();
         }
 
-        async void OnHostSelected(object sender, SelectedItemChangedEventArgs args)
+        async void OnItemSelected(object sender, SelectedItemChangedEventArgs args)
         {
             var host = args.SelectedItem as Host;
             if (host == null)

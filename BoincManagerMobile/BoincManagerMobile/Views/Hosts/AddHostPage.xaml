@@ -15,15 +15,15 @@
     <ContentPage.Content>
         <StackLayout Spacing="20" Padding="15">
             <Label Text="Name" />
-            <Entry Text="{Binding Host.Name}" d:Text="Host name" />
+            <Entry Text="{Binding HostConnection.Name}" d:Text="Host name" />
             <Label Text="Ip Address" />
-            <Editor Text="{Binding Host.IpAddress}" d:Text="IP" Margin="0" />
+            <Editor Text="{Binding HostConnection.IpAddress}" d:Text="IP" Margin="0" />
             <Label Text="Port" />
-            <Editor Text="{Binding Host.Port}" d:Text="31416" Margin="0" />
+            <Editor Text="{Binding HostConnection.Port}" d:Text="31416" Margin="0" />
             <Label Text="Password" />
-            <Editor Text="{Binding Host.Password}" d:Text="31416" Margin="0" />
+            <Editor Text="{Binding HostConnection.Password}" d:Text="31416" Margin="0" />
             <Label Text="Auto Connect" />
-            <Switch IsToggled="{Binding Host.AutoConnect}" Margin="0" />
+            <Switch IsToggled="{Binding HostConnection.AutoConnect}" Margin="0" />
         </StackLayout>
     </ContentPage.Content>
     

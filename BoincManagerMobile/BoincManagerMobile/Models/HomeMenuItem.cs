@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace BoincManagerMobile.Models
+﻿namespace BoincManagerMobile.Models
 {
     public enum MenuItemType
     {
         Hosts,
+        Projects,
+        Tasks,
+        Transfers,
+        Messages,
         About
     }
     public class HomeMenuItem

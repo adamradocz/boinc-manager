@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Threading.Tasks;
 using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
-
-using BoincManagerMobile.Models;
 
 namespace BoincManagerMobile.Views
 {
@@ -22,7 +18,7 @@ namespace BoincManagerMobile.Views
 
             MasterBehavior = MasterBehavior.Popover;
 
-            MenuPages.Add((int)MenuItemType.Hosts, (NavigationPage)Detail);
+            MenuPages.Add((int)Models.MenuItemType.Hosts, (NavigationPage)Detail);
         }
 
         public async Task NavigateFromMenu(int id)
@@ -31,10 +27,13 @@ namespace BoincManagerMobile.Views
             {
                 switch (id)
                 {
-                    case (int)MenuItemType.Hosts:
+                    case (int)Models.MenuItemType.Hosts:
                         MenuPages.Add(id, new NavigationPage(new HostsPage()));
                         break;
-                    case (int)MenuItemType.About:
+                    case (int)Models.MenuItemType.Tasks:
+                        MenuPages.Add(id, new NavigationPage(new TasksPage()));
+                        break;
+                    case (int)Models.MenuItemType.About:
                         MenuPages.Add(id, new NavigationPage(new AboutPage()));
                         break;
                 }

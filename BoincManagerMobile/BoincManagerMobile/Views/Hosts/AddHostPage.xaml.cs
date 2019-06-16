@@ -7,12 +7,11 @@ using BoincManager.Models;
 
 namespace BoincManagerMobile.Views
 {
-    // Learn more about making custom code visible in the Xamarin.Forms previewer
-    // by visiting https://aka.ms/xamarinforms-previewer
+    // Learn more about making custom code visible in the Xamarin.Forms previewer by visiting https://aka.ms/xamarinforms-previewer
     [DesignTimeVisible(false)]
     public partial class AddHostPage : ContentPage
     {
-        public HostConnection Host { get; set; }
+        public HostConnection HostConnection { get; set; }
 
         public AddHostPage()
         {
@@ -20,7 +19,7 @@ namespace BoincManagerMobile.Views
 
             Title = "Add Host";
 
-            Host = new HostConnection();
+            HostConnection = new HostConnection();
 
             BindingContext = this;
         }
@@ -29,18 +28,17 @@ namespace BoincManagerMobile.Views
         {
             using (var context = new ApplicationDbContext(Utils.Storage.GetDbContextOptions()))
             {
-                await context.AddAsync(Host);
+                await context.AddAsync(HostConnection);
                 await context.SaveChangesAsync();
             }
 
-            App.Manager.AddHost(Host);
-            if (Host.AutoConnect)
+            App.Manager.AddHost(HostConnection);
+            if (HostConnection.AutoConnect)
             {
-                await App.Manager.Connect(Host.Id);
+                await App.Manager.Connect(HostConnection.Id);
             }
 
-            var hostViewModel = new Host(App.Manager.GetHostState(Host.Id));
-            MessagingCenter.Send(this, "AddHost", hostViewModel);
+            MessagingCenter.Send(this, "AddHost", new Host(App.Manager.GetHostState(HostConnection.Id)));
             await Navigation.PopModalAsync();
         }
 

@@ -32,15 +32,24 @@
     <Compile Update="Views\HostsPage.xaml.cs">
       <DependentUpon>HostsPage.xaml</DependentUpon>
     </Compile>
-    <Compile Update="Views\HostsPage\AddHostPage.xaml.cs">
+    <Compile Update="Views\Hosts\AddHostPage.xaml.cs">
       <DependentUpon>AddHostPage.xaml</DependentUpon>
     </Compile>
-    <Compile Update="Views\HostsPage\HostDetailPage.xaml.cs">
+    <Compile Update="Views\Hosts\HostDetailPage.xaml.cs">
       <DependentUpon>HostDetailPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Tasks\TaskDetailPage.xaml.cs">
+      <DependentUpon>TaskDetailPage.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Services\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Views\TasksPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
   </ItemGroup>
 </Project>

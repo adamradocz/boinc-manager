@@ -22,9 +22,14 @@ namespace BoincManagerMobile.ViewModels
 
             LoadItemsCommand = new Command(() => ExecuteLoadItemsCommand());
 
-            MessagingCenter.Subscribe<AddHostPage, Host>(this, "AddHost", (obj, hostViewModel) =>
+            MessagingCenter.Subscribe<AddHostPage, Host>(this, "AddHost", (obj, host) =>
             {
-                Hosts.Add(hostViewModel);
+                Hosts.Add(host);
+            });
+
+            MessagingCenter.Subscribe<HostDetailPage, Host>(this, "RemoveHost", (obj, host) =>
+            {
+                Hosts.Remove(host);
             });
         }
 

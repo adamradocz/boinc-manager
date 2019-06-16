@@ -4,16 +4,12 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
-             x:Class="BoincManagerMobile.Views.HostsPage"
+             x:Class="BoincManagerMobile.Views.TasksPage"
              Title="{Binding Title}">
-
-    <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Add Host" Clicked="AddHost_Clicked" />
-    </ContentPage.ToolbarItems>
 
     <StackLayout>
         <ListView x:Name="ItemsListView"
-                ItemsSource="{Binding Hosts}"
+                ItemsSource="{Binding Tasks}"
                 VerticalOptions="FillAndExpand"
                 HasUnevenRows="true"
                 RefreshCommand="{Binding LoadItemsCommand}"
@@ -36,24 +32,24 @@
                     <ViewCell>
                         <StackLayout Padding="10">
                             <StackLayout Orientation="Horizontal" >
-                                <Label Text="Name: " />
-                                <Label Text="{Binding Name}" d:Text="{Binding .}" LineBreakMode="NoWrap" />
+                                <Label Text="Host: " />
+                                <Label Text="{Binding HostName}" d:Text="{Binding .}" LineBreakMode="NoWrap" />
                             </StackLayout>
                             <StackLayout Orientation="Horizontal" >
-                                <Label Text="IP Address: " />
-                                <Label Text="{Binding IpAddress}" d:Text="Item descripton" LineBreakMode="NoWrap" />
+                                <Label Text="Project: " />
+                                <Label Text="{Binding Project}" d:Text="Item descripton" LineBreakMode="NoWrap" />
                             </StackLayout>
                             <StackLayout Orientation="Horizontal" >
-                                <Label Text="Auto Connect: " />
-                                <Switch IsToggled="{Binding AutoConnect}" />
+                                <Label Text="Application: " />
+                                <Label Text="{Binding Application}" d:Text="Item descripton" LineBreakMode="NoWrap" />
                             </StackLayout>
                             <StackLayout Orientation="Horizontal" >
-                                <Label Text="Boinc Version: " />
-                                <Label Text="{Binding BoincVersion}" d:Text="Item descripton" LineBreakMode="NoWrap" />
+                                <Label Text="Elapsed Time: " />
+                                <Label Text="{Binding ElapsedTime}" d:Text="Item descripton" LineBreakMode="NoWrap" />
                             </StackLayout>
                             <StackLayout Orientation="Horizontal" >
-                                <Label Text="Operating System: " />
-                                <Label Text="{Binding OperatingSystem}" d:Text="Item descripton" LineBreakMode="NoWrap" />
+                                <Label Text="Deadline: " />
+                                <Label Text="{Binding Deadline}" d:Text="Item descripton" LineBreakMode="NoWrap" />
                             </StackLayout>
                             <StackLayout Orientation="Horizontal" >
                                 <Label Text="Status: " />
@@ -65,5 +61,5 @@
             </ListView.ItemTemplate>
         </ListView>
     </StackLayout>
-    
+
 </ContentPage>

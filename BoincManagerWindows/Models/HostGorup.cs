@@ -1,5 +1,4 @@
 ﻿using BoincManager.Models;
-using BoincManagerWindows.Models;
 using System.Collections.ObjectModel;
 
 namespace BoincManagerWindows.Models
