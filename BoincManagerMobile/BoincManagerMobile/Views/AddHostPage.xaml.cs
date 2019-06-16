@@ -16,7 +16,7 @@ namespace BoincManagerMobile.Views
     [DesignTimeVisible(false)]
     public partial class AddHostPage : ContentPage
     {
-        public Host Host { get; set; }
+        public HostConnection Host { get; set; }
 
         public AddHostPage()
         {
@@ -24,7 +24,7 @@ namespace BoincManagerMobile.Views
 
             Title = "Add Host";
 
-            Host = new Host();
+            Host = new HostConnection();
 
             BindingContext = this;
         }
@@ -43,7 +43,7 @@ namespace BoincManagerMobile.Views
                 await App.Manager.Connect(Host.Id);
             }
 
-            var hostViewModel = new HostViewModel(App.Manager.GetHostState(Host.Id));
+            var hostViewModel = new Host(App.Manager.GetHostState(Host.Id));
             MessagingCenter.Send(this, "AddHost", hostViewModel);
             await Navigation.PopModalAsync();
         }

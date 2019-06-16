@@ -8,7 +8,7 @@ namespace BoincManager.Models
     // - https://docs.microsoft.com/en-us/aspnet/core/tutorials/razor-pages/model?view=aspnetcore-3.0&tabs=visual-studio
     public class ApplicationDbContext : DbContext
     {
-        public DbSet<Host> Host { get; set; }
+        public DbSet<HostConnection> Host { get; set; }
         
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {

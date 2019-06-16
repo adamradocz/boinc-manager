@@ -1,4 +1,4 @@
-﻿using BoincManagerWeb.ViewModels;
+﻿using BoincManagerWeb.Models;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Collections.Generic; 
 
@@ -11,7 +11,7 @@ namespace BoincManagerWeb.Pages.Messages
 
         public string CurrentFilter { get; set; }
 
-        public List<MessageViewModel> Messages { get; set; }
+        public List<Message> Messages { get; set; }
 
         public IndexModel(BoincManager.Manager manager, ViewDataProcessor viewDataProcessor)
         {

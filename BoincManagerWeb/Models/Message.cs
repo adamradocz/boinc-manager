@@ -1,28 +1,27 @@
-﻿using BoincManager.Models;
-using BoincManager.ViewModels;
-using BoincRpc;
+﻿using BoincManager.Interfaces;
+using BoincManager.Models;
 using System.Collections.Generic;
 
-namespace BoincManagerWeb.ViewModels
+namespace BoincManagerWeb.Models
 {
-    public class MessageViewModel : IFilterable
+    public class Message : IMessage, IFilterable
     {
         public int HostId { get; }
         public string HostName { get; }
         public string Project { get; }
         public string Date { get; }
-        public string Message { get; }
+        public string MessageBody { get; }
         public string Priority { get; }
 
-        public MessageViewModel(HostState hostState, Message message)
+        public Message(HostState hostState, BoincRpc.Message rpcMessage)
         {
             HostId = hostState.Id;
             HostName = hostState.Name;
 
-            Project = message.Project;
-            Date = message.Timestamp.ToLocalTime().ToString("g");
-            Message = message.Body;
-            Priority = message.Priority.ToString();
+            Project = rpcMessage.Project;
+            Date = rpcMessage.Timestamp.ToLocalTime().ToString("g");
+            MessageBody = rpcMessage.Body;
+            Priority = rpcMessage.Priority.ToString();
         }
 
         public IEnumerable<string> GetContentsForFiltering()
@@ -30,7 +29,7 @@ namespace BoincManagerWeb.ViewModels
             yield return HostName;
             yield return Project;
             yield return Date;
-            yield return Message;
+            yield return MessageBody;
         }
     }
 }

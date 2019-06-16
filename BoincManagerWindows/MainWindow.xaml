@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BoincManagerWindows"
-        xmlns:viewmodels="clr-namespace:BoincManagerWindows.ViewModels"
+        xmlns:models="clr-namespace:BoincManagerWindows.Models"
         mc:Ignorable="d"
         Title="MainWindow" Height="800" Width="1200"
         Loaded="Window_Loaded" Closing="Window_Closing">
@@ -307,7 +307,7 @@
         </StatusBar>
         <TreeView Name="computersTreeView" ItemsSource="{Binding ComputerGroups}" SelectedItemChanged="ComputersTreeView_SelectedItemChanged" Width="200">
             <TreeView.Resources>
-                <HierarchicalDataTemplate DataType="{x:Type viewmodels:ComputerGorupViewModel}" ItemsSource="{Binding Members}">
+                <HierarchicalDataTemplate DataType="{x:Type models:HostGorup}" ItemsSource="{Binding Members}">
                     <StackPanel Orientation="Horizontal">
                         <Image Source="Resources\computer.png" Margin="0,0,5,0" />
                         <TextBlock Text="{Binding Name}" />
@@ -316,7 +316,7 @@
                         <TextBlock Text=")" Foreground="Blue" />
                     </StackPanel>
                 </HierarchicalDataTemplate>
-                <DataTemplate DataType="{x:Type viewmodels:HostViewModel}">
+                <DataTemplate DataType="{x:Type models:Host}">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="{Binding Name}" />
                     </StackPanel>
@@ -499,10 +499,10 @@
                         </Style>
                     </DataGrid.RowStyle>
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="Computer" Binding="{Binding Path=ComputerName}"/>
+                        <DataGridTextColumn Header="Host" Binding="{Binding Path=HostName}"/>
                         <DataGridTextColumn Header="Project" Binding="{Binding Path=Project}"/>
                         <DataGridTextColumn Header="Date" Binding="{Binding Path=Date}"/>
-                        <DataGridTextColumn Header="Message" Binding="{Binding Path=Message}"/>
+                        <DataGridTextColumn Header="Message" Binding="{Binding Path=MessageBody}"/>
                     </DataGrid.Columns>
                 </DataGrid>                
             </TabItem>

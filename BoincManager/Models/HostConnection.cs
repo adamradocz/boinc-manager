@@ -2,7 +2,7 @@
 
 namespace BoincManager.Models
 {
-    public class Host
+    public class HostConnection
     {
         public int Id { get; set; }
         
@@ -24,12 +24,12 @@ namespace BoincManager.Models
         public bool AutoConnect { get; set; } = true;
 
         // To make model binding possible in ASP.NET, the class must have a public default constructor.
-        public Host()
+        public HostConnection()
         {
 
         }
 
-        public Host(string name, string ipAddress, string password, bool autoConnect = true, int port = Constants.BoincDefaultPort)
+        public HostConnection(string name, string ipAddress, string password, bool autoConnect = true, int port = Constants.BoincDefaultPort)
         {
             Name = name;
             IpAddress = ipAddress;

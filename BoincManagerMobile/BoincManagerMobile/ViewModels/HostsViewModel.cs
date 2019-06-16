@@ -10,12 +10,13 @@ using BoincManagerMobile.Views;
 using System.Collections.Generic;
 using BoincManager.Models;
 using BoincManagerMobile.Models;
+using BoincManager.Interfaces;
 
 namespace BoincManagerMobile.ViewModels
 {
     public class HostsViewModel : BaseViewModel
     {
-        public ObservableCollection<HostViewModel> Hosts { get; set; }
+        public ObservableCollection<Host> Hosts { get; set; }
         public Command LoadItemsCommand { get; set; }
 
         public HostsViewModel()
@@ -25,24 +26,24 @@ namespace BoincManagerMobile.ViewModels
 
             LoadItemsCommand = new Command(() => ExecuteLoadItemsCommand());
 
-            MessagingCenter.Subscribe<AddHostPage, HostViewModel>(this, "AddHost", (obj, hostViewModel) =>
+            MessagingCenter.Subscribe<AddHostPage, Host>(this, "AddHost", (obj, hostViewModel) =>
             {
                 Hosts.Add(hostViewModel);
             });
         }
 
-        public ObservableCollection<HostViewModel> GetHosts(IEnumerable<HostState> hostStates, string searchString)
+        public ObservableCollection<Host> GetHosts(IEnumerable<HostState> hostStates, string searchString)
         {
-            var hosts = new ObservableCollection<HostViewModel>();
+            var hosts = new ObservableCollection<Host>();
             foreach (var hostState in hostStates)
             {
                 if (string.IsNullOrEmpty(searchString))
                 {
-                    hosts.Add(new HostViewModel(hostState));
+                    hosts.Add(new Host(hostState));
                 }
                 else
                 {
-                    var hostVM = new HostViewModel(hostState);
+                    var hostVM = new Host(hostState);
                     foreach (var content in hostVM.GetContentsForFiltering())
                     {
                         if (content != null && content.IndexOf(searchString, StringComparison.InvariantCultureIgnoreCase) != -1)

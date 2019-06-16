@@ -1,6 +1,6 @@
 ﻿using BoincManager;
+using BoincManager.Interfaces;
 using BoincManager.Models;
-using BoincManager.ViewModels;
 using BoincRpc;
 using System.Collections.Generic;
 

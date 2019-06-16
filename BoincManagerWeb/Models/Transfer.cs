@@ -1,12 +1,11 @@
 ﻿using BoincManager;
+using BoincManager.Interfaces;
 using BoincManager.Models;
-using BoincManager.ViewModels;
-using BoincRpc;
 using System.Collections.Generic;
 
-namespace BoincManagerWeb.ViewModels
+namespace BoincManagerWeb.Models
 {
-    public class TransferViewModel : IFilterable
+    public class Transfer : ITransfer, IFilterable
     {
         public int HostId { get; }
         public string HostName { get; }
@@ -19,7 +18,7 @@ namespace BoincManagerWeb.ViewModels
         public string TimeRemaining { get; }
         public string Status { get; }
 
-        public TransferViewModel(HostState hostState, FileTransfer fileTransfer)
+        public Transfer(HostState hostState, BoincRpc.FileTransfer fileTransfer)
         {
             HostId = hostState.Id;
             HostName = hostState.Name;

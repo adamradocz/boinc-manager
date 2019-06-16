@@ -11,7 +11,7 @@ namespace BoincManagerWeb.Pages.Hosts
         private readonly BoincManager.Manager _manager;
 
         [BindProperty]
-        public Host Host { get; set; }
+        public HostConnection Host { get; set; }
 
         public AddModel(ApplicationDbContext context, BoincManager.Manager manager)
         {

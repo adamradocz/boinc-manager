@@ -1,12 +1,11 @@
 ﻿using System.Collections.Generic;
 using BoincManager;
+using BoincManager.Interfaces;
 using BoincManager.Models;
-using BoincManager.ViewModels;
-using BoincRpc;
 
-namespace BoincManagerWindows.ViewModels
+namespace BoincManagerWindows.Models
 {
-    class ProjectViewModel : BindableBase, IFilterable
+    class Project : BindableBase, IProject, IFilterable
     {
         public int HostId { get; }
         public string HostName { get; }
@@ -53,24 +52,24 @@ namespace BoincManagerWindows.ViewModels
             private set { SetProperty(ref status, value); }
         }
 
-        public Project Project { get; private set; }
+        public BoincRpc.Project RpcProject { get; private set; }
 
-        public ProjectViewModel(HostState hostState)
+        public Project(HostState hostState)
         {
             HostId = hostState.Id;
             HostName = hostState.Name;
         }
 
-        public void Update(Project project)
+        public void Update(BoincRpc.Project rpcProject)
         {
-            Project = project;
+            RpcProject = rpcProject;
 
-            Name = project.ProjectName;
-            Username = project.UserName;
-            Team = project.TeamName;
-            Credit = project.UserTotalCredit.ToString("N2");
-            AverageCredit = project.UserAverageCredit.ToString("N2");
-            Status = Statuses.GetProjectStatus(project);
+            Name = rpcProject.ProjectName;
+            Username = rpcProject.UserName;
+            Team = rpcProject.TeamName;
+            Credit = rpcProject.UserTotalCredit.ToString("N2");
+            AverageCredit = rpcProject.UserAverageCredit.ToString("N2");
+            Status = Statuses.GetProjectStatus(rpcProject);
         }
 
         public IEnumerable<string> GetContentsForFiltering()

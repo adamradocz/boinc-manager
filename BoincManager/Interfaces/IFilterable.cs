@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace BoincManager.ViewModels
+namespace BoincManager.Interfaces
 {
     public interface IFilterable
     {

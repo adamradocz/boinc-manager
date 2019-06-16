@@ -1,12 +1,11 @@
 ﻿using BoincManager;
+using BoincManager.Interfaces;
 using BoincManager.Models;
-using BoincManager.ViewModels;
-using BoincRpc;
 using System.Collections.Generic;
 
-namespace BoincManagerWeb.ViewModels
+namespace BoincManagerWeb.Models
 {
-    public class ProjectViewModel : IFilterable
+    public class Project : IProject, IFilterable
     {
         public int HostId { get; }
         public string HostName { get; }
@@ -17,7 +16,7 @@ namespace BoincManagerWeb.ViewModels
         public string AverageCredit { get; }
         public string Status { get; }
 
-        public ProjectViewModel(HostState hostState, Project project)
+        public Project(HostState hostState, BoincRpc.Project project)
         {
             HostId = hostState.Id;
             HostName = hostState.Name;

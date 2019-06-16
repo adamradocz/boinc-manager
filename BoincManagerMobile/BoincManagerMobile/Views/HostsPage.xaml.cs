@@ -1,15 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using Xamarin.Forms;
 
 using BoincManagerMobile.ViewModels;
-using BoincManager.Models;
+using BoincManagerMobile.Models;
 
 namespace BoincManagerMobile.Views
 {
-    // Learn more about making custom code visible in the Xamarin.Forms previewer
-    // by visiting https://aka.ms/xamarinforms-previewer
+    // Learn more about making custom code visible in the Xamarin.Forms previewer by visiting https://aka.ms/xamarinforms-previewer
     [DesignTimeVisible(false)]
     public partial class HostsPage : ContentPage
     {
@@ -22,19 +20,19 @@ namespace BoincManagerMobile.Views
             BindingContext = viewModel = new HostsViewModel();
         }
 
-        async void OnItemSelected(object sender, SelectedItemChangedEventArgs args)
+        async void OnHostSelected(object sender, SelectedItemChangedEventArgs args)
         {
             var host = args.SelectedItem as Host;
             if (host == null)
                 return;
 
-            await Navigation.PushAsync(new ItemDetailPage(new ItemDetailViewModel(host)));
+            await Navigation.PushAsync(new HostDetailPage(new HostDetailViewModel(host)));
 
             // Manually deselect item.
             ItemsListView.SelectedItem = null;
         }
 
-        async void AddItem_Clicked(object sender, EventArgs e)
+        async void AddHost_Clicked(object sender, EventArgs e)
         {
             await Navigation.PushModalAsync(new NavigationPage(new AddHostPage()));
         }

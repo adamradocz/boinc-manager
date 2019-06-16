@@ -1,12 +1,12 @@
-﻿using BoincManager.Models;
-using BoincManager.ViewModels;
+﻿using BoincManager.Interfaces;
+using BoincManager.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace BoincManagerWeb.ViewModels
+namespace BoincManagerWeb.Models
 {
-    public class HostViewModel : IFilterable
+    public class Host : IHost, IFilterable
     {
         public int Id { get; }
         public string Name { get; set; }
@@ -21,7 +21,7 @@ namespace BoincManagerWeb.ViewModels
         public bool Connected { get; set; }
         public string Status { get; set; }
 
-        public HostViewModel(HostState hostState)
+        public Host(HostState hostState)
         {
             Id = hostState.Id;
 

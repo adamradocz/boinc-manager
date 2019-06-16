@@ -45,7 +45,7 @@ namespace BoincManagerWeb.Hubs
             //
             // 'Count' operation in the ConcurrentDictionary cause it to acquire all the locks at once.
             // Alternative method, is the lock-free enumerator: concurrentDictionary.Skip(0).Count(), because it uses LINQ
-            if (_connections.Count() == 0)
+            if (_connections.Skip(0).Count() == 0)
             {
                 // Manager stops after 30 seconds
                 _manager.Stop(30000);
@@ -56,7 +56,7 @@ namespace BoincManagerWeb.Hubs
 
         public async Task GetVisitors()
         {
-            await Clients.All.SendAsync("ReceiveVisitors", _connections.Count);
+            await Clients.All.SendAsync("ReceiveVisitors", _connections.Skip(0).Count());
         }
 
         public async Task GetProjects(string searchString)

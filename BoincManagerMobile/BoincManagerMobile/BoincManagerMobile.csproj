@@ -35,6 +35,9 @@
     <Compile Update="Views\AddHostPage.xaml.cs">
       <DependentUpon>AddHostPage.xaml</DependentUpon>
     </Compile>
+    <Compile Update="Views\HostDetailPage.xaml.cs">
+      <DependentUpon>HostDetailPage.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup>

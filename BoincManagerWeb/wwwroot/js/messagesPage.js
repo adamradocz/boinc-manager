@@ -20,8 +20,8 @@ connection.on("ReceiveMessages", function (messages) {
         var tdDate = document.createElement("td");
         tdDate.textContent = messages[i].date;
 
-        var tdMessage = document.createElement("td");
-        tdMessage.textContent = messages[i].message;
+        var tdMessageBody = document.createElement("td");
+        tdMessageBody.textContent = messages[i].messageBody;
 
         var tdPriority = document.createElement("td");
         tdPriority.textContent = messages[i].priority;
@@ -29,7 +29,7 @@ connection.on("ReceiveMessages", function (messages) {
         tr.appendChild(tdHostName);
         tr.appendChild(tdProject);
         tr.appendChild(tdDate);
-        tr.appendChild(tdMessage);
+        tr.appendChild(tdMessageBody);
         tr.appendChild(tdPriority);
 
         tbody.appendChild(tr);

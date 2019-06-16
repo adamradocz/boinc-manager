@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using BoincManager.Models;
-using BoincManagerWeb.ViewModels;
+using BoincManagerWeb.Models;
 
 namespace BoincManagerWeb.Pages.Hosts
 {
@@ -13,7 +12,7 @@ namespace BoincManagerWeb.Pages.Hosts
         private readonly BoincManager.Manager _manager;
         private readonly ViewDataProcessor _viewDataProcessor;
 
-        public List<HostViewModel> Hosts { get; set; }
+        public List<Host> Hosts { get; set; }
 
         public string CurrentFilter { get; set; }
         public string NameSort { get; set; }
@@ -39,7 +38,7 @@ namespace BoincManagerWeb.Pages.Hosts
             AutoConnectSort = sortOrder == "autoconnect_asc" ? "autoconnect_desc" : "autoconnect_asc";
             StatusSort = sortOrder == "status_asc" ? "status_desc" : "status_asc";
 
-            IQueryable<HostViewModel> hostStateIQ = _viewDataProcessor.GetHosts(_manager.GetAllHostStates(), searchString).AsQueryable();
+            IQueryable<Host> hostStateIQ = _viewDataProcessor.GetHosts(_manager.GetAllHostStates(), searchString).AsQueryable();
 
             switch (sortOrder)
             {

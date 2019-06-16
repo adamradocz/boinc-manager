@@ -19,7 +19,7 @@ namespace BoincManagerWeb.Pages.Hosts
         }
 
         [BindProperty]
-        public Host Host { get; set; }
+        public HostConnection Host { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {

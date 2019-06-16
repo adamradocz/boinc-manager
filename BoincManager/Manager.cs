@@ -35,7 +35,7 @@ namespace BoincManager
         /// -Load the data from database.
         /// </summary>
         /// <param name="hosts"></param>
-        public void Initialize(IEnumerable<Host> hosts)
+        public void Initialize(IEnumerable<HostConnection> hosts)
         {
             // Initialize the Dictionary. Add all the hosts stored in the database.
             foreach (var host in hosts)
@@ -238,7 +238,7 @@ namespace BoincManager
             }
         }
 
-        public void AddHost(Host host)
+        public void AddHost(HostConnection host)
         {
             _hostStates.TryAdd(host.Id, new HostState(host));
         }
@@ -254,7 +254,7 @@ namespace BoincManager
             _hostStates.TryRemove(hostId, out _);
         }
 
-        public void UpdateHost(Host host)
+        public void UpdateHost(HostConnection host)
         {
             var found = _hostStates.TryGetValue(host.Id, out HostState hostState);
             if (found)
@@ -273,7 +273,7 @@ namespace BoincManager
         public IEnumerable<HostState> GetAllHostStates()
         {
             return _hostStates.Values;
-        }        
+        }
 
         public void Dispose()
         {

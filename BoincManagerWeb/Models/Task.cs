@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using BoincManager;
+using BoincManager.Interfaces;
 using BoincManager.Models;
-using BoincManager.ViewModels;
 using BoincRpc;
 
-namespace BoincManagerWeb.ViewModels
+namespace BoincManagerWeb.Models
 {
-    public class TaskViewModel : IFilterable
+    public class Task : ITask, IFilterable
     {
         public int HostId { get; }
         public string HostName { get; }
@@ -23,7 +23,7 @@ namespace BoincManagerWeb.ViewModels
         public string Deadline { get; }
         public string Status { get; }
 
-        public TaskViewModel(HostState hostState, Result result)
+        public Task(HostState hostState, Result result)
         {
             HostId = hostState.Id;
             HostName = hostState.Name;

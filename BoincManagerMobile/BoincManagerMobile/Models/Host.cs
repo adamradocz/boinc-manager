@@ -1,12 +1,11 @@
-﻿using BoincManager.Models;
-using BoincManager.ViewModels;
-using System;
+﻿using BoincManager.Interfaces;
+using BoincManager.Models;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace BoincManagerWindows.ViewModels
+namespace BoincManagerMobile.Models
 {
-    class HostViewModel : BindableBase, IFilterable
+    public class Host : BindableBase, IHost, IFilterable
     {
         public int Id { get; }
 
@@ -31,22 +30,17 @@ namespace BoincManagerWindows.ViewModels
 
         private string operatingSystem;
         public string OperatingSystem { get => operatingSystem; private set => SetProperty(ref operatingSystem, value); }
-        
+
         private bool connected;
         public bool Connected { get => connected; private set => SetProperty(ref connected, value); }
 
         private string status;
         public string Status { get => status; set => SetProperty(ref status, value); }
 
-        public HostViewModel(HostState hostState)
+        public Host(HostState hostState)
         {
             Id = hostState.Id;
 
-            Update(hostState);
-        }
-
-        public void Update(HostState hostState)
-        {
             Name = hostState.Name;
             IpAddress = hostState.IpAddress;
             Port = hostState.Port;
@@ -65,15 +59,6 @@ namespace BoincManagerWindows.ViewModels
             yield return BoincVersion;
             yield return OperatingSystem;
             yield return Status;
-        }
-
-        public static IEnumerable<string> GetLiveFilteringProperties()
-        {
-            yield return nameof(Name);
-            yield return nameof(IpAddress);
-            yield return nameof(BoincVersion);
-            yield return nameof(OperatingSystem);
-            yield return nameof(Status);
         }
     }
 }

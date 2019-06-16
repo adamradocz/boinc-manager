@@ -1,6 +1,6 @@
-﻿using BoincManager.ViewModels;
+﻿using BoincManager.Interfaces;
+using BoincManagerWindows.Models;
 using BoincManagerWindows.ViewModels;
-using BoincRpc;
 using System;
 using System.Diagnostics;
 using System.Linq;
@@ -34,25 +34,25 @@ namespace BoincManagerWindows
         {
             // Constructor is too early for setting these properties.
             computersDataGrid.Items.IsLiveFiltering = true;
-            foreach (string propertie in HostViewModel.GetLiveFilteringProperties())
+            foreach (string propertie in Host.GetLiveFilteringProperties())
             {
                 computersDataGrid.Items.LiveFilteringProperties.Add(propertie);
             }
 
             projectsDataGrid.Items.IsLiveFiltering = true;
-            foreach (string propertie in ProjectViewModel.GetLiveFilteringProperties())
+            foreach (string propertie in Project.GetLiveFilteringProperties())
             {
                 projectsDataGrid.Items.LiveFilteringProperties.Add(propertie);
             }
 
             tasksDataGrid.Items.IsLiveFiltering = true;
-            foreach (string propertie in TaskViewModel.GetLiveFilteringProperties())
+            foreach (string propertie in Task.GetLiveFilteringProperties())
             {
                 tasksDataGrid.Items.LiveFilteringProperties.Add(propertie);
             }
 
             transfersDataGrid.Items.IsLiveFiltering = true;
-            foreach (string propertie in TransferViewModel.GetLiveFilteringProperties())
+            foreach (string propertie in Transfer.GetLiveFilteringProperties())
             {
                 transfersDataGrid.Items.LiveFilteringProperties.Add(propertie);
             }            
@@ -78,15 +78,15 @@ namespace BoincManagerWindows
 
             webMenuItem.Items.Clear();
 
-            ProjectViewModel selectedProject = (ProjectViewModel)projectsDataGrid.SelectedItem;
+            Project selectedProject = (Project)projectsDataGrid.SelectedItem;
 
-            if (projectsDataGrid.SelectedItems.Count != 1 || selectedProject.Project.GuiUrls.Count == 0)
+            if (projectsDataGrid.SelectedItems.Count != 1 || selectedProject.RpcProject.GuiUrls.Count == 0)
             {
                 webMenuItem.Visibility = Visibility.Collapsed;
                 return;
             }
 
-            foreach (GuiUrl guiUrl in selectedProject.Project.GuiUrls)
+            foreach (BoincRpc.GuiUrl guiUrl in selectedProject.RpcProject.GuiUrls)
             {
                 MenuItem urlMenuItem = new MenuItem
                 {
@@ -104,9 +104,9 @@ namespace BoincManagerWindows
 
         private void ComputersTreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
-            if (computersTreeView.SelectedItem is HostViewModel)
+            if (computersTreeView.SelectedItem is Host)
             {
-                _viewModel.SelectedComputerInTreeView = (HostViewModel)computersTreeView.SelectedItem;
+                _viewModel.SelectedComputerInTreeView = (Host)computersTreeView.SelectedItem;
             }
             else
             {

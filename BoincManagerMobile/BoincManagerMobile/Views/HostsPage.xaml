@@ -9,7 +9,7 @@
              x:Name="BrowseItemsPage">
 
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Add Host" Clicked="AddItem_Clicked" />
+        <ToolbarItem Text="Add Host" Clicked="AddHost_Clicked" />
     </ContentPage.ToolbarItems>
 
     <StackLayout>
@@ -21,7 +21,7 @@
                 IsPullToRefreshEnabled="true"
                 IsRefreshing="{Binding IsBusy, Mode=OneWay}"
                 CachingStrategy="RecycleElement"
-                ItemSelected="OnItemSelected">
+                ItemSelected="OnHostSelected">
             <d:ListView.ItemsSource>
                 <x:Array Type="{x:Type x:String}">
                     <x:String>First Item</x:String>

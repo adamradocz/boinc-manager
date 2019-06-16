@@ -1,6 +1,6 @@
 ﻿namespace BoincManager.Interfaces
 {
-    public interface IHostViewModel
+    public interface IHost
     {
         int Id { get; }        
         string Name { get; }

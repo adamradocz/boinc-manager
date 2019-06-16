@@ -1,12 +1,11 @@
 ﻿using System.Collections.Generic;
 using BoincManager;
+using BoincManager.Interfaces;
 using BoincManager.Models;
-using BoincManager.ViewModels;
-using BoincRpc;
 
-namespace BoincManagerWindows.ViewModels
+namespace BoincManagerWindows.Models
 {
-    class TransferViewModel : BindableBase, IFilterable
+    class Transfer : BindableBase, ITransfer, IFilterable
     {
         public int HostId { get; }
         public string HostName { get; }
@@ -66,15 +65,15 @@ namespace BoincManagerWindows.ViewModels
             private set { SetProperty(ref status, value); }
         }
 
-        public FileTransfer FileTransfer { get; private set; }
+        public BoincRpc.FileTransfer FileTransfer { get; private set; }
 
-        public TransferViewModel(HostState hostState)
+        public Transfer(HostState hostState)
         {
             HostId = hostState.Id;
             HostName = hostState.Name;
         }
 
-        public void Update(FileTransfer fileTransfer)
+        public void Update(BoincRpc.FileTransfer fileTransfer)
         {
             FileTransfer = fileTransfer;
 

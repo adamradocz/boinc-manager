@@ -1,5 +1,5 @@
 ﻿using BoincManager.Models;
-using BoincManagerWeb.ViewModels;
+using BoincManagerWeb.Models;
 using System;
 using System.Collections.Generic;
 
@@ -7,24 +7,24 @@ namespace BoincManagerWeb
 {
     public class ViewDataProcessor
     {
-        public List<HostViewModel> GetHosts(IEnumerable<HostState> hostStates, string searchString)
+        public List<Host> GetHosts(IEnumerable<HostState> hostStates, string searchString)
         {
-            var hosts = new List<HostViewModel>();
+            var hosts = new List<Host>();
             foreach (var hostState in hostStates)
             {
                 if (string.IsNullOrEmpty(searchString))
                 {
-                    hosts.Add(new HostViewModel(hostState));
+                    hosts.Add(new Host(hostState));
                 }
                 else
                 {
-                    var hostVM = new HostViewModel(hostState);
-                    foreach (var content in hostVM.GetContentsForFiltering())
+                    var host = new Host(hostState);
+                    foreach (var content in host.GetContentsForFiltering())
                     {
                         if (content != null && content.IndexOf(searchString, StringComparison.InvariantCultureIgnoreCase) != -1)
                         {
                             // The search string is found in any of the VM's property
-                            hosts.Add(hostVM);
+                            hosts.Add(host);
                             break;
                         }
                     }
@@ -34,28 +34,28 @@ namespace BoincManagerWeb
             return hosts;
         }
 
-        public List<ProjectViewModel> GetProjects(IEnumerable<HostState> hostStates, string searchString)
+        public List<Project> GetProjects(IEnumerable<HostState> hostStates, string searchString)
         {
-            var projects = new List<ProjectViewModel>();
+            var projects = new List<Project>();
             foreach (var hostState in hostStates)
             {
                 if (hostState.Connected)
                 {
-                    foreach (var project in hostState.BoincState.Projects)
+                    foreach (var rpcProject in hostState.BoincState.Projects)
                     {
                         if (string.IsNullOrEmpty(searchString))
                         {
-                            projects.Add(new ProjectViewModel(hostState, project));
+                            projects.Add(new Project(hostState, rpcProject));
                         }
                         else
                         {
-                            var projectVM = new ProjectViewModel(hostState, project);
-                            foreach (var content in projectVM.GetContentsForFiltering())
+                            var project = new Project(hostState, rpcProject);
+                            foreach (var content in project.GetContentsForFiltering())
                             {
                                 if (content != null && content.IndexOf(searchString, StringComparison.InvariantCultureIgnoreCase) != -1)
                                 {
                                     // The search string is found in any of the VM's property
-                                    projects.Add(projectVM);
+                                    projects.Add(project);
                                     break;
                                 }
                             }
@@ -67,28 +67,28 @@ namespace BoincManagerWeb
             return projects;
         }
 
-        public List<TaskViewModel> GetTasks(IEnumerable<HostState> hostStates, string searchString)
+        public List<Task> GetTasks(IEnumerable<HostState> hostStates, string searchString)
         {
-            var tasks = new List<TaskViewModel>();
+            var tasks = new List<Task>();
             foreach (var hostState in hostStates)
             {
                 if (hostState.Connected)
                 {
-                    foreach (var result in hostState.BoincState.Results)
+                    foreach (var rpcResult in hostState.BoincState.Results)
                     {
                         if (string.IsNullOrEmpty(searchString))
                         {
-                            tasks.Add(new TaskViewModel(hostState, result));
+                            tasks.Add(new Task(hostState, rpcResult));
                         }
                         else
                         {
-                            var taskVM = new TaskViewModel(hostState, result);
-                            foreach (var content in taskVM.GetContentsForFiltering())
+                            var task = new Task(hostState, rpcResult);
+                            foreach (var content in task.GetContentsForFiltering())
                             {
                                 if (content != null && content.IndexOf(searchString, StringComparison.InvariantCultureIgnoreCase) != -1)
                                 {
                                     // The search string is found in any of the VM's property
-                                    tasks.Add(taskVM);
+                                    tasks.Add(task);
                                     break;
                                 }
                             }
@@ -100,28 +100,28 @@ namespace BoincManagerWeb
             return tasks;
         }
 
-        public List<TransferViewModel> GetTransfers(IEnumerable<HostState> hostStates, string searchString)
+        public List<Transfer> GetTransfers(IEnumerable<HostState> hostStates, string searchString)
         {
-            var transfers = new List<TransferViewModel>();
+            var transfers = new List<Transfer>();
             foreach (var hostState in hostStates)
             {
                 if (hostState.Connected)
                 {
-                    foreach (var fileTransfer in hostState.BoincState.FileTransfers)
+                    foreach (var rpcFileTransfer in hostState.BoincState.FileTransfers)
                     {                        
                         if (string.IsNullOrEmpty(searchString))
                         {
-                            transfers.Add(new TransferViewModel(hostState, fileTransfer));
+                            transfers.Add(new Transfer(hostState, rpcFileTransfer));
                         }
                         else
                         {
-                            var transferVM = new TransferViewModel(hostState, fileTransfer);
-                            foreach (var content in transferVM.GetContentsForFiltering())
+                            var transfer = new Transfer(hostState, rpcFileTransfer);
+                            foreach (var content in transfer.GetContentsForFiltering())
                             {
                                 if (content != null && content.IndexOf(searchString, StringComparison.InvariantCultureIgnoreCase) != -1)
                                 {
                                     // The search string is found in any of the VM's property
-                                    transfers.Add(transferVM);
+                                    transfers.Add(transfer);
                                     break;
                                 }
                             }
@@ -133,28 +133,28 @@ namespace BoincManagerWeb
             return transfers;
         }
 
-        public List<MessageViewModel> GetMessages(IEnumerable<HostState> hostStates, string searchString)
+        public List<Message> GetMessages(IEnumerable<HostState> hostStates, string searchString)
         {
-            var messages = new List<MessageViewModel>();
+            var messages = new List<Message>();
             foreach (var hostState in hostStates)
             {
                 if (hostState.Connected)
                 {
-                    foreach (var message in hostState.BoincState.Messages)
+                    foreach (var rpcMessage in hostState.BoincState.Messages)
                     {
                         if (string.IsNullOrEmpty(searchString))
                         {
-                            messages.Add(new MessageViewModel(hostState, message));
+                            messages.Add(new Message(hostState, rpcMessage));
                         }
                         else
                         {
-                            var messageVM = new MessageViewModel(hostState, message);
-                            foreach (var content in messageVM.GetContentsForFiltering())
+                            var message = new Message(hostState, rpcMessage);
+                            foreach (var content in message.GetContentsForFiltering())
                             {
                                 if (content != null && content.IndexOf(searchString, StringComparison.InvariantCultureIgnoreCase) != -1)
                                 {
                                     // The search string is found in any of the VM's property
-                                    messages.Add(messageVM);
+                                    messages.Add(message);
                                     break;
                                 }
                             }

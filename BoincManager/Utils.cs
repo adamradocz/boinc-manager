@@ -33,7 +33,7 @@ namespace BoincManager
                 var localhostPassword = GetLocalhostGuiRpcPassword();
                 if(!string.IsNullOrEmpty(localhostPassword))
                 {
-                    var host = new Host("Localhost", "localhost", localhostPassword);
+                    var host = new HostConnection("Localhost", "localhost", localhostPassword);
                     context.Add(host);
                     context.SaveChanges();
                     hosts = context.Host.ToList();

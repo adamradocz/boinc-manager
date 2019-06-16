@@ -53,13 +53,13 @@ namespace BoincManager.Models
         public RpcClient RpcClient { get; private set; }
         public BoincState BoincState { get; private set; }
 
-        public HostState(Host host)
+        public HostState(HostConnection host)
         {
             Id = host.Id;
             Update(host);
         }
 
-        public void Update(Host host)
+        public void Update(HostConnection host)
         {
             Name = host.Name;
             IpAddress = host.IpAddress;

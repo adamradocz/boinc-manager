@@ -11,6 +11,8 @@ connection.start().then(function () {
     spanSigalRInfo.textContent = "Connected";
     spanSigalRInfo.style = "color:green";
 
+    connection.invoke("GetVisitors");
+
     setInterval(updateLoop, 1000);
 }).catch(function (err) {
     return console.error(err.toString());

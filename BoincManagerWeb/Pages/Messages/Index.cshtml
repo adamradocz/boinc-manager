@@ -22,7 +22,7 @@
                 @Html.DisplayNameFor(model => model.Messages[0].Date)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Messages[0].Message)
+                @Html.DisplayNameFor(model => model.Messages[0].MessageBody)
             </th>
         </tr>
     </thead>
@@ -40,7 +40,7 @@
                     @Html.DisplayFor(modelItem => item.Date)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Message)
+                    @Html.DisplayFor(modelItem => item.MessageBody)
                 </td>
             </tr>
         }

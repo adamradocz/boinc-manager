@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="BoincManagerMobile.Views.HostDetailPage"
+             Title="{Binding Title}">
+
+    <StackLayout Spacing="20" Padding="15">
+        <StackLayout Orientation="Horizontal" >
+            <Label Text="Name: " />
+            <Label Text="{Binding HostViewModel.Name}" d:Text="{Binding .}" LineBreakMode="NoWrap" />
+        </StackLayout>
+        <StackLayout Orientation="Horizontal" >
+            <Label Text="IP Address: " />
+            <Label Text="{Binding HostViewModel.IpAddress}" d:Text="Item descripton" LineBreakMode="NoWrap" />
+        </StackLayout>
+        <StackLayout Orientation="Horizontal" >
+            <Label Text="Auto Connect: " />
+            <Switch IsToggled="{Binding HostViewModel.AutoConnect}" />
+        </StackLayout>
+        <StackLayout Orientation="Horizontal" >
+            <Label Text="Boinc Version: " />
+            <Label Text="{Binding HostViewModel.BoincVersion}" d:Text="Item descripton" LineBreakMode="NoWrap" />
+        </StackLayout>
+        <StackLayout Orientation="Horizontal" >
+            <Label Text="Operating System: " />
+            <Label Text="{Binding HostViewModel.OperatingSystem}" d:Text="Item descripton" LineBreakMode="NoWrap" />
+        </StackLayout>
+        <StackLayout Orientation="Horizontal" >
+            <Label Text="Status: " />
+            <Label Text="{Binding HostViewModel.Status}" d:Text="Item descripton" LineBreakMode="NoWrap" />
+        </StackLayout>
+    </StackLayout>
+    
+</ContentPage>

@@ -1,13 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using BoincManager;
+using BoincManager.Interfaces;
 using BoincManager.Models;
-using BoincManager.ViewModels;
-using BoincRpc;
 
-namespace BoincManagerWindows.ViewModels
+namespace BoincManagerWindows.Models
 {
-    class TaskViewModel : BindableBase, IFilterable
+    class Task : BindableBase, ITask, IFilterable
     {
         public int HostId { get; }
         public string HostName { get; }
@@ -82,19 +81,19 @@ namespace BoincManagerWindows.ViewModels
             private set { SetProperty(ref status, value); }
         }
 
-        public Result RpcResult { get; private set; }
-        public Project RpcProject { get; private set; }
-        public Workunit RpcWorkunit { get; private set; }
+        public BoincRpc.Result RpcResult { get; private set; }
+        public BoincRpc.Project RpcProject { get; private set; }
+        public BoincRpc.Workunit RpcWorkunit { get; private set; }
         public BoincRpc.App RpcApp { get; private set; }
-        public AppVersion RpcAppVersion { get; private set; }
+        public BoincRpc.AppVersion RpcAppVersion { get; private set; }
         
-        public TaskViewModel(HostState hostState)
+        public Task(HostState hostState)
         {
             HostId = hostState.Id;
             HostName = hostState.Name;
         }
 
-        public void Update(Result result, HostState hostState)
+        public void Update(BoincRpc.Result result, HostState hostState)
         {
             RpcProject = hostState.BoincState.Projects?.FirstOrDefault(p => p.MasterUrl == result.ProjectUrl);
             RpcWorkunit = hostState.BoincState.Workunits?.FirstOrDefault(w => w.ProjectUrl == RpcProject?.MasterUrl && w.Name == result.WorkunitName);
