@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
 
 using BoincManagerMobile.Models;
 using BoincManager.Models;
-using BoincManager;
-using BoincManagerMobile.ViewModels;
 
 namespace BoincManagerMobile.Views
 {

@@ -19,7 +19,7 @@
                 </OnPlatform>
             </NavigationPage.Icon>
             <x:Arguments>
-                <views:HostsPage />
+              <views:HostsPage />
             </x:Arguments>
         </NavigationPage>
     </MasterDetailPage.Detail>

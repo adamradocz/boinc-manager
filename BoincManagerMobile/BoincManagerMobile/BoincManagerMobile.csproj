@@ -32,10 +32,10 @@
     <Compile Update="Views\HostsPage.xaml.cs">
       <DependentUpon>HostsPage.xaml</DependentUpon>
     </Compile>
-    <Compile Update="Views\AddHostPage.xaml.cs">
+    <Compile Update="Views\HostsPage\AddHostPage.xaml.cs">
       <DependentUpon>AddHostPage.xaml</DependentUpon>
     </Compile>
-    <Compile Update="Views\HostDetailPage.xaml.cs">
+    <Compile Update="Views\HostsPage\HostDetailPage.xaml.cs">
       <DependentUpon>HostDetailPage.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
