@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             mc:Ignorable="d"
+             x:Class="BoincManagerMobile.Views.AddHostPage"
+             Title="{Binding Title}">
+    
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Cancel" Clicked="Cancel_Clicked" />
+        <ToolbarItem Text="Save" Clicked="Save_Clicked" />
+    </ContentPage.ToolbarItems>
+    
+    <ContentPage.Content>
+        <StackLayout Spacing="20" Padding="15">
+            <Label Text="Name" />
+            <Entry Text="{Binding Host.Name}" d:Text="Host name" />
+            <Label Text="Ip Address" />
+            <Editor Text="{Binding Host.IpAddress}" d:Text="IP" Margin="0" />
+            <Label Text="Port" />
+            <Editor Text="{Binding Host.Port}" d:Text="31416" Margin="0" />
+            <Label Text="Password" />
+            <Editor Text="{Binding Host.Password}" d:Text="31416" Margin="0" />
+            <Label Text="Auto Connect" />
+            <Switch IsToggled="{Binding Host.AutoConnect}" Margin="0" />
+        </StackLayout>
+    </ContentPage.Content>
+    
+</ContentPage>

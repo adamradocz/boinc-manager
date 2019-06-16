@@ -31,7 +31,7 @@ namespace BoincManagerWeb.Pages.Hosts
                 return Page();
             }
 
-            _context.Host.Add(Host);
+            await _context.Host.AddAsync(Host);
             await _context.SaveChangesAsync();
 
             _manager.AddHost(Host);

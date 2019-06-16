@@ -5,6 +5,7 @@ using Xamarin.Forms.Xaml;
 
 using BoincManagerMobile.Models;
 using BoincManagerMobile.ViewModels;
+using BoincManager.Models;
 
 namespace BoincManagerMobile.Views
 {
@@ -26,13 +27,12 @@ namespace BoincManagerMobile.Views
         {
             InitializeComponent();
 
-            var item = new Item
+            var host = new Host
             {
-                Text = "Item 1",
-                Description = "This is an item description."
+                Name = "Item 1",                
             };
 
-            viewModel = new ItemDetailViewModel(item);
+            viewModel = new ItemDetailViewModel(host);
             BindingContext = viewModel;
         }
     }

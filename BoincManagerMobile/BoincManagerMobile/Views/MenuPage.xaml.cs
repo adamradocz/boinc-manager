@@ -20,8 +20,8 @@ namespace BoincManagerMobile.Views
 
             menuItems = new List<HomeMenuItem>
             {
-                new HomeMenuItem {Id = MenuItemType.Browse, Title="Browse" },
-                new HomeMenuItem {Id = MenuItemType.About, Title="About" }
+                new HomeMenuItem {Id = MenuItemType.Hosts, Title=nameof(MenuItemType.Hosts) },
+                new HomeMenuItem {Id = MenuItemType.About, Title=nameof(MenuItemType.About) }
             };
 
             ListViewMenu.ItemsSource = menuItems;

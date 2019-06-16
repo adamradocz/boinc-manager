@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Threading;
 using System.Threading.Tasks;
+using BoincManager.Interfaces;
 using BoincManager.Models;
 
 namespace BoincManager
@@ -21,13 +23,13 @@ namespace BoincManager
         private CancellationToken _delayedStopCancellationToken;
 
         public bool IsRunning { get; private set; }
-
         public bool DelayedStopStarted { get; private set; }
 
         public Manager()
         {
             _hostStates = new ConcurrentDictionary<int, HostState>();
         }
+
         /// <summary>
         /// Ensure everything is set to run the BoincManager.
         /// -Load the data from database.
@@ -71,7 +73,7 @@ namespace BoincManager
             {
                 await Update();
 
-                // The 'Delay' method should be at bottom, otherwise the 'Update' method would be called one more time unnecessarily, when cancellation is requested.
+                // The 'Delay' method have to be at bottom, otherwise the 'Update' method would be called one more time unnecessarily, when cancellation is requested.
                 await Task.Delay(2000);
             }
         }

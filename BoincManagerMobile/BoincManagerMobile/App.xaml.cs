@@ -2,7 +2,6 @@
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using BoincManager;
-using BoincManagerMobile.Services;
 using BoincManagerMobile.Views;
 using BoincManager.Models;
 
@@ -10,25 +9,21 @@ namespace BoincManagerMobile
 {
     public partial class App : Application
     {
-        public static Manager _manager;
+        public static Manager Manager;
 
         public App()
         {
             InitializeComponent();
 
-            DependencyService.Register<MockDataStore>();
-
-            _manager = new Manager();
+            Manager = new Manager();
 
             // Initialize the application            
             using (var context = new ApplicationDbContext(Utils.Storage.GetDbContextOptions()))
             {
-                BoincManager.Utils.InitializeApplication(context, _manager);
+                BoincManager.Utils.InitializeApplication(context, Manager);
             }
 
-            _manager.Start();
-            _manager.AddHost(new Host("Nasy", "192.168.0.100", "11235"));
-            _manager.ConnectAll();
+            Manager.Start();
 
             MainPage = new MainPage();
         }

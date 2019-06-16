@@ -6,7 +6,7 @@ namespace BoincManagerMobile.Models
 {
     public enum MenuItemType
     {
-        Browse,
+        Hosts,
         About
     }
     public class HomeMenuItem

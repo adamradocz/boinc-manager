@@ -1,0 +1,70 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="BoincManagerMobile.Views.HostsPage"
+             Title="{Binding Title}"
+             x:Name="BrowseItemsPage">
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Add Host" Clicked="AddItem_Clicked" />
+    </ContentPage.ToolbarItems>
+
+    <StackLayout>
+        <ListView x:Name="ItemsListView"
+                ItemsSource="{Binding Hosts}"
+                VerticalOptions="FillAndExpand"
+                HasUnevenRows="true"
+                RefreshCommand="{Binding LoadItemsCommand}"
+                IsPullToRefreshEnabled="true"
+                IsRefreshing="{Binding IsBusy, Mode=OneWay}"
+                CachingStrategy="RecycleElement"
+                ItemSelected="OnItemSelected">
+            <d:ListView.ItemsSource>
+                <x:Array Type="{x:Type x:String}">
+                    <x:String>First Item</x:String>
+                    <x:String>Second Item</x:String>
+                    <x:String>Third Item</x:String>
+                    <x:String>Forth Item</x:String>
+                    <x:String>Fifth Item</x:String>
+                    <x:String>Sixth Item</x:String>
+                </x:Array>
+            </d:ListView.ItemsSource>
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <StackLayout Padding="10">
+                            <StackLayout Orientation="Horizontal" >
+                                <Label Text="Name: " />
+                                <Label Text="{Binding Name}" d:Text="{Binding .}" LineBreakMode="NoWrap" />
+                            </StackLayout>
+                            <StackLayout Orientation="Horizontal" >
+                                <Label Text="IP Address: " />
+                                <Label Text="{Binding IpAddress}" d:Text="Item descripton" LineBreakMode="NoWrap" />
+                            </StackLayout>
+                            <StackLayout Orientation="Horizontal" >
+                                <Label Text="Auto Connect: " />
+                                <Switch IsToggled="{Binding AutoConnect}" />
+                            </StackLayout>
+                            <StackLayout Orientation="Horizontal" >
+                                <Label Text="Boinc Version: " />
+                                <Label Text="{Binding BoincVersion}" d:Text="Item descripton" LineBreakMode="NoWrap" />
+                            </StackLayout>
+                            <StackLayout Orientation="Horizontal" >
+                                <Label Text="Operating System: " />
+                                <Label Text="{Binding OperatingSystem}" d:Text="Item descripton" LineBreakMode="NoWrap" />
+                            </StackLayout>
+                            <StackLayout Orientation="Horizontal" >
+                                <Label Text="Status: " />
+                                <Label Text="{Binding Status}" d:Text="Item descripton" LineBreakMode="NoWrap" />
+                            </StackLayout>
+                        </StackLayout>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </StackLayout>
+    
+</ContentPage>

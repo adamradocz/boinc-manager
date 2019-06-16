@@ -6,14 +6,11 @@ using System.Runtime.CompilerServices;
 using Xamarin.Forms;
 
 using BoincManagerMobile.Models;
-using BoincManagerMobile.Services;
 
 namespace BoincManagerMobile.ViewModels
 {
     public class BaseViewModel : INotifyPropertyChanged
     {
-        public IDataStore<Item> DataStore => DependencyService.Get<IDataStore<Item>>() ?? new MockDataStore();
-
         bool isBusy = false;
         public bool IsBusy
         {

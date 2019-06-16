@@ -1,16 +1,14 @@
-﻿using System;
-
-using BoincManagerMobile.Models;
+﻿using BoincManager.Models;
 
 namespace BoincManagerMobile.ViewModels
 {
     public class ItemDetailViewModel : BaseViewModel
     {
-        public Item Item { get; set; }
-        public ItemDetailViewModel(Item item = null)
+        public Host Host { get; set; }
+        public ItemDetailViewModel(Host host = null)
         {
-            Title = item?.Text;
-            Item = item;
+            Title = host?.Name;
+            Host = host;
         }
     }
 }

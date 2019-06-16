@@ -9,29 +9,26 @@ using BoincManagerMobile;
 using BoincManagerMobile.Views;
 using System.Collections.Generic;
 using BoincManager.Models;
+using BoincManagerMobile.Models;
 
 namespace BoincManagerMobile.ViewModels
 {
-    public class ItemsViewModel : BaseViewModel
+    public class HostsViewModel : BaseViewModel
     {
-        public ObservableCollection<ProjectViewModel> Items { get; set; }
+        public ObservableCollection<HostViewModel> Hosts { get; set; }
         public Command LoadItemsCommand { get; set; }
 
-        public ItemsViewModel()
+        public HostsViewModel()
         {
-            Title = "Projects";
-            Items = new ObservableCollection<ProjectViewModel>();
-                        
-            LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());
+            Title = nameof(MenuItemType.Hosts);
+            Hosts = GetHosts(App.Manager.GetAllHostStates(), "");
 
-            /*MessagingCenter.Subscribe<NewItemPage, Item>(this, "AddItem", async (obj, item) =>
+            LoadItemsCommand = new Command(() => ExecuteLoadItemsCommand());
+
+            MessagingCenter.Subscribe<AddHostPage, HostViewModel>(this, "AddHost", (obj, hostViewModel) =>
             {
-                var newItem = item as Item;
-                Items.Add(newItem);
-                await DataStore.AddItemAsync(newItem);
-            });*/
-            
-            Items = GetProjects(App._manager.GetAllHostStates(), "");
+                Hosts.Add(hostViewModel);
+            });
         }
 
         public ObservableCollection<HostViewModel> GetHosts(IEnumerable<HostState> hostStates, string searchString)
@@ -94,7 +91,7 @@ namespace BoincManagerMobile.ViewModels
             return projects;
         }
 
-        async Task ExecuteLoadItemsCommand()
+        void ExecuteLoadItemsCommand()
         {
             if (IsBusy)
                 return;
@@ -103,12 +100,11 @@ namespace BoincManagerMobile.ViewModels
 
             try
             {
-                Items.Clear();
-                //var items = await DataStore.GetItemsAsync(true);
-                var items = GetProjects(App._manager.GetAllHostStates(), "");
+                Hosts.Clear();
+                var items = GetHosts(App.Manager.GetAllHostStates(), "");
                 foreach (var item in items)
                 {
-                    Items.Add(item);
+                    Hosts.Add(item);
                 }
             }
             catch (Exception ex)
