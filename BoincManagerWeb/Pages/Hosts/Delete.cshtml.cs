@@ -18,7 +18,7 @@ namespace BoincManagerWeb.Pages.Hosts
         }
 
         [BindProperty]
-        public HostConnection Host { get; set; }
+        public HostConnection HostConnection { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -27,9 +27,9 @@ namespace BoincManagerWeb.Pages.Hosts
                 return NotFound();
             }
 
-            Host = await _context.Host.FirstOrDefaultAsync(m => m.Id == id);
+            HostConnection = await _context.Host.FirstOrDefaultAsync(m => m.Id == id);
 
-            if (Host == null)
+            if (HostConnection == null)
             {
                 return NotFound();
             }
@@ -43,14 +43,14 @@ namespace BoincManagerWeb.Pages.Hosts
                 return NotFound();
             }
 
-            Host = await _context.Host.FindAsync(id);
+            HostConnection = await _context.Host.FindAsync(id);
 
-            if (Host != null)
+            if (HostConnection != null)
             {
-                _context.Host.Remove(Host);
+                _context.Host.Remove(HostConnection);
                 await _context.SaveChangesAsync();
 
-                _manager.RemoveHost(Host.Id);
+                _manager.RemoveHost(HostConnection.Id);
             }
 
             return RedirectToPage("./Index");

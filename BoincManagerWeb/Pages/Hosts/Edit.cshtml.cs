@@ -19,7 +19,7 @@ namespace BoincManagerWeb.Pages.Hosts
         }
 
         [BindProperty]
-        public HostConnection Host { get; set; }
+        public HostConnection HostConnection { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -28,9 +28,9 @@ namespace BoincManagerWeb.Pages.Hosts
                 return NotFound();
             }
 
-            Host = await _context.Host.FirstOrDefaultAsync(m => m.Id == id);
+            HostConnection = await _context.Host.FirstOrDefaultAsync(m => m.Id == id);
 
-            if (Host == null)
+            if (HostConnection == null)
             {
                 return NotFound();
             }
@@ -44,16 +44,16 @@ namespace BoincManagerWeb.Pages.Hosts
                 return Page();
             }
 
-            _context.Attach(Host).State = EntityState.Modified;
+            _context.Attach(HostConnection).State = EntityState.Modified;
 
             try
             {
                 await _context.SaveChangesAsync();
-                _manager.UpdateHost(Host);
+                _manager.UpdateHost(HostConnection);
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!HostExists(Host.Id))
+                if (!HostExists(HostConnection.Id))
                 {
                     return NotFound();
                 }

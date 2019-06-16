@@ -11,7 +11,7 @@ namespace BoincManagerWeb.Pages.Hosts
         private readonly BoincManager.Manager _manager;
 
         [BindProperty]
-        public HostConnection Host { get; set; }
+        public HostConnection HostConnection { get; set; }
 
         public AddModel(ApplicationDbContext context, BoincManager.Manager manager)
         {
@@ -31,13 +31,13 @@ namespace BoincManagerWeb.Pages.Hosts
                 return Page();
             }
 
-            await _context.Host.AddAsync(Host);
+            await _context.Host.AddAsync(HostConnection);
             await _context.SaveChangesAsync();
 
-            _manager.AddHost(Host);
-            if (Host.AutoConnect)
+            _manager.AddHost(HostConnection);
+            if (HostConnection.AutoConnect)
             {
-                await _manager.Connect(Host.Id);
+                await _manager.Connect(HostConnection.Id);
             }
 
             return RedirectToPage("./Index");

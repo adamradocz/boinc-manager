@@ -14,29 +14,29 @@
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Host.Name" class="control-label"></label>
-                <input asp-for="Host.Name" class="form-control" />
-                <span asp-validation-for="Host.Name" class="text-danger"></span>
+                <label asp-for="HostConnection.Name" class="control-label"></label>
+                <input asp-for="HostConnection.Name" class="form-control" />
+                <span asp-validation-for="HostConnection.Name" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Host.IpAddress" class="control-label"></label>
-                <input asp-for="Host.IpAddress" class="form-control" />
-                <span asp-validation-for="Host.IpAddress" class="text-danger"></span>
+                <label asp-for="HostConnection.IpAddress" class="control-label"></label>
+                <input asp-for="HostConnection.IpAddress" class="form-control" />
+                <span asp-validation-for="HostConnection.IpAddress" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Host.Port" class="control-label"></label>
-                <input asp-for="Host.Port" class="form-control" value="@BoincManager.Constants.BoincDefaultPort" />
-                <span asp-validation-for="Host.Port" class="text-danger"></span>
+                <label asp-for="HostConnection.Port" class="control-label"></label>
+                <input asp-for="HostConnection.Port" class="form-control" value="@BoincManager.Constants.BoincDefaultPort" />
+                <span asp-validation-for="HostConnection.Port" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Host.Password" class="control-label"></label>
-                <input asp-for="Host.Password" class="form-control" type="password" />
-                <span asp-validation-for="Host.Password" class="text-danger"></span>
+                <label asp-for="HostConnection.Password" class="control-label"></label>
+                <input asp-for="HostConnection.Password" class="form-control" type="password" />
+                <span asp-validation-for="HostConnection.Password" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Host.AutoConnect" class="control-label"></label>
-                <input asp-for="Host.AutoConnect" class="form-control" value="true" />
-                <span asp-validation-for="Host.AutoConnect" class="text-danger"></span>
+                <label asp-for="HostConnection.AutoConnect" class="control-label"></label>
+                <input asp-for="HostConnection.AutoConnect" class="form-control" value="true" />
+                <span asp-validation-for="HostConnection.AutoConnect" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Add" class="btn btn-primary" />
