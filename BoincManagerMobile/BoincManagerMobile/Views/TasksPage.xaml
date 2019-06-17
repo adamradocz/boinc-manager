@@ -32,31 +32,31 @@
                     <ViewCell>
                         <StackLayout Padding="10">
                             <StackLayout Orientation="Horizontal" >
-                                <Label Text="Host: " />
-                                <Label Text="{Binding HostName}" d:Text="{Binding .}" />
+                                <Label Text="Host:" Style="{StaticResource ListItemTextStyle}" />
+                                <Label Text="{Binding HostName}" d:Text="{Binding .}" Style="{StaticResource ListItemDetailTextStyle}" />
                             </StackLayout>
                             <StackLayout Orientation="Horizontal" >
-                                <Label Text="Project: " />
+                                <Label Text="Project:" Style="{StaticResource ListItemTextStyle}" />
                                 <Label Text="{Binding Project}" d:Text="Item descripton" />
                             </StackLayout>
                             <StackLayout Orientation="Horizontal" >
-                                <Label Text="Application: " />
+                                <Label Text="Application:" Style="{StaticResource ListItemTextStyle}" />
                                 <Label Text="{Binding Application}" d:Text="Item descripton" />
                             </StackLayout>                            
                             <StackLayout Orientation="Horizontal" >
-                                <Label Text="Elapsed Time: " />
+                                <Label Text="Elapsed Time:" Style="{StaticResource ListItemTextStyle}" />
                                 <Label Text="{Binding ElapsedTime}" d:Text="Item descripton" />
                             </StackLayout>
                             <StackLayout Orientation="Horizontal" >
-                                <Label Text="Deadline: " />
+                                <Label Text="Deadline:" Style="{StaticResource ListItemTextStyle}" />
                                 <Label Text="{Binding Deadline}" d:Text="Item descripton" />
                             </StackLayout>
                             <StackLayout Orientation="Horizontal" >
-                                <Label Text="Status: " />
+                                <Label Text="Status:" Style="{StaticResource ListItemTextStyle}" />
                                 <Label Text="{Binding Status}" d:Text="Item descripton" />
                             </StackLayout>
                             <StackLayout Orientation="Horizontal" >
-                                <Label Text="Progress: " />
+                                <Label Text="Progress:" Style="{StaticResource ListItemTextStyle}" />
                                 <Label Text="{Binding Progress, Converter={StaticResource FractionToPercentage}}" />
                             </StackLayout>
                             <ProgressBar Progress="{Binding Progress}" />

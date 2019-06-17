@@ -36,28 +36,28 @@
                     <ViewCell>
                         <StackLayout Padding="10">
                             <StackLayout Orientation="Horizontal" >
-                                <Label Text="Name: " />
-                                <Label Text="{Binding Name}" d:Text="{Binding .}" LineBreakMode="NoWrap" />
+                                <Label Text="Name:" Style="{StaticResource ListItemTextStyle}" />
+                                <Label Text="{Binding Name}" d:Text="{Binding .}" Style="{StaticResource ListItemDetailTextStyle}" />
                             </StackLayout>
                             <StackLayout Orientation="Horizontal" >
-                                <Label Text="IP Address: " />
-                                <Label Text="{Binding IpAddress}" d:Text="Item descripton" LineBreakMode="NoWrap" />
+                                <Label Text="IP Address:" Style="{StaticResource ListItemTextStyle}" />
+                                <Label Text="{Binding IpAddress}" d:Text="Item descripton" Style="{StaticResource ListItemDetailTextStyle}" />
                             </StackLayout>
                             <StackLayout Orientation="Horizontal" >
-                                <Label Text="Auto Connect: " />
+                                <Label Text="Auto Connect:" Style="{StaticResource ListItemTextStyle}" />
                                 <Switch IsToggled="{Binding AutoConnect}" />
                             </StackLayout>
                             <StackLayout Orientation="Horizontal" >
-                                <Label Text="Boinc Version: " />
-                                <Label Text="{Binding BoincVersion}" d:Text="Item descripton" LineBreakMode="NoWrap" />
+                                <Label Text="Boinc Version:" Style="{StaticResource ListItemTextStyle}" />
+                                <Label Text="{Binding BoincVersion}" d:Text="Item descripton" Style="{StaticResource ListItemDetailTextStyle}" />
                             </StackLayout>
                             <StackLayout Orientation="Horizontal" >
-                                <Label Text="Operating System: " />
-                                <Label Text="{Binding OperatingSystem}" d:Text="Item descripton" LineBreakMode="NoWrap" />
+                                <Label Text="Operating System:" Style="{StaticResource ListItemTextStyle}" />
+                                <Label Text="{Binding OperatingSystem}" d:Text="Item descripton" Style="{StaticResource ListItemDetailTextStyle}" />
                             </StackLayout>
                             <StackLayout Orientation="Horizontal" >
-                                <Label Text="Status: " />
-                                <Label Text="{Binding Status}" d:Text="Item descripton" LineBreakMode="NoWrap" />
+                                <Label Text="Status:" Style="{StaticResource ListItemTextStyle}" />
+                                <Label Text="{Binding Status}" d:Text="Item descripton" Style="{StaticResource ListItemDetailTextStyle}" />
                             </StackLayout>
                         </StackLayout>
                     </ViewCell>

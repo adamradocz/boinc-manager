@@ -18,6 +18,14 @@
                 <Setter Property="BarBackgroundColor" Value="{StaticResource NavigationPrimary}" />
                 <Setter Property="BarTextColor" Value="White" />
             </Style>
+
+            <Style TargetType="Label" x:Key="ListItemTextStyle" >
+                <Setter Property="Style" Value="{DynamicResource ListItemTextStyle}" />
+            </Style>
+
+            <Style TargetType="Label" x:Key="ListItemDetailTextStyle" >
+                <Setter Property="Style" Value="{DynamicResource ListItemDetailTextStyle}" />
+            </Style>
         </ResourceDictionary>
     </Application.Resources>
     
