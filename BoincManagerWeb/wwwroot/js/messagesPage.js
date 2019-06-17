@@ -21,16 +21,12 @@ connection.on("ReceiveMessages", function (messages) {
         tdDate.textContent = messages[i].date;
 
         var tdMessageBody = document.createElement("td");
-        tdMessageBody.textContent = messages[i].messageBody;
-
-        var tdPriority = document.createElement("td");
-        tdPriority.textContent = messages[i].priority;
+        tdMessageBody.textContent = messages[i].messageBody;        
 
         tr.appendChild(tdHostName);
         tr.appendChild(tdProject);
         tr.appendChild(tdDate);
         tr.appendChild(tdMessageBody);
-        tr.appendChild(tdPriority);
 
         tbody.appendChild(tr);
     }
