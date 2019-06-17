@@ -4,13 +4,14 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using BoincManagerWeb.Models;
+using BoincManagerWeb.Helpers;
 
 namespace BoincManagerWeb.Pages.Hosts
 {
     public class IndexModel : PageModel
     {
         private readonly BoincManager.Manager _manager;
-        private readonly ViewDataProcessor _viewDataProcessor;
+        private readonly ViewDataHelper _viewDataHelper;
 
         public List<Host> Hosts { get; set; }
 
@@ -20,10 +21,10 @@ namespace BoincManagerWeb.Pages.Hosts
         public string AutoConnectSort { get; set; }
         public string StatusSort { get; set; }        
 
-        public IndexModel(BoincManager.Manager manager, ViewDataProcessor viewDataProcessor)
+        public IndexModel(BoincManager.Manager manager, ViewDataHelper viewDataProcessor)
         {
             _manager = manager;
-            _viewDataProcessor = viewDataProcessor;
+            _viewDataHelper = viewDataProcessor;
         }
 
         public void OnGet(string searchString, string sortOrder)
@@ -38,7 +39,7 @@ namespace BoincManagerWeb.Pages.Hosts
             AutoConnectSort = sortOrder == "autoconnect_asc" ? "autoconnect_desc" : "autoconnect_asc";
             StatusSort = sortOrder == "status_asc" ? "status_desc" : "status_asc";
 
-            IQueryable<Host> hostStateIQ = _viewDataProcessor.GetHosts(_manager.GetAllHostStates(), searchString).AsQueryable();
+            IQueryable<Host> hostStateIQ = _viewDataHelper.GetHosts(_manager.GetAllHostStates(), searchString).AsQueryable();
 
             switch (sortOrder)
             {

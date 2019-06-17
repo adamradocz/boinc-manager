@@ -1,4 +1,5 @@
-﻿using BoincManagerWeb.Models;
+﻿using BoincManagerWeb.Helpers;
+using BoincManagerWeb.Models;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Collections.Generic;
 
@@ -7,22 +8,22 @@ namespace BoincManagerWeb.Pages.Transfers
     public class IndexModel : PageModel
     {
         private readonly BoincManager.Manager _manager;
-        private readonly ViewDataProcessor _viewDataProcessor;
+        private readonly ViewDataHelper _viewDataHelper;
 
         public string CurrentFilter { get; set; }
 
         public List<Transfer> Transfers { get; set; }
 
-        public IndexModel(BoincManager.Manager manager, ViewDataProcessor viewDataProcessor)
+        public IndexModel(BoincManager.Manager manager, ViewDataHelper viewDataHelper)
         {
             _manager = manager;
-            _viewDataProcessor = viewDataProcessor;
+            _viewDataHelper = viewDataHelper;
         }
 
         public void OnGet(string searchString)
         {
             CurrentFilter = searchString;
-            Transfers = _viewDataProcessor.GetTransfers(_manager.GetAllHostStates(), searchString);
+            Transfers = _viewDataHelper.GetTransfers(_manager.GetAllHostStates(), searchString);
         }
 
     }

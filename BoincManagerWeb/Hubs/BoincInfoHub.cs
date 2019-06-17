@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.SignalR;
+﻿using BoincManagerWeb.Helpers;
+using Microsoft.AspNetCore.SignalR;
 using System;
 using System.Collections.Concurrent;
 using System.Linq;
@@ -12,12 +13,12 @@ namespace BoincManagerWeb.Hubs
         private readonly static ConcurrentDictionary<string, string> _connections = new ConcurrentDictionary<string, string>();
 
         private readonly BoincManager.Manager _manager;
-        private readonly ViewDataProcessor _viewDataProcessor;
+        private readonly ViewDataHelper _viewDataHelper;
 
-        public BoincInfoHub(BoincManager.Manager manager, ViewDataProcessor viewDataProcessor)
+        public BoincInfoHub(BoincManager.Manager manager, ViewDataHelper viewDataHelper)
         {
             _manager = manager;
-            _viewDataProcessor = viewDataProcessor;
+            _viewDataHelper = viewDataHelper;
         }
 
         public override Task OnConnectedAsync()
@@ -61,22 +62,22 @@ namespace BoincManagerWeb.Hubs
 
         public async Task GetProjects(string searchString)
         {
-            await Clients.Caller.SendAsync("ReceiveProjects", _viewDataProcessor.GetProjects(_manager.GetAllHostStates(), searchString));
+            await Clients.Caller.SendAsync("ReceiveProjects", _viewDataHelper.GetProjects(_manager.GetAllHostStates(), searchString));
         }
 
         public async Task GetTasks(string searchString)
         {
-            await Clients.Caller.SendAsync("ReceiveTasks", _viewDataProcessor.GetTasks(_manager.GetAllHostStates(), searchString));
+            await Clients.Caller.SendAsync("ReceiveTasks", _viewDataHelper.GetTasks(_manager.GetAllHostStates(), searchString));
         }
 
         public async Task GetTransfers(string searchString)
         {
-            await Clients.Caller.SendAsync("ReceiveTransfers", _viewDataProcessor.GetTransfers(_manager.GetAllHostStates(), searchString));
+            await Clients.Caller.SendAsync("ReceiveTransfers", _viewDataHelper.GetTransfers(_manager.GetAllHostStates(), searchString));
         }
 
         public async Task GetMessages(string searchString)
         {
-            await Clients.Caller.SendAsync("ReceiveMessages", _viewDataProcessor.GetMessages(_manager.GetAllHostStates(), searchString));
+            await Clients.Caller.SendAsync("ReceiveMessages", _viewDataHelper.GetMessages(_manager.GetAllHostStates(), searchString));
         }
 
     }

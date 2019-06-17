@@ -3,9 +3,9 @@ using BoincManagerWeb.Models;
 using System;
 using System.Collections.Generic;
 
-namespace BoincManagerWeb
+namespace BoincManagerWeb.Helpers
 {
-    public class ViewDataProcessor
+    public class ViewDataHelper
     {
         public List<Host> GetHosts(IEnumerable<HostState> hostStates, string searchString)
         {

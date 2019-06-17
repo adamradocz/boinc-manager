@@ -17,14 +17,14 @@ namespace BoincManagerMobile.ViewModels
         public TasksViewModel()
         {
             Title = nameof(MenuItemType.Hosts);
-            Tasks = GetTasks(App.Manager.GetAllHostStates(), "");
+            Tasks = new ObservableCollection<Task>(GetTasks(App.Manager.GetAllHostStates(), ""));
 
             LoadItemsCommand = new Command(() => ExecuteLoadItemsCommand());
         }
 
-        public ObservableCollection<Task> GetTasks(IEnumerable<HostState> hostStates, string searchString)
+        public IEnumerable<Task> GetTasks(IEnumerable<HostState> hostStates, string searchString)
         {
-            var tasks = new ObservableCollection<Task>();
+            var tasks = new List<Task>();
             foreach (var hostState in hostStates)
             {
                 if (hostState.Connected)

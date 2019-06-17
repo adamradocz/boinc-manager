@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.DataProtection;
 using System.Security.Cryptography.X509Certificates;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
+using BoincManagerWeb.Helpers;
 
 namespace BoincManagerWeb
 {
@@ -56,7 +57,7 @@ namespace BoincManagerWeb
             services.AddSignalR();
             
             services.AddSingleton<Manager>();
-            services.AddScoped<ViewDataProcessor>();
+            services.AddScoped<ViewDataHelper>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
