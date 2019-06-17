@@ -95,9 +95,21 @@ services:
 - Shell access whilst the container is running: `docker exec -it boinc-manager-web /bin/bash` or `docker exec -it boinc-manager-web /bin/sh`
 - Monitor the logs of the container in realtime: `docker logs -f boinc-manager-web`
 
-## Development requirements
+## Development
+
+### Development requirements
 - [Visual Studio 2019](https://visualstudio.microsoft.com/vs/preview/)
 - [.NET Core 3.0 Runtime and SDK](https://dotnet.microsoft.com/download/dotnet-core/3.0)
+
+### Project Guide
+| Project | Info |
+| :--- | :--- |
+| BoincManager | .NET Standard Library. Contains the Business logic, all of the Common code, Interfaces, Models, and DbContext |
+| BoincManagerMobile | .NET Standard Libray. Contains the majority of the Mobile Code. |
+| BoincManagerMobile.Android | Contains the Android specific code only. |
+| BoincManagerMobile.iOS | Contains the iOS specific code only. |
+| BoincManagerWeb | ASP.NET Core implementation of the Boinc Manager. |
+| BoincManagerWindows | .NET Core WPF implementation of the Boinc Manager for Windows. |
 
 ### How to add HTTPS Certificate
 Info about [Hosting ASP.NET Core Images with Docker over HTTPS](https://github.com/dotnet/dotnet-docker/blob/master/samples/aspnetapp/aspnetcore-docker-https.md)
