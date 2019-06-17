@@ -100,7 +100,7 @@ namespace BoincManagerMobile.Models
             Project = rpcProject.ProjectName;
             Application = rpcApp.UserFriendlyName;
             Workunit = result.WorkunitName;
-            Progress = result.ReadyToReport ? 100 : Math.Round(result.FractionDone * 100, 3);
+            Progress = result.ReadyToReport ? 1 : result.FractionDone;
             ElapsedTime = BoincManager.Utils.ConvertDuration(result.ElapsedTime);
             CpuTime = BoincManager.Utils.ConvertDuration(result.CurrentCpuTime);
             CpuTimeRemaining = BoincManager.Utils.ConvertDuration(result.EstimatedCpuTimeRemaining);

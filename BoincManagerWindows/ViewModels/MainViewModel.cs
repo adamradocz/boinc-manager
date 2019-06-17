@@ -596,7 +596,7 @@ namespace BoincManagerWindows.ViewModels
             {
                 GetNewBoincInfo(hostState);                
             }
-            
+
             // Remove outdated info
             switch (CurrentTabPage)
             {
@@ -735,7 +735,7 @@ namespace BoincManagerWindows.ViewModels
                         taskViewModel.Update(result, hostState);
                     }
                 }
-            }            
+            }
         }
 
         private void RemoveOutdatedTask(IEnumerable<HostState> hostStates)

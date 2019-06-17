@@ -33,28 +33,33 @@
                         <StackLayout Padding="10">
                             <StackLayout Orientation="Horizontal" >
                                 <Label Text="Host: " />
-                                <Label Text="{Binding HostName}" d:Text="{Binding .}" LineBreakMode="NoWrap" />
+                                <Label Text="{Binding HostName}" d:Text="{Binding .}" />
                             </StackLayout>
                             <StackLayout Orientation="Horizontal" >
                                 <Label Text="Project: " />
-                                <Label Text="{Binding Project}" d:Text="Item descripton" LineBreakMode="NoWrap" />
+                                <Label Text="{Binding Project}" d:Text="Item descripton" />
                             </StackLayout>
                             <StackLayout Orientation="Horizontal" >
                                 <Label Text="Application: " />
-                                <Label Text="{Binding Application}" d:Text="Item descripton" LineBreakMode="NoWrap" />
-                            </StackLayout>
+                                <Label Text="{Binding Application}" d:Text="Item descripton" />
+                            </StackLayout>                            
                             <StackLayout Orientation="Horizontal" >
                                 <Label Text="Elapsed Time: " />
-                                <Label Text="{Binding ElapsedTime}" d:Text="Item descripton" LineBreakMode="NoWrap" />
+                                <Label Text="{Binding ElapsedTime}" d:Text="Item descripton" />
                             </StackLayout>
                             <StackLayout Orientation="Horizontal" >
                                 <Label Text="Deadline: " />
-                                <Label Text="{Binding Deadline}" d:Text="Item descripton" LineBreakMode="NoWrap" />
+                                <Label Text="{Binding Deadline}" d:Text="Item descripton" />
                             </StackLayout>
                             <StackLayout Orientation="Horizontal" >
                                 <Label Text="Status: " />
-                                <Label Text="{Binding Status}" d:Text="Item descripton" LineBreakMode="NoWrap" />
+                                <Label Text="{Binding Status}" d:Text="Item descripton" />
                             </StackLayout>
+                            <StackLayout Orientation="Horizontal" >
+                                <Label Text="Progress: " />
+                                <Label Text="{Binding Progress, Converter={StaticResource FractionToPercentage}}" />
+                            </StackLayout>
+                            <ProgressBar Progress="{Binding Progress}" />
                         </StackLayout>
                     </ViewCell>
                 </DataTemplate>

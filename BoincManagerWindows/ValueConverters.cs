@@ -9,9 +9,7 @@ namespace BoincManagerWindows
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            double percentage = (double)value * 100;
-
-            return string.Format(culture, "{0:F}%", percentage);
+            return ((double)value).ToString("P2", culture);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

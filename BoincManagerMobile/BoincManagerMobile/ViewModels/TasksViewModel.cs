@@ -17,14 +17,40 @@ namespace BoincManagerMobile.ViewModels
         public TasksViewModel()
         {
             Title = nameof(MenuItemType.Hosts);
-            Tasks = new ObservableCollection<Task>(GetTasks(App.Manager.GetAllHostStates(), ""));
+            Tasks = new ObservableCollection<Task>();
 
             LoadItemsCommand = new Command(() => ExecuteLoadItemsCommand());
         }
 
-        public IEnumerable<Task> GetTasks(IEnumerable<HostState> hostStates, string searchString)
+        void ExecuteLoadItemsCommand()
         {
-            var tasks = new List<Task>();
+            if (IsBusy)
+                return;
+
+            IsBusy = true;
+
+            try
+            {
+                Tasks.Clear();
+                var items = GetTasks(App.Manager.GetAllHostStates(), "");
+                foreach (var item in items)
+                {
+                    Tasks.Add(item);
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+        }
+
+        private Collection<Task> GetTasks(IEnumerable<HostState> hostStates, string searchString)
+        {
+            var tasks = new Collection<Task>();
             foreach (var hostState in hostStates)
             {
                 if (hostState.Connected)
@@ -53,32 +79,6 @@ namespace BoincManagerMobile.ViewModels
             }
 
             return tasks;
-        }
-
-        void ExecuteLoadItemsCommand()
-        {
-            if (IsBusy)
-                return;
-
-            IsBusy = true;
-
-            try
-            {
-                Tasks.Clear();
-                var items = GetTasks(App.Manager.GetAllHostStates(), "");
-                foreach (var item in items)
-                {
-                    Tasks.Add(item);
-                }
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex);
-            }
-            finally
-            {
-                IsBusy = false;
-            }
         }
     }
 }

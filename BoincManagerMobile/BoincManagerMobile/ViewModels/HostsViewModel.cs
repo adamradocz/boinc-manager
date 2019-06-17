@@ -18,7 +18,7 @@ namespace BoincManagerMobile.ViewModels
         public HostsViewModel()
         {
             Title = nameof(MenuItemType.Hosts);
-            Hosts = GetHosts(App.Manager.GetAllHostStates(), "");
+            Hosts = new ObservableCollection<Host>();
 
             LoadItemsCommand = new Command(() => ExecuteLoadItemsCommand());
 
@@ -31,33 +31,6 @@ namespace BoincManagerMobile.ViewModels
             {
                 Hosts.Remove(host);
             });
-        }
-
-        public ObservableCollection<Host> GetHosts(IEnumerable<HostState> hostStates, string searchString)
-        {
-            var hosts = new ObservableCollection<Host>();
-            foreach (var hostState in hostStates)
-            {
-                if (string.IsNullOrEmpty(searchString))
-                {
-                    hosts.Add(new Host(hostState));
-                }
-                else
-                {
-                    var hostVM = new Host(hostState);
-                    foreach (var content in hostVM.GetContentsForFiltering())
-                    {
-                        if (content != null && content.IndexOf(searchString, StringComparison.InvariantCultureIgnoreCase) != -1)
-                        {
-                            // The search string is found in any of the VM's property
-                            hosts.Add(hostVM);
-                            break;
-                        }
-                    }
-                }
-            }
-
-            return hosts;
         }
 
         void ExecuteLoadItemsCommand()
@@ -85,5 +58,33 @@ namespace BoincManagerMobile.ViewModels
                 IsBusy = false;
             }
         }
+
+        private Collection<Host> GetHosts(IEnumerable<HostState> hostStates, string searchString)
+        {
+            var hosts = new ObservableCollection<Host>();
+            foreach (var hostState in hostStates)
+            {
+                if (string.IsNullOrEmpty(searchString))
+                {
+                    hosts.Add(new Host(hostState));
+                }
+                else
+                {
+                    var hostVM = new Host(hostState);
+                    foreach (var content in hostVM.GetContentsForFiltering())
+                    {
+                        if (content != null && content.IndexOf(searchString, StringComparison.InvariantCultureIgnoreCase) != -1)
+                        {
+                            // The search string is found in any of the VM's property
+                            hosts.Add(hostVM);
+                            break;
+                        }
+                    }
+                }
+            }
+
+            return hosts;
+        }
+
     }
 }

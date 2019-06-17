@@ -10,44 +10,49 @@
     <StackLayout Spacing="20" Padding="15">
         <StackLayout Orientation="Horizontal" >
             <Label Text="Host: " />
-            <Label Text="{Binding Task.HostName}" d:Text="{Binding .}" LineBreakMode="NoWrap" />
+            <Label Text="{Binding Task.HostName}" d:Text="{Binding .}" />
         </StackLayout>
         <StackLayout Orientation="Horizontal" >
             <Label Text="Project: " />
-            <Label Text="{Binding Task.Project}" d:Text="Item descripton" LineBreakMode="NoWrap" />
+            <Label Text="{Binding Task.Project}" d:Text="Item descripton" />
         </StackLayout>
         <StackLayout Orientation="Horizontal" >
             <Label Text="Application: " />
-            <Label Text="{Binding Task.Application}" d:Text="Item descripton" LineBreakMode="NoWrap" />
+            <Label Text="{Binding Task.Application}" d:Text="Item descripton" />
         </StackLayout>
         <StackLayout Orientation="Horizontal" >
             <Label Text="Workunit: " />
-            <Label Text="{Binding Task.Workunit}" d:Text="Item descripton" LineBreakMode="NoWrap" />
+            <Label Text="{Binding Task.Workunit}" d:Text="Item descripton" />
         </StackLayout>
         <StackLayout Orientation="Horizontal" >
             <Label Text="Elapsed Time: " />
-            <Label Text="{Binding Task.ElapsedTime}" d:Text="Item descripton" LineBreakMode="NoWrap" />
+            <Label Text="{Binding Task.ElapsedTime}" d:Text="Item descripton" />
         </StackLayout>
         <StackLayout Orientation="Horizontal" >
             <Label Text="Cpu Time: " />
-            <Label Text="{Binding Task.CpuTime}" d:Text="Item descripton" LineBreakMode="NoWrap" />
+            <Label Text="{Binding Task.CpuTime}" d:Text="Item descripton" />
         </StackLayout>
         <StackLayout Orientation="Horizontal" >
             <Label Text="Cpu Time Remaining: " />
-            <Label Text="{Binding Task.CpuTimeRemaining}" d:Text="Item descripton" LineBreakMode="NoWrap" />
+            <Label Text="{Binding Task.CpuTimeRemaining}" d:Text="Item descripton" />
         </StackLayout>
         <StackLayout Orientation="Horizontal" >
             <Label Text="Last Checkpoint: " />
-            <Label Text="{Binding Task.LastCheckpoint}" d:Text="Item descripton" LineBreakMode="NoWrap" />
+            <Label Text="{Binding Task.LastCheckpoint}" d:Text="Item descripton" />
         </StackLayout>
         <StackLayout Orientation="Horizontal" >
             <Label Text="Deadline: " />
-            <Label Text="{Binding Task.Deadline}" d:Text="Item descripton" LineBreakMode="NoWrap" />
+            <Label Text="{Binding Task.Deadline}" d:Text="Item descripton" />
         </StackLayout>
         <StackLayout Orientation="Horizontal" >
             <Label Text="Status: " />
-            <Label Text="{Binding Task.Status}" d:Text="Item descripton" LineBreakMode="NoWrap" />
+            <Label Text="{Binding Task.Status}" d:Text="Item descripton" />
         </StackLayout>
+        <StackLayout Orientation="Horizontal" >
+            <Label Text="Progress: " />
+            <Label Text="{Binding Progress, Converter={StaticResource FractionToPercentage}}" />
+        </StackLayout>
+        <ProgressBar Progress="{Binding Progress}" />
     </StackLayout>
     
 </ContentPage>
