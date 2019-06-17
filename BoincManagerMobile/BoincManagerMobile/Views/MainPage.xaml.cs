@@ -30,6 +30,9 @@ namespace BoincManagerMobile.Views
                     case (int)Models.MenuItemType.Hosts:
                         MenuPages.Add(id, new NavigationPage(new HostsPage()));
                         break;
+                    case (int)Models.MenuItemType.Projects:
+                        MenuPages.Add(id, new NavigationPage(new ProjectsPage()));
+                        break;
                     case (int)Models.MenuItemType.Tasks:
                         MenuPages.Add(id, new NavigationPage(new TasksPage()));
                         break;

@@ -1,0 +1,69 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="BoincManagerMobile.Views.ProjectsPage"
+             Title="{Binding Title}">
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Add Project" Clicked="AddProject_Clicked" />
+    </ContentPage.ToolbarItems>
+
+    <StackLayout>
+        <ListView x:Name="ItemsListView"
+                ItemsSource="{Binding Projects}"
+                VerticalOptions="FillAndExpand"
+                HasUnevenRows="true"
+                RefreshCommand="{Binding LoadItemsCommand}"
+                IsPullToRefreshEnabled="true"
+                IsRefreshing="{Binding IsBusy, Mode=OneWay}"
+                CachingStrategy="RecycleElement"
+                ItemSelected="OnItemSelected">
+            <d:ListView.ItemsSource>
+                <x:Array Type="{x:Type x:String}">
+                    <x:String>First Item</x:String>
+                    <x:String>Second Item</x:String>
+                    <x:String>Third Item</x:String>
+                    <x:String>Forth Item</x:String>
+                    <x:String>Fifth Item</x:String>
+                    <x:String>Sixth Item</x:String>
+                </x:Array>
+            </d:ListView.ItemsSource>
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <StackLayout Padding="10">
+                            <StackLayout Orientation="Horizontal" >
+                                <Label Text="Host:" Style="{StaticResource ListItemTextStyle}" />
+                                <Label Text="{Binding HostName}" d:Text="{Binding .}" Style="{StaticResource ListItemDetailTextStyle}" />
+                            </StackLayout>
+                            <StackLayout Orientation="Horizontal" >
+                                <Label Text="Name:" Style="{StaticResource ListItemTextStyle}" />
+                                <Label Text="{Binding Name}" d:Text="Item descripton" />
+                            </StackLayout>
+                            <StackLayout Orientation="Horizontal" >
+                                <Label Text="Username:" Style="{StaticResource ListItemTextStyle}" />
+                                <Label Text="{Binding Username}" d:Text="Item descripton" />
+                            </StackLayout>                            
+                            <StackLayout Orientation="Horizontal" >
+                                <Label Text="Team:" Style="{StaticResource ListItemTextStyle}" />
+                                <Label Text="{Binding Team}" d:Text="Item descripton" />
+                            </StackLayout>
+                            <StackLayout Orientation="Horizontal" >
+                                <Label Text="Credit:" Style="{StaticResource ListItemTextStyle}" />
+                                <Label Text="{Binding Credit}" d:Text="Item descripton" />
+                            </StackLayout>
+                            <StackLayout Orientation="Horizontal" >
+                                <Label Text="Status:" Style="{StaticResource ListItemTextStyle}" />
+                                <Label Text="{Binding Status}" d:Text="Item descripton" />
+                            </StackLayout>
+                        </StackLayout>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </StackLayout>
+
+</ContentPage>

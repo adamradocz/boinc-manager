@@ -38,6 +38,15 @@
     <Compile Update="Views\Hosts\HostDetailPage.xaml.cs">
       <DependentUpon>HostDetailPage.xaml</DependentUpon>
     </Compile>
+    <Compile Update="Views\ProjectsPage.xaml.cs">
+      <DependentUpon>ProjectsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Projects\AddProjectPage.xaml.cs">
+      <DependentUpon>AddProjectPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Projects\ProjectDetailPage.xaml.cs">
+      <DependentUpon>ProjectDetailPage.xaml</DependentUpon>
+    </Compile>
     <Compile Update="Views\Tasks\TaskDetailPage.xaml.cs">
       <DependentUpon>TaskDetailPage.xaml</DependentUpon>
     </Compile>
