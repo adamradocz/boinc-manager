@@ -103,13 +103,13 @@ services:
 - [.NET Core 3.0 Runtime and SDK](https://dotnet.microsoft.com/download/dotnet-core/3.0)
 
 
-## Project Guide
+## Project Structure
 | Project | Info |
 | :--- | :--- |
-| BoincManager | .NET Standard Library. This is the Core, contains the Business logic, all of the Common code, Interfaces, Models, and DbContext |
-| BoincManagerMobile | .NET Standard Libray. Contains the majority of the Mobile Code. |
-| BoincManagerMobile.Android | Contains the Android specific code only. |
-| BoincManagerMobile.iOS | Contains the iOS specific code only. |
+| BoincManager | .NET Standard Library. This is the Core project, contains all of the Common code, Business logic, Models, DbContext, Interfaces. |
+| BoincManagerMobile | Xamarin Core (.NET Standard Library) project. Contains the re-usable code in one place, to be shared across the mobile platforms. |
+| BoincManagerMobile.Android | Xamarin Android-specific application project. Consume the re-usable code with as little coupling as possible. Platform-specific features are added at this level, built on components exposed in the Core project. |
+| BoincManagerMobile.iOS | Xamarin iOS-specific application project. Consume the re-usable code with as little coupling as possible. Platform-specific features are added at this level, built on components exposed in the Core project. |
 | BoincManagerWeb | ASP.NET Core implementation of the Boinc Manager. |
 | BoincManagerWindows | .NET Core WPF implementation of the Boinc Manager for Windows. |
 
