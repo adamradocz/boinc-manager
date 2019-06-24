@@ -1,9 +1,7 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using Xamarin.Forms;
 
-using BoincManagerMobile.Models;
-using BoincManager.Models;
+using BoincManagerMobile.ViewModels;
 
 namespace BoincManagerMobile.Views
 {
@@ -11,40 +9,18 @@ namespace BoincManagerMobile.Views
     [DesignTimeVisible(false)]
     public partial class AddHostPage : ContentPage
     {
-        public HostConnection HostConnection { get; set; }
+        AddHostViewModel _viewModel;
 
         public AddHostPage()
         {
             InitializeComponent();
 
-            Title = "Add Host";
-
-            HostConnection = new HostConnection();
-
-            BindingContext = this;
+            BindingContext = _viewModel = new AddHostViewModel(Navigation);
         }
 
-        async void Save_Clicked(object sender, EventArgs e)
+        private void Entry_TextChanged(object sender, TextChangedEventArgs e)
         {
-            using (var context = new ApplicationDbContext(Utils.Storage.GetDbContextOptions()))
-            {
-                await context.AddAsync(HostConnection);
-                await context.SaveChangesAsync();
-            }
-
-            App.Manager.AddHost(HostConnection);
-            if (HostConnection.AutoConnect)
-            {
-                await App.Manager.Connect(HostConnection.Id);
-            }
-
-            MessagingCenter.Send(this, "AddHost", new Host(App.Manager.GetHostState(HostConnection.Id)));
-            await Navigation.PopModalAsync();
-        }
-
-        async void Cancel_Clicked(object sender, EventArgs e)
-        {
-            await Navigation.PopModalAsync();
+            _viewModel.AddHostCommand.RaiseCanExecuteChanged();
         }
     }
 }

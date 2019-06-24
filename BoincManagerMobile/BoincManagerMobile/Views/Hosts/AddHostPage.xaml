@@ -8,22 +8,21 @@
              Title="{Binding Title}">
     
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Cancel" Clicked="Cancel_Clicked" />
-        <ToolbarItem Text="Save" Clicked="Save_Clicked" />
+        <ToolbarItem Text="Add" Command="{Binding AddHostCommand}" />
     </ContentPage.ToolbarItems>
     
     <ContentPage.Content>
         <StackLayout Spacing="20" Padding="15">
             <Label Text="Name" />
-            <Entry Text="{Binding HostConnection.Name}" d:Text="Host name" />
+            <Entry Text="{Binding HostConnection.Name}" TextChanged="Entry_TextChanged" d:Text="Host name" />
             <Label Text="Ip Address" />
-            <Editor Text="{Binding HostConnection.IpAddress}" d:Text="IP" Margin="0" />
+            <Editor Text="{Binding HostConnection.IpAddress}" TextChanged="Entry_TextChanged" d:Text="localhost" />
             <Label Text="Port" />
-            <Editor Text="{Binding HostConnection.Port}" d:Text="31416" Margin="0" />
+            <Editor Text="{Binding HostConnection.Port}" TextChanged="Entry_TextChanged" d:Text="31416" />
             <Label Text="Password" />
-            <Editor Text="{Binding HostConnection.Password}" d:Text="31416" Margin="0" />
+            <Editor Text="{Binding HostConnection.Password}" TextChanged="Entry_TextChanged" d:Text="123" />
             <Label Text="Auto Connect" />
-            <Switch IsToggled="{Binding HostConnection.AutoConnect}" Margin="0" />
+            <Switch IsToggled="{Binding HostConnection.AutoConnect}" />
         </StackLayout>
     </ContentPage.Content>
     

@@ -8,34 +8,36 @@
              Title="{Binding Title}">
 
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Remove Host" Clicked="RemoveHost_Clicked" />
+        <ToolbarItem Text="Remove Host" Command="{Binding RemoveHostCommand}" />
     </ContentPage.ToolbarItems>
-
-    <StackLayout Spacing="20" Padding="15">
-        <StackLayout Orientation="Horizontal" >
-            <Label Text="Name: " />
-            <Label Text="{Binding Host.Name}" d:Text="{Binding .}" LineBreakMode="NoWrap" />
+    
+    <ContentPage.Content>
+        <StackLayout Spacing="20" Padding="15">
+            <StackLayout Orientation="Horizontal" >
+                <Label Text="Name: " />
+                <Label Text="{Binding Host.Name}" d:Text="{Binding .}" />
+            </StackLayout>
+            <StackLayout Orientation="Horizontal" >
+                <Label Text="IP Address: " />
+                <Label Text="{Binding Host.IpAddress}" d:Text="Item descripton" />
+            </StackLayout>
+            <StackLayout Orientation="Horizontal" >
+                <Label Text="Auto Connect: " />
+                <Switch IsToggled="{Binding Host.AutoConnect}" />
+            </StackLayout>
+            <StackLayout Orientation="Horizontal" >
+                <Label Text="Boinc Version: " />
+                <Label Text="{Binding Host.BoincVersion}" d:Text="Item descripton" />
+            </StackLayout>
+            <StackLayout Orientation="Horizontal" >
+                <Label Text="Operating System: " />
+                <Label Text="{Binding Host.OperatingSystem}" d:Text="Item descripton" />
+            </StackLayout>
+            <StackLayout Orientation="Horizontal" >
+                <Label Text="Status: " />
+                <Label Text="{Binding Host.Status}" d:Text="Item descripton" />
+            </StackLayout>
         </StackLayout>
-        <StackLayout Orientation="Horizontal" >
-            <Label Text="IP Address: " />
-            <Label Text="{Binding Host.IpAddress}" d:Text="Item descripton" LineBreakMode="NoWrap" />
-        </StackLayout>
-        <StackLayout Orientation="Horizontal" >
-            <Label Text="Auto Connect: " />
-            <Switch IsToggled="{Binding Host.AutoConnect}" />
-        </StackLayout>
-        <StackLayout Orientation="Horizontal" >
-            <Label Text="Boinc Version: " />
-            <Label Text="{Binding Host.BoincVersion}" d:Text="Item descripton" LineBreakMode="NoWrap" />
-        </StackLayout>
-        <StackLayout Orientation="Horizontal" >
-            <Label Text="Operating System: " />
-            <Label Text="{Binding Host.OperatingSystem}" d:Text="Item descripton" LineBreakMode="NoWrap" />
-        </StackLayout>
-        <StackLayout Orientation="Horizontal" >
-            <Label Text="Status: " />
-            <Label Text="{Binding Host.Status}" d:Text="Item descripton" LineBreakMode="NoWrap" />
-        </StackLayout>
-    </StackLayout>
+    </ContentPage.Content>
     
 </ContentPage>

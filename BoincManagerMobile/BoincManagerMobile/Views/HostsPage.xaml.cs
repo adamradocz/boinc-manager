@@ -26,7 +26,7 @@ namespace BoincManagerMobile.Views
             if (host == null)
                 return;
 
-            await Navigation.PushAsync(new HostDetailPage(new HostDetailViewModel(host)));
+            await Navigation.PushAsync(new HostDetailPage(new HostDetailViewModel(host, Navigation)));
 
             // Manually deselect item.
             ItemsListView.SelectedItem = null;
@@ -34,7 +34,7 @@ namespace BoincManagerMobile.Views
 
         async void AddHost_Clicked(object sender, EventArgs e)
         {
-            await Navigation.PushModalAsync(new NavigationPage(new AddHostPage()));
+            await Navigation.PushAsync(new AddHostPage());
         }
 
         protected override void OnAppearing()
