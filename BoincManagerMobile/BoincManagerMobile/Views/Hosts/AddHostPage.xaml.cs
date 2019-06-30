@@ -9,7 +9,7 @@ namespace BoincManagerMobile.Views
     [DesignTimeVisible(false)]
     public partial class AddHostPage : ContentPage
     {
-        AddHostViewModel _viewModel;
+        readonly AddHostViewModel _viewModel;
 
         public AddHostPage()
         {

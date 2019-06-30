@@ -52,17 +52,20 @@ namespace BoincManagerMobile.Models
             private set { SetProperty(ref status, value); }
         }
 
-        public Project(HostState hostState, BoincRpc.Project project)
+        public BoincRpc.Project RpcProject { get; private set; }
+
+        public Project(HostState hostState, BoincRpc.Project rpcProject)
         {
             HostId = hostState.Id;
             HostName = hostState.Name;
 
-            Name = project.ProjectName;
-            Username = project.UserName;
-            Team = project.TeamName;
-            Credit = project.UserTotalCredit.ToString("N2");
-            AverageCredit = project.UserAverageCredit.ToString("N2");
-            Status = Statuses.GetProjectStatus(project);
+            RpcProject = rpcProject;
+            Name = rpcProject.ProjectName;
+            Username = rpcProject.UserName;
+            Team = rpcProject.TeamName;
+            Credit = rpcProject.UserTotalCredit.ToString("N2");
+            AverageCredit = rpcProject.UserAverageCredit.ToString("N2");
+            Status = Statuses.GetProjectStatus(rpcProject);
         }
 
         public IEnumerable<string> GetContentsForFiltering()

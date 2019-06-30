@@ -1,7 +1,6 @@
 ﻿using System.ComponentModel;
 using Xamarin.Forms;
 using BoincManagerMobile.ViewModels;
-using System;
 
 namespace BoincManagerMobile.Views
 {
@@ -9,19 +8,11 @@ namespace BoincManagerMobile.Views
     [DesignTimeVisible(false)]
     public partial class ProjectDetailPage : ContentPage
     {
-        readonly ProjectDetailViewModel _viewModel;
-
         public ProjectDetailPage(ProjectDetailViewModel viewModel)
         {
             InitializeComponent();
 
-            BindingContext = _viewModel = viewModel;
+            BindingContext = viewModel;
         }
-
-        async void RemoveProject_Clicked(object sender, EventArgs e)
-        {
-            await Navigation.PopAsync();
-        }
-
     }
 }

@@ -12,17 +12,17 @@ namespace BoincManagerMobile.ViewModels
     public class TasksViewModel : BaseViewModel
     {
         public ObservableCollection<Task> Tasks { get; set; }
-        public Command LoadItemsCommand { get; set; }
+        public Command LoadTasksCommand { get; set; }
 
         public TasksViewModel()
         {
             Title = nameof(MenuItemType.Hosts);
             Tasks = new ObservableCollection<Task>();
 
-            LoadItemsCommand = new Command(() => ExecuteLoadItemsCommand());
+            LoadTasksCommand = new Command(() => ExecuteLoadTasksCommand());
         }
 
-        void ExecuteLoadItemsCommand()
+        void ExecuteLoadTasksCommand()
         {
             if (IsBusy)
                 return;

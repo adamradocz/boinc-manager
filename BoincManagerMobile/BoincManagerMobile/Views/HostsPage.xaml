@@ -8,7 +8,7 @@
              Title="{Binding Title}">
 
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Add Host" Clicked="AddHost_Clicked" />
+        <ToolbarItem Text="Add Host" Command="{Binding AddHostsCommand}" />
     </ContentPage.ToolbarItems>
 
     <StackLayout>
@@ -16,7 +16,7 @@
                 ItemsSource="{Binding Hosts}"
                 VerticalOptions="FillAndExpand"
                 HasUnevenRows="true"
-                RefreshCommand="{Binding LoadItemsCommand}"
+                RefreshCommand="{Binding LoadHostsCommand}"
                 IsPullToRefreshEnabled="true"
                 IsRefreshing="{Binding IsBusy, Mode=OneWay}"
                 CachingStrategy="RecycleElement"

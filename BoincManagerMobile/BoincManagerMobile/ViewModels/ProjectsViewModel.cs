@@ -6,23 +6,31 @@ using Xamarin.Forms;
 using System.Collections.Generic;
 using BoincManager.Models;
 using BoincManagerMobile.Models;
+using BoincManagerMobile.Views;
 
 namespace BoincManagerMobile.ViewModels
 {
     public class ProjectsViewModel : BaseViewModel
     {
-        public ObservableCollection<Project> Projects { get; set; }
-        public Command LoadItemsCommand { get; set; }
+        private readonly INavigation _navigation;
 
-        public ProjectsViewModel()
+        public ObservableCollection<Project> Projects { get; set; }
+        public Command LoadProjectsCommand { get; set; }
+        public Command AddProjectsCommand { get; set; }
+
+        public ProjectsViewModel(INavigation navigation)
         {
             Title = nameof(MenuItemType.Projects);
+
+            _navigation = navigation;
+
             Projects = new ObservableCollection<Project>();
 
-            LoadItemsCommand = new Command(() => ExecuteLoadItemsCommand());
+            LoadProjectsCommand = new Command(() => ExecuteLoadProjectsCommand());
+            AddProjectsCommand = new Command(async () => await ExecuteAddProjectsCommand());
         }
 
-        void ExecuteLoadItemsCommand()
+        void ExecuteLoadProjectsCommand()
         {
             if (IsBusy)
                 return;
@@ -32,7 +40,7 @@ namespace BoincManagerMobile.ViewModels
             try
             {
                 Projects.Clear();
-                var items = GetProjects(App.Manager.GetAllHostStates(), "");
+                var items = GetProjects(App.Manager.GetAllHostStates(), string.Empty);
                 foreach (var item in items)
                 {
                     Projects.Add(item);
@@ -81,5 +89,9 @@ namespace BoincManagerMobile.ViewModels
             return projects;
         }
 
+        private async System.Threading.Tasks.Task ExecuteAddProjectsCommand()
+        {
+            await _navigation.PushAsync(new AddProjectPage());
+        }
     }
 }

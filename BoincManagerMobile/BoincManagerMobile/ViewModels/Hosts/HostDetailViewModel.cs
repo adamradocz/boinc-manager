@@ -9,7 +9,7 @@ namespace BoincManagerMobile.ViewModels
 {
     public class HostDetailViewModel : BaseViewModel
     {
-        private INavigation _navigation;
+        private readonly INavigation _navigation;
 
         public Host Host { get; set; }
         public RelayCommand RemoveHostCommand { get; private set; }

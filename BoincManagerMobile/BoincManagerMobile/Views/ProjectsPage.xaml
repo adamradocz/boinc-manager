@@ -8,7 +8,7 @@
              Title="{Binding Title}">
 
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Add Project" Clicked="AddProject_Clicked" />
+        <ToolbarItem Text="Add Project" Command="{Binding AddProjectsCommand}" />
     </ContentPage.ToolbarItems>
 
     <StackLayout>
@@ -16,7 +16,7 @@
                 ItemsSource="{Binding Projects}"
                 VerticalOptions="FillAndExpand"
                 HasUnevenRows="true"
-                RefreshCommand="{Binding LoadItemsCommand}"
+                RefreshCommand="{Binding LoadProjectsCommand}"
                 IsPullToRefreshEnabled="true"
                 IsRefreshing="{Binding IsBusy, Mode=OneWay}"
                 CachingStrategy="RecycleElement"

@@ -6,10 +6,9 @@
              mc:Ignorable="d"
              x:Class="BoincManagerMobile.Views.AddProjectPage"
              Title="{Binding Title}">
-    
+
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Cancel" Clicked="Cancel_Clicked" />
-        <ToolbarItem Text="Save" Clicked="Save_Clicked" />
+        <ToolbarItem Text="Save" Command="{Binding AddProjectCommand}" />
     </ContentPage.ToolbarItems>
     
     <ContentPage.Content>

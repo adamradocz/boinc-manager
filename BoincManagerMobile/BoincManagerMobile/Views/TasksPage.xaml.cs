@@ -31,7 +31,7 @@ namespace BoincManagerMobile.Views
             base.OnAppearing();
 
             if (viewModel.Tasks.Count == 0)
-                viewModel.LoadItemsCommand.Execute(null);
+                viewModel.LoadTasksCommand.Execute(null);
         }
     }
 }

@@ -17,13 +17,12 @@ namespace BoincManagerMobile.Views
         {
             InitializeComponent();
 
-            BindingContext = viewModel = new HostsViewModel();
+            BindingContext = viewModel = new HostsViewModel(Navigation);
         }
 
         async void OnItemSelected(object sender, SelectedItemChangedEventArgs args)
         {
-            var host = args.SelectedItem as Host;
-            if (host == null)
+            if (!(args.SelectedItem is Host host))
                 return;
 
             await Navigation.PushAsync(new HostDetailPage(new HostDetailViewModel(host, Navigation)));
@@ -32,17 +31,12 @@ namespace BoincManagerMobile.Views
             ItemsListView.SelectedItem = null;
         }
 
-        async void AddHost_Clicked(object sender, EventArgs e)
-        {
-            await Navigation.PushAsync(new AddHostPage());
-        }
-
         protected override void OnAppearing()
         {
             base.OnAppearing();
 
             if (viewModel.Hosts.Count == 0)
-                viewModel.LoadItemsCommand.Execute(null);
+                viewModel.LoadHostsCommand.Execute(null);
         }
     }
 }

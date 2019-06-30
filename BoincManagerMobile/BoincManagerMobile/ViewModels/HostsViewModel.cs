@@ -12,15 +12,22 @@ namespace BoincManagerMobile.ViewModels
 {
     public class HostsViewModel : BaseViewModel
     {
-        public ObservableCollection<Host> Hosts { get; set; }
-        public Command LoadItemsCommand { get; set; }
+        private readonly INavigation _navigation;
 
-        public HostsViewModel()
+        public ObservableCollection<Host> Hosts { get; set; }
+        public Command LoadHostsCommand { get; set; }
+        public Command AddHostsCommand { get; set; }
+
+        public HostsViewModel(INavigation navigation)
         {
             Title = nameof(MenuItemType.Hosts);
+
+            _navigation = navigation;
+
             Hosts = new ObservableCollection<Host>();
 
-            LoadItemsCommand = new Command(() => ExecuteLoadItemsCommand());
+            LoadHostsCommand = new Command(() => ExecuteLoadHostsCommand());
+            AddHostsCommand = new Command(async () => await ExecuteAddHostsCommandAsync());
 
             MessagingCenter.Subscribe<AddHostPage, Host>(this, "AddHost", (obj, host) =>
             {
@@ -33,7 +40,7 @@ namespace BoincManagerMobile.ViewModels
             });
         }
 
-        void ExecuteLoadItemsCommand()
+        void ExecuteLoadHostsCommand()
         {
             if (IsBusy)
                 return;
@@ -43,7 +50,7 @@ namespace BoincManagerMobile.ViewModels
             try
             {
                 Hosts.Clear();
-                var items = GetHosts(App.Manager.GetAllHostStates(), "");
+                var items = GetHosts(App.Manager.GetAllHostStates(), string.Empty);
                 foreach (var item in items)
                 {
                     Hosts.Add(item);
@@ -86,5 +93,9 @@ namespace BoincManagerMobile.ViewModels
             return hosts;
         }
 
+        private async System.Threading.Tasks.Task ExecuteAddHostsCommandAsync()
+        {
+            await _navigation.PushAsync(new AddHostPage());
+        }
     }
 }

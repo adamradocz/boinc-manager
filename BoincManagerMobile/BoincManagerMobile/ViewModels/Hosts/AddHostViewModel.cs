@@ -9,10 +9,10 @@ namespace BoincManagerMobile.ViewModels
 {
     public class AddHostViewModel : BaseViewModel
     {
-        private INavigation _navigation;
+        private readonly INavigation _navigation;
 
         public HostConnection HostConnection { get; set; }
-        public RelayCommand AddHostCommand { get; private set; }        
+        public RelayCommand AddHostCommand { get; private set; }
 
         public AddHostViewModel(INavigation navigation)
         {

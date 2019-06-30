@@ -8,38 +8,40 @@
              Title="{Binding Title}">
 
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Remove Project" Clicked="RemoveProject_Clicked" />
+        <ToolbarItem Text="Remove Project" Command="{Binding RemoveProjectCommand}" />
     </ContentPage.ToolbarItems>
 
-    <StackLayout Spacing="20" Padding="15">
-        <StackLayout Orientation="Horizontal" >
-            <Label Text="Host:" />
-            <Label Text="{Binding Project.HostName}" d:Text="{Binding .}" />
+    <ContentPage.Content>
+        <StackLayout Spacing="20" Padding="15">
+            <StackLayout Orientation="Horizontal" >
+                <Label Text="Host:" />
+                <Label Text="{Binding Project.HostName}" d:Text="{Binding .}" />
+            </StackLayout>
+            <StackLayout Orientation="Horizontal" >
+                <Label Text="Name:" />
+                <Label Text="{Binding Project.Name}" d:Text="Item descripton" />
+            </StackLayout>
+            <StackLayout Orientation="Horizontal" >
+                <Label Text="Username:" />
+                <Label Text="{Binding Project.Username}" d:Text="Item descripton" />
+            </StackLayout>
+            <StackLayout Orientation="Horizontal" >
+                <Label Text="Team:" />
+                <Label Text="{Binding Project.Team}" d:Text="Item descripton" />
+            </StackLayout>
+            <StackLayout Orientation="Horizontal" >
+                <Label Text="Credit:" />
+                <Label Text="{Binding Project.Credit}" d:Text="Item descripton" />
+            </StackLayout>
+            <StackLayout Orientation="Horizontal" >
+                <Label Text="AverageCredit:" />
+                <Label Text="{Binding Project.AverageCredit}" d:Text="Item descripton" />
+            </StackLayout>
+            <StackLayout Orientation="Horizontal" >
+                <Label Text="Status:" />
+                <Label Text="{Binding Project.Status}" d:Text="Item descripton" />
+            </StackLayout>
         </StackLayout>
-        <StackLayout Orientation="Horizontal" >
-            <Label Text="Name:" />
-            <Label Text="{Binding Project.Name}" d:Text="Item descripton" />
-        </StackLayout>
-        <StackLayout Orientation="Horizontal" >
-            <Label Text="Username:" />
-            <Label Text="{Binding Project.Username}" d:Text="Item descripton" />
-        </StackLayout>
-        <StackLayout Orientation="Horizontal" >
-            <Label Text="Team:" />
-            <Label Text="{Binding Project.Team}" d:Text="Item descripton" />
-        </StackLayout>
-        <StackLayout Orientation="Horizontal" >
-            <Label Text="Credit:" />
-            <Label Text="{Binding Project.Credit}" d:Text="Item descripton" />
-        </StackLayout>
-        <StackLayout Orientation="Horizontal" >
-            <Label Text="AverageCredit:" />
-            <Label Text="{Binding Project.AverageCredit}" d:Text="Item descripton" />
-        </StackLayout>
-        <StackLayout Orientation="Horizontal" >
-            <Label Text="Status:" />
-            <Label Text="{Binding Project.Status}" d:Text="Item descripton" />
-        </StackLayout>
-    </StackLayout>
-    
+    </ContentPage.Content>
+
 </ContentPage>
