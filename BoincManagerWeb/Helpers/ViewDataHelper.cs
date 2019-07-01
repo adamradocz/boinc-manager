@@ -23,7 +23,7 @@ namespace BoincManagerWeb.Helpers
                     {
                         if (content != null && content.IndexOf(searchString, StringComparison.InvariantCultureIgnoreCase) != -1)
                         {
-                            // The search string is found in any of the VM's property
+                            // The search string is found in any of the Models's property
                             hosts.Add(host);
                             break;
                         }
@@ -54,7 +54,7 @@ namespace BoincManagerWeb.Helpers
                             {
                                 if (content != null && content.IndexOf(searchString, StringComparison.InvariantCultureIgnoreCase) != -1)
                                 {
-                                    // The search string is found in any of the VM's property
+                                    // The search string is found in any of the Models's property
                                     projects.Add(project);
                                     break;
                                 }
@@ -87,7 +87,7 @@ namespace BoincManagerWeb.Helpers
                             {
                                 if (content != null && content.IndexOf(searchString, StringComparison.InvariantCultureIgnoreCase) != -1)
                                 {
-                                    // The search string is found in any of the VM's property
+                                    // The search string is found in any of the Models's property
                                     tasks.Add(task);
                                     break;
                                 }
@@ -120,7 +120,7 @@ namespace BoincManagerWeb.Helpers
                             {
                                 if (content != null && content.IndexOf(searchString, StringComparison.InvariantCultureIgnoreCase) != -1)
                                 {
-                                    // The search string is found in any of the VM's property
+                                    // The search string is found in any of the Models's property
                                     transfers.Add(transfer);
                                     break;
                                 }
@@ -153,7 +153,7 @@ namespace BoincManagerWeb.Helpers
                             {
                                 if (content != null && content.IndexOf(searchString, StringComparison.InvariantCultureIgnoreCase) != -1)
                                 {
-                                    // The search string is found in any of the VM's property
+                                    // The search string is found in any of the Models's property
                                     messages.Add(message);
                                     break;
                                 }

@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="BoincManagerMobile.Views.TransferDetailPage"
+             Title="{Binding Title}">
+
+    <ContentPage.Content>
+        <StackLayout Spacing="20" Padding="15">
+            <StackLayout Orientation="Horizontal" >
+                <Label Text="Host:" />
+                <Label Text="{Binding HostName}" d:Text="{Binding .}" />
+            </StackLayout>
+            <StackLayout Orientation="Horizontal" >
+                <Label Text="Project:" />
+                <Label Text="{Binding Project}" d:Text="Item descripton" />
+            </StackLayout>
+            <StackLayout Orientation="Horizontal" >
+                <Label Text="File Name:" />
+                <Label Text="{Binding FileName}" d:Text="Item descripton" />
+            </StackLayout>
+            <StackLayout Orientation="Horizontal" >
+                <Label Text="File Size:" />
+                <Label Text="{Binding FileSize}" d:Text="Item descripton" />
+            </StackLayout>
+            <StackLayout Orientation="Horizontal" >
+                <Label Text="Transfer Rate:" />
+                <Label Text="{Binding TransferRate}" d:Text="Item descripton" />
+            </StackLayout>
+            <StackLayout Orientation="Horizontal" >
+                <Label Text="Elapsed Time:" />
+                <Label Text="{Binding ElapsedTime}" d:Text="Item descripton" />
+            </StackLayout>
+            <StackLayout Orientation="Horizontal" >
+                <Label Text="Time Remaining:" />
+                <Label Text="{Binding TimeRemaining}" d:Text="Item descripton" />
+            </StackLayout>
+            <StackLayout Orientation="Horizontal" >
+                <Label Text="Status:" />
+                <Label Text="{Binding Status}" d:Text="Item descripton" />
+            </StackLayout>
+            <StackLayout Orientation="Horizontal" >
+                <Label Text="Progress:" />
+                <Label Text="{Binding Progress, Converter={StaticResource FractionToPercentage}}" />
+            </StackLayout>
+            <ProgressBar Progress="{Binding Progress}" />
+        </StackLayout>
+    </ContentPage.Content>
+
+</ContentPage>

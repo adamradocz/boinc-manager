@@ -47,8 +47,14 @@
     <Compile Update="Views\Projects\ProjectDetailPage.xaml.cs">
       <DependentUpon>ProjectDetailPage.xaml</DependentUpon>
     </Compile>
+    <Compile Update="Views\TransfersPage.xaml.cs">
+      <DependentUpon>TransfersPage.xaml</DependentUpon>
+    </Compile>
     <Compile Update="Views\Tasks\TaskDetailPage.xaml.cs">
       <DependentUpon>TaskDetailPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Transfers\TransferDetailPage.xaml.cs">
+      <DependentUpon>TransferDetailPage.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
 

@@ -1,7 +1,6 @@
 ﻿using BoincManager;
 using BoincManager.Interfaces;
 using BoincManager.Models;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 

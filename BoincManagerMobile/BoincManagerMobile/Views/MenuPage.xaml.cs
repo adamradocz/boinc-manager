@@ -21,6 +21,7 @@ namespace BoincManagerMobile.Views
                 new HomeMenuItem {Id = MenuItemType.Hosts, Title=nameof(MenuItemType.Hosts) },
                 new HomeMenuItem {Id = MenuItemType.Projects, Title=nameof(MenuItemType.Projects) },
                 new HomeMenuItem {Id = MenuItemType.Tasks, Title=nameof(MenuItemType.Tasks) },
+                new HomeMenuItem {Id = MenuItemType.Transfers, Title=nameof(MenuItemType.Transfers) },
                 new HomeMenuItem {Id = MenuItemType.About, Title=nameof(MenuItemType.About) }
             };
 
