@@ -11,8 +11,9 @@ namespace BoincManagerMobile.ViewModels
 {
     public class TransfersViewModel : BaseViewModel
     {
-        public ObservableCollection<Transfer> Transfers { get; set; }
-        public Command LoadTransfersCommand { get; set; }
+        private ObservableCollection<Transfer> _transfers;
+        public ObservableCollection<Transfer> Transfers { get => _transfers; set => _transfers = value; }
+        public Command LoadTransfersCommand { get; }
 
         public TransfersViewModel()
         {
@@ -32,11 +33,7 @@ namespace BoincManagerMobile.ViewModels
             try
             {
                 Transfers.Clear();
-                var items = GetTransfers(App.Manager.GetAllHostStates(), "");
-                foreach (var item in items)
-                {
-                    Transfers.Add(item);
-                }
+                GetTransfers(App.Manager.GetAllHostStates(), string.Empty, ref _transfers);
             }
             catch (Exception ex)
             {
@@ -48,9 +45,8 @@ namespace BoincManagerMobile.ViewModels
             }
         }
 
-        public List<Transfer> GetTransfers(IEnumerable<HostState> hostStates, string searchString)
+        public void GetTransfers(IEnumerable<HostState> hostStates, string searchString, ref ObservableCollection<Transfer> transfers)
         {
-            var transfers = new List<Transfer>();
             foreach (var hostState in hostStates)
             {
                 if (hostState.Connected)
@@ -77,8 +73,6 @@ namespace BoincManagerMobile.ViewModels
                     }
                 }
             }
-
-            return transfers;
         }
 
     }

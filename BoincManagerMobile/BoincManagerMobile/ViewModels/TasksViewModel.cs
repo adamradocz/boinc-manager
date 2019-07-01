@@ -11,8 +11,9 @@ namespace BoincManagerMobile.ViewModels
 {
     public class TasksViewModel : BaseViewModel
     {
-        public ObservableCollection<Task> Tasks { get; set; }
-        public Command LoadTasksCommand { get; set; }
+        private ObservableCollection<Task> _tasks;
+        public ObservableCollection<Task> Tasks { get => _tasks; set => _tasks = value; }
+        public Command LoadTasksCommand { get; }
 
         public TasksViewModel()
         {
@@ -32,11 +33,7 @@ namespace BoincManagerMobile.ViewModels
             try
             {
                 Tasks.Clear();
-                var items = GetTasks(App.Manager.GetAllHostStates(), "");
-                foreach (var item in items)
-                {
-                    Tasks.Add(item);
-                }
+                GetTasks(App.Manager.GetAllHostStates(), string.Empty, ref _tasks);
             }
             catch (Exception ex)
             {
@@ -48,9 +45,8 @@ namespace BoincManagerMobile.ViewModels
             }
         }
 
-        private Collection<Task> GetTasks(IEnumerable<HostState> hostStates, string searchString)
+        private void GetTasks(IEnumerable<HostState> hostStates, string searchString, ref ObservableCollection<Task> tasks)
         {
-            var tasks = new Collection<Task>();
             foreach (var hostState in hostStates)
             {
                 if (hostState.Connected)
@@ -77,8 +73,6 @@ namespace BoincManagerMobile.ViewModels
                     }
                 }
             }
-
-            return tasks;
         }
     }
 }

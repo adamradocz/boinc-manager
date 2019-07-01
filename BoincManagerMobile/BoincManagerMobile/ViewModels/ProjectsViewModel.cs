@@ -14,9 +14,10 @@ namespace BoincManagerMobile.ViewModels
     {
         private readonly INavigation _navigation;
 
-        public ObservableCollection<Project> Projects { get; set; }
-        public Command LoadProjectsCommand { get; set; }
-        public Command AddProjectsCommand { get; set; }
+        private ObservableCollection<Project> _projects;
+        public ObservableCollection<Project> Projects { get => _projects; set => _projects = value; }
+        public Command LoadProjectsCommand { get; }
+        public Command AddProjectsCommand { get; }
 
         public ProjectsViewModel(INavigation navigation)
         {
@@ -40,11 +41,7 @@ namespace BoincManagerMobile.ViewModels
             try
             {
                 Projects.Clear();
-                var items = GetProjects(App.Manager.GetAllHostStates(), string.Empty);
-                foreach (var item in items)
-                {
-                    Projects.Add(item);
-                }
+                GetProjects(App.Manager.GetAllHostStates(), string.Empty, ref _projects);                
             }
             catch (Exception ex)
             {
@@ -56,9 +53,8 @@ namespace BoincManagerMobile.ViewModels
             }
         }
 
-        public Collection<Project> GetProjects(IEnumerable<HostState> hostStates, string searchString)
+        public void GetProjects(IEnumerable<HostState> hostStates, string searchString, ref ObservableCollection<Project> projects)
         {
-            var projects = new Collection<Project>();
             foreach (var hostState in hostStates)
             {
                 if (hostState.Connected)
@@ -85,8 +81,6 @@ namespace BoincManagerMobile.ViewModels
                     }
                 }
             }
-
-            return projects;
         }
 
         private async System.Threading.Tasks.Task ExecuteAddProjectsCommand()

@@ -14,9 +14,10 @@ namespace BoincManagerMobile.ViewModels
     {
         private readonly INavigation _navigation;
 
-        public ObservableCollection<Host> Hosts { get; set; }
-        public Command LoadHostsCommand { get; set; }
-        public Command AddHostsCommand { get; set; }
+        private ObservableCollection<Host> _hosts;
+        public ObservableCollection<Host> Hosts { get => _hosts; set => _hosts = value; }
+        public Command LoadHostsCommand { get; }
+        public Command AddHostsCommand { get; }
 
         public HostsViewModel(INavigation navigation)
         {
@@ -50,11 +51,7 @@ namespace BoincManagerMobile.ViewModels
             try
             {
                 Hosts.Clear();
-                var items = GetHosts(App.Manager.GetAllHostStates(), string.Empty);
-                foreach (var item in items)
-                {
-                    Hosts.Add(item);
-                }
+                GetHosts(App.Manager.GetAllHostStates(), string.Empty, ref _hosts);                
             }
             catch (Exception ex)
             {
@@ -66,9 +63,8 @@ namespace BoincManagerMobile.ViewModels
             }
         }
 
-        private Collection<Host> GetHosts(IEnumerable<HostState> hostStates, string searchString)
+        private void GetHosts(IEnumerable<HostState> hostStates, string searchString, ref ObservableCollection<Host> hosts)
         {
-            var hosts = new ObservableCollection<Host>();
             foreach (var hostState in hostStates)
             {
                 if (string.IsNullOrEmpty(searchString))
@@ -89,8 +85,6 @@ namespace BoincManagerMobile.ViewModels
                     }
                 }
             }
-
-            return hosts;
         }
 
         private async System.Threading.Tasks.Task ExecuteAddHostsCommandAsync()
