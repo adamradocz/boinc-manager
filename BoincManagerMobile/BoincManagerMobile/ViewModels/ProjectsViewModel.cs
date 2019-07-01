@@ -15,7 +15,7 @@ namespace BoincManagerMobile.ViewModels
         private readonly INavigation _navigation;
 
         private ObservableCollection<Project> _projects;
-        public ObservableCollection<Project> Projects { get => _projects; set => _projects = value; }
+        public ObservableCollection<Project> Projects { get => _projects; }
         public Command LoadProjectsCommand { get; }
         public Command AddProjectsCommand { get; }
 
@@ -25,7 +25,7 @@ namespace BoincManagerMobile.ViewModels
 
             _navigation = navigation;
 
-            Projects = new ObservableCollection<Project>();
+            _projects = new ObservableCollection<Project>();
 
             LoadProjectsCommand = new Command(() => ExecuteLoadProjectsCommand());
             AddProjectsCommand = new Command(async () => await ExecuteAddProjectsCommand());
@@ -40,7 +40,7 @@ namespace BoincManagerMobile.ViewModels
 
             try
             {
-                Projects.Clear();
+                _projects.Clear();
                 GetProjects(App.Manager.GetAllHostStates(), string.Empty, ref _projects);                
             }
             catch (Exception ex)

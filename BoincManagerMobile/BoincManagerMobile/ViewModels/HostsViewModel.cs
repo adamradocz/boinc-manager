@@ -15,7 +15,7 @@ namespace BoincManagerMobile.ViewModels
         private readonly INavigation _navigation;
 
         private ObservableCollection<Host> _hosts;
-        public ObservableCollection<Host> Hosts { get => _hosts; set => _hosts = value; }
+        public ObservableCollection<Host> Hosts { get => _hosts; }
         public Command LoadHostsCommand { get; }
         public Command AddHostsCommand { get; }
 
@@ -25,19 +25,19 @@ namespace BoincManagerMobile.ViewModels
 
             _navigation = navigation;
 
-            Hosts = new ObservableCollection<Host>();
+            _hosts = new ObservableCollection<Host>();
 
             LoadHostsCommand = new Command(() => ExecuteLoadHostsCommand());
             AddHostsCommand = new Command(async () => await ExecuteAddHostsCommandAsync());
 
             MessagingCenter.Subscribe<AddHostPage, Host>(this, "AddHost", (obj, host) =>
             {
-                Hosts.Add(host);
+                _hosts.Add(host);
             });
 
             MessagingCenter.Subscribe<HostDetailPage, Host>(this, "RemoveHost", (obj, host) =>
             {
-                Hosts.Remove(host);
+                _hosts.Remove(host);
             });
         }
 
@@ -50,7 +50,7 @@ namespace BoincManagerMobile.ViewModels
 
             try
             {
-                Hosts.Clear();
+                _hosts.Clear();
                 GetHosts(App.Manager.GetAllHostStates(), string.Empty, ref _hosts);                
             }
             catch (Exception ex)

@@ -12,13 +12,13 @@ namespace BoincManagerMobile.ViewModels
     public class TasksViewModel : BaseViewModel
     {
         private ObservableCollection<Task> _tasks;
-        public ObservableCollection<Task> Tasks { get => _tasks; set => _tasks = value; }
+        public ObservableCollection<Task> Tasks { get => _tasks; }
         public Command LoadTasksCommand { get; }
 
         public TasksViewModel()
         {
             Title = nameof(MenuItemType.Tasks);
-            Tasks = new ObservableCollection<Task>();
+            _tasks = new ObservableCollection<Task>();
 
             LoadTasksCommand = new Command(() => ExecuteLoadTasksCommand());
         }
@@ -32,7 +32,7 @@ namespace BoincManagerMobile.ViewModels
 
             try
             {
-                Tasks.Clear();
+                _tasks.Clear();
                 GetTasks(App.Manager.GetAllHostStates(), string.Empty, ref _tasks);
             }
             catch (Exception ex)

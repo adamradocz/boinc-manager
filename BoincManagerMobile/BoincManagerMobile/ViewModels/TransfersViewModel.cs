@@ -12,13 +12,13 @@ namespace BoincManagerMobile.ViewModels
     public class TransfersViewModel : BaseViewModel
     {
         private ObservableCollection<Transfer> _transfers;
-        public ObservableCollection<Transfer> Transfers { get => _transfers; set => _transfers = value; }
+        public ObservableCollection<Transfer> Transfers { get => _transfers; }
         public Command LoadTransfersCommand { get; }
 
         public TransfersViewModel()
         {
             Title = nameof(MenuItemType.Transfers);
-            Transfers = new ObservableCollection<Transfer>();
+            _transfers = new ObservableCollection<Transfer>();
 
             LoadTransfersCommand = new Command(() => ExecuteLoadTransfersCommand());
         }
@@ -32,7 +32,7 @@ namespace BoincManagerMobile.ViewModels
 
             try
             {
-                Transfers.Clear();
+                _transfers.Clear();
                 GetTransfers(App.Manager.GetAllHostStates(), string.Empty, ref _transfers);
             }
             catch (Exception ex)
