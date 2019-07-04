@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Threading;
 using System.Threading.Tasks;
-using BoincManager.Interfaces;
 using BoincManager.Models;
 
 namespace BoincManager
@@ -72,8 +70,6 @@ namespace BoincManager
             while (!_updateLoopCancellationToken.IsCancellationRequested)
             {
                 await Update();
-
-                // The 'Delay' method have to be at bottom, otherwise the 'Update' method would be called one more time unnecessarily, when cancellation is requested.
                 await Task.Delay(2000);
             }
         }
@@ -84,6 +80,11 @@ namespace BoincManager
             // TODO - Update only the Viewed tabs (is that possible?)
             foreach (var hostState in _hostStates.Values)
             {
+                if (_updateLoopCancellationToken.IsCancellationRequested)
+                {
+                    break;
+                }
+
                 if (hostState.Connected)
                 {
                     await hostState.BoincState.UpdateProjects();
