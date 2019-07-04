@@ -21,6 +21,12 @@ namespace BoincManager
         private CancellationToken _delayedStopCancellationToken;
 
         public bool IsRunning { get; private set; }
+
+        /// <summary>
+        /// Set X milliseconds Delay in the <see cref="StartUpdateLoop"/>.
+        /// </summary>
+        public int UpdatePeriod { get; set; } = 2000;
+
         public bool DelayedStopStarted { get; private set; }
 
         public Manager()
@@ -70,7 +76,7 @@ namespace BoincManager
             while (!_updateLoopCancellationToken.IsCancellationRequested)
             {
                 await Update();
-                await Task.Delay(2000);
+                await Task.Delay(UpdatePeriod);
             }
         }
 
