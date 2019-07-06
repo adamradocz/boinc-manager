@@ -3,9 +3,9 @@ using BoincManager.Interfaces;
 using BoincManager.Models;
 using System.Collections.Generic;
 
-namespace BoincManagerMobile.Models
+namespace BoincManager.Models
 {
-    public class Transfer : BindableBase, ITransfer, IFilterable
+    public class ObservableTransfer : BindableBase, ITransfer, IFilterable
     {
         public int HostId { get; }
         public string HostName { get; }
@@ -68,20 +68,25 @@ namespace BoincManagerMobile.Models
 
         public BoincRpc.FileTransfer FileTransfer { get; private set; }
 
-        public Transfer(HostState hostState, BoincRpc.FileTransfer fileTransfer)
+        public ObservableTransfer(HostState hostState, BoincRpc.FileTransfer fileTransfer)
         {
             HostId = hostState.Id;
             HostName = hostState.Name;
 
+            Update(fileTransfer);
+        }
+
+        public void Update(BoincRpc.FileTransfer fileTransfer)
+        {
             FileTransfer = fileTransfer;
 
             Project = fileTransfer.ProjectName;
             FileName = fileTransfer.Name;
             Progress = fileTransfer.NumberOfBytes > 0 ? fileTransfer.BytesTransferred / fileTransfer.NumberOfBytes : 0;
-            FileSize = BoincManager.Utils.ConvertBytesToFileSize(fileTransfer.NumberOfBytes);
-            TransferRate = fileTransfer.TransferActive ? $"{BoincManager.Utils.ConvertBytesToFileSize(fileTransfer.TransferSpeed)} /s" : string.Empty;
-            ElapsedTime = BoincManager.Utils.ConvertDuration(fileTransfer.TimeSoFar);
-            TimeRemaining = fileTransfer.TransferActive ? BoincManager.Utils.GetTimeRemaining(fileTransfer) : string.Empty;
+            FileSize = Utils.ConvertBytesToFileSize(fileTransfer.NumberOfBytes);
+            TransferRate = fileTransfer.TransferActive ? $"{Utils.ConvertBytesToFileSize(fileTransfer.TransferSpeed)} /s" : string.Empty;
+            ElapsedTime = Utils.ConvertDuration(fileTransfer.TimeSoFar);
+            TimeRemaining = fileTransfer.TransferActive ? Utils.GetTimeRemaining(fileTransfer) : string.Empty;
             Status = Statuses.GetTransferStatus(fileTransfer);
         }
 

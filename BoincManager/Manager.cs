@@ -37,6 +37,7 @@ namespace BoincManager
         public string SearchString { get; set; }
         public ObservableCollection<ObservableProject> Projects { get; private set; }
         public ObservableCollection<ObservableTask> Tasks { get; private set; }
+        public ObservableCollection<ObservableTransfer> Transfers { get; private set; }
 
         public Manager()
         {
@@ -57,6 +58,7 @@ namespace BoincManager
             {
                 Projects = new ObservableCollection<ObservableProject>();
                 Tasks = new ObservableCollection<ObservableTask>();
+                Transfers = new ObservableCollection<ObservableTransfer>();
             }
 
             // Initialize the Dictionary. Add all the hosts stored in the database.
@@ -112,8 +114,8 @@ namespace BoincManager
                 {                    
                     await UpdateProjects(hostState);
                     await UpdateTasks(hostState);
-
-                    await hostState.BoincState.UpdateFileTransfers();
+                    await UpdateTransfers(hostState);
+                    
                     await hostState.BoincState.UpdateMessages();
                 }
             }
@@ -121,7 +123,8 @@ namespace BoincManager
             if (_useObservableCollections)
             {
                 RemoveOutdatedProjects(_hostStates.Values);
-                RemoveOutdatedTasks(_hostStates.Values);                
+                RemoveOutdatedTasks(_hostStates.Values);
+                RemoveOutdatedTransfers(_hostStates.Values);
             }
 
             _updating = false;
@@ -136,8 +139,8 @@ namespace BoincManager
 
             foreach (var rpcProject in hostState.BoincState.Projects)
             {
-                ObservableProject projectViewModel = Projects.FirstOrDefault(pvm => pvm.HostId == hostState.Id && pvm.Name == rpcProject.ProjectName);
-                if (projectViewModel == null)
+                ObservableProject project = Projects.FirstOrDefault(pvm => pvm.HostId == hostState.Id && pvm.Name == rpcProject.ProjectName);
+                if (project == null)
                 {
                     if (string.IsNullOrEmpty(SearchString))
                     {
@@ -145,7 +148,6 @@ namespace BoincManager
                     }
                     else
                     {
-                        var project = new ObservableProject(hostState, rpcProject);
                         foreach (var content in project.GetContentsForFiltering())
                         {
                             if (content != null && content.IndexOf(SearchString, StringComparison.InvariantCultureIgnoreCase) != -1)
@@ -159,7 +161,7 @@ namespace BoincManager
                 }
                 else
                 {
-                    projectViewModel.Update(rpcProject);
+                    project.Update(rpcProject);
                 }
             }
         }
@@ -187,15 +189,15 @@ namespace BoincManager
 
         private async Task UpdateTasks(HostState hostState)
         {
-            await hostState.BoincState.UpdateResults(); // Tasks
+            await hostState.BoincState.UpdateResults();
 
             if (!_useObservableCollections)
                 return;
 
             foreach (var rpcResult in hostState.BoincState.Results)
             {
-                ObservableTask boincTask = Tasks.FirstOrDefault(m => m.HostId == hostState.Id && m.Workunit == rpcResult.WorkunitName);
-                if (boincTask == null)
+                ObservableTask task = Tasks.FirstOrDefault(m => m.HostId == hostState.Id && m.Workunit == rpcResult.WorkunitName);
+                if (task == null)
                 {
                     if (string.IsNullOrEmpty(SearchString))
                     {
@@ -203,12 +205,12 @@ namespace BoincManager
                     }
                     else
                     {
-                        foreach (var content in boincTask.GetContentsForFiltering())
+                        foreach (var content in task.GetContentsForFiltering())
                         {
                             if (content != null && content.IndexOf(SearchString, StringComparison.InvariantCultureIgnoreCase) != -1)
                             {
                                 // The search string is found in any of the Models's property
-                                Tasks.Add(boincTask);
+                                Tasks.Add(task);
                                 break;
                             }
                         }
@@ -216,7 +218,7 @@ namespace BoincManager
                 }
                 else
                 {
-                    boincTask.Update(hostState, rpcResult);
+                    task.Update(hostState, rpcResult);
                 }
             }
         }
@@ -241,6 +243,63 @@ namespace BoincManager
                 }
             }
          }
+
+        private async Task UpdateTransfers(HostState hostState)
+        {
+            await hostState.BoincState.UpdateFileTransfers();
+
+            if (!_useObservableCollections)
+                return;
+
+            foreach (BoincRpc.FileTransfer fileTransfer in hostState.BoincState.FileTransfers)
+            {
+                ObservableTransfer transfer = Transfers.FirstOrDefault(tvm => tvm.HostId == hostState.Id && tvm.FileName == fileTransfer.Name);
+                if (transfer == null)
+                {
+                    if (string.IsNullOrEmpty(SearchString))
+                    {
+                        Transfers.Add(new ObservableTransfer(hostState, fileTransfer));
+                    }
+                    else
+                    {
+                        foreach (var content in transfer.GetContentsForFiltering())
+                        {
+                            if (content != null && content.IndexOf(SearchString, StringComparison.InvariantCultureIgnoreCase) != -1)
+                            {
+                                // The search string is found in any of the Models's property
+                                Transfers.Add(transfer);
+                                break;
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    transfer.Update(fileTransfer);
+                }
+            }
+        }
+
+        private void RemoveOutdatedTransfers(IEnumerable<HostState> hostStates)
+        {
+            var currentFileTransfers = new HashSet<BoincRpc.FileTransfer>();
+            foreach (var hostState in hostStates)
+            {
+                if (hostState.Connected)
+                {
+                    currentFileTransfers.UnionWith(hostState.BoincState.FileTransfers);
+                }
+            }
+
+            for (int i = 0; i < Transfers.Count; i++)
+            {
+                if (!currentFileTransfers.Contains(Transfers[i].FileTransfer))
+                {
+                    Transfers.RemoveAt(i);
+                    i--;
+                }
+            }
+        }
 
         /// <summary>
         /// Connect to a host.

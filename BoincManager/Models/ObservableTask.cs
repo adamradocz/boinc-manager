@@ -154,8 +154,8 @@ namespace BoincManager.Models
 
         public override bool Equals(object obj)
         {
-            ObservableTask boincTask = obj as ObservableTask;
-            return boincTask == null ? false : Equals(boincTask);
+            ObservableTask task = obj as ObservableTask;
+            return task == null ? false : Equals(task);
         }
 
         public override int GetHashCode()

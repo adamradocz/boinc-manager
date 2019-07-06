@@ -1,11 +1,11 @@
-﻿using BoincManagerMobile.Models;
+﻿using BoincManager.Models;
 
 namespace BoincManagerMobile.ViewModels
 {
     public class TransferDetailViewModel : BaseViewModel
     {
-        public Transfer Transfer { get; set; }
-        public TransferDetailViewModel(Transfer transfer)
+        public ObservableTransfer Transfer { get; set; }
+        public TransferDetailViewModel(ObservableTransfer transfer)
         {
             Title = transfer.FileName;
             Transfer = transfer;

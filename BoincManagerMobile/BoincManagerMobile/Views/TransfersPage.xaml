@@ -12,7 +12,7 @@
                 ItemsSource="{Binding Transfers}"
                 VerticalOptions="FillAndExpand"
                 HasUnevenRows="true"
-                RefreshCommand="{Binding LoadTransfersCommand}"
+                RefreshCommand="{Binding RefreshTransfersCommand}"
                 IsPullToRefreshEnabled="true"
                 IsRefreshing="{Binding IsBusy, Mode=OneWay}"
                 CachingStrategy="RecycleElement"

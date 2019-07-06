@@ -1,4 +1,5 @@
-﻿using BoincManagerMobile.ViewModels;
+﻿using BoincManager.Models;
+using BoincManagerMobile.ViewModels;
 using Xamarin.Forms;
 
 namespace BoincManagerMobile.Views
@@ -16,7 +17,7 @@ namespace BoincManagerMobile.Views
 
         async void OnItemSelected(object sender, SelectedItemChangedEventArgs args)
         {
-            var transfer = args.SelectedItem as Models.Transfer;
+            var transfer = args.SelectedItem as ObservableTransfer;
             if (transfer == null)
                 return;
 
@@ -31,7 +32,7 @@ namespace BoincManagerMobile.Views
             base.OnAppearing();
 
             if (viewModel.Transfers.Count == 0)
-                viewModel.LoadTransfersCommand.Execute(null);
+                viewModel.RefreshTransfersCommand.Execute(null);
         }
     }
 }

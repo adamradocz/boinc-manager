@@ -485,7 +485,7 @@ namespace BoincRpc
             if (ReferenceEquals(this, other))
                 return true;
 
-            return MasterUrl.Equals(other.MasterUrl, StringComparison.Ordinal);
+            return HostID == other.HostID && MasterUrl.Equals(other.MasterUrl, StringComparison.Ordinal);
         }
 
         public override bool Equals(object obj)
@@ -496,7 +496,7 @@ namespace BoincRpc
 
         public override int GetHashCode()
         {
-            return MasterUrl.GetHashCode();
+            return (HostID, MasterUrl).GetHashCode();
         }
 
         public static bool operator ==(Project lhs, Project rhs)
@@ -744,7 +744,8 @@ namespace BoincRpc
             if (ReferenceEquals(this, other))
                 return true;
 
-            return Name.Equals(other.Name, StringComparison.Ordinal);
+            return ProjectUrl.Equals(other.ProjectUrl, StringComparison.Ordinal)
+                && WorkunitName.Equals(other.WorkunitName, StringComparison.Ordinal);
         }
 
         public override bool Equals(object obj)
@@ -755,7 +756,7 @@ namespace BoincRpc
 
         public override int GetHashCode()
         {
-            return Name.GetHashCode();
+            return (ProjectUrl, WorkunitName).GetHashCode();
         }
 
         public static bool operator ==(Result lhs, Result rhs)
@@ -784,7 +785,7 @@ namespace BoincRpc
         #endregion
     }
 
-    public class FileTransfer
+    public class FileTransfer : IEquatable<FileTransfer>
     {
         public string Name { get; private set; }
         public string ProjectUrl { get; private set; }
@@ -847,6 +848,64 @@ namespace BoincRpc
         {
             return $"{Name} (Project: {ProjectUrl}): {Url}";
         }
+
+        #region Equality comparisons
+        /* From:
+         * - https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/statements-expressions-operators/how-to-define-value-equality-for-a-type
+         * - https://intellitect.com/overidingobjectusingtuple/
+         * - https://montemagno.com/optimizing-c-struct-equality-with-iequatable/
+        */
+
+        public bool Equals(FileTransfer other)
+        {
+            // If parameter is null, return false.
+            if (other is null)
+                return false;
+
+            // Optimization for a common success case.
+            if (ReferenceEquals(this, other))
+                return true;
+
+            return Hostname.Equals(other.Hostname, StringComparison.Ordinal)
+                && ProjectName.Equals(other.ProjectName, StringComparison.Ordinal)
+                && Name.Equals(other.Name, StringComparison.Ordinal);
+        }
+
+        public override bool Equals(object obj)
+        {
+            FileTransfer fileTransfer = obj as FileTransfer;
+            return fileTransfer == null ? false : Equals(fileTransfer);
+        }
+
+        public override int GetHashCode()
+        {
+            return (Hostname, ProjectName, Name).GetHashCode();
+        }
+
+        public static bool operator ==(FileTransfer lhs, FileTransfer rhs)
+        {
+            // Check for null on left side.
+            if (lhs is null)
+            {
+                if (rhs is null)
+                {
+                    // null == null = true.
+                    return true;
+                }
+
+                // Only the left side is null.
+                return false;
+            }
+
+            // Equals handles case of null on right side.
+            return lhs.Equals(rhs);
+        }
+
+        public static bool operator !=(FileTransfer lhs, FileTransfer rhs)
+        {
+            return !(lhs == rhs);
+        }
+        #endregion
     }
 
     public class Message
