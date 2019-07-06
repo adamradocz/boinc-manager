@@ -205,8 +205,8 @@ namespace BoincRpc
 
         public override bool Equals(object obj)
         {
-            VersionInfo boincTask = obj as VersionInfo;
-            return boincTask == null ? false : Equals(boincTask);
+            VersionInfo versionInfo = obj as VersionInfo;
+            return versionInfo == null ? false : Equals(versionInfo);
         }
 
         public override int GetHashCode()
@@ -992,7 +992,7 @@ namespace BoincRpc
         }
     }
 
-    public struct StartEndTime
+    public struct StartEndTime : IEquatable<StartEndTime>
     {
         public double StartHour { get; }
         public double EndHour { get; }
@@ -1003,33 +1003,44 @@ namespace BoincRpc
             EndHour = endHour;
         }
 
-        public override bool Equals(object obj)
-        {
-            if (obj == null || GetType() != obj.GetType())
-                return false;
-
-            return StartHour == ((StartEndTime)obj).StartHour && EndHour == ((StartEndTime)obj).EndHour;
-        }
-
-        public override int GetHashCode()
-        {
-            return StartHour.GetHashCode() ^ EndHour.GetHashCode();
-        }
-        
-        public static bool operator ==(StartEndTime obj1, object obj2)
-        {
-            return obj1.Equals(obj2);
-        }
-
-        public static bool operator !=(StartEndTime obj1, object obj2)
-        {
-            return !obj1.Equals(obj2);
-        }
-
         public override string ToString()
         {
             return $"{TimeSpan.FromHours(StartHour)} to {TimeSpan.FromHours(EndHour)}";
         }
+
+        #region Equality comparisons
+        /* From:
+         * - https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/statements-expressions-operators/how-to-define-value-equality-for-a-type
+         * - https://intellitect.com/overidingobjectusingtuple/
+         * - https://montemagno.com/optimizing-c-struct-equality-with-iequatable/
+        */
+
+        public bool Equals(StartEndTime other)
+        {
+            return StartHour == other.StartHour && EndHour == other.EndHour;
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is StartEndTime startEndTime ? Equals(startEndTime) : false;
+        }
+
+        public override int GetHashCode()
+        {
+            //return HashCode.Combine(StartHour, EndHour); Available in .NET Strandard 2.1, but the current Xamarin version doesn't support it, only .NET Standard 2.0
+            return (StartHour, EndHour).GetHashCode();
+        }
+
+        public static bool operator ==(StartEndTime lhs, StartEndTime rhs)
+        {
+            return lhs.Equals(rhs);
+        }
+
+        public static bool operator !=(StartEndTime lhs, StartEndTime rhs)
+        {
+            return !lhs.Equals(rhs);
+        }
+        #endregion
     }
 
     public class TimesPreferences
