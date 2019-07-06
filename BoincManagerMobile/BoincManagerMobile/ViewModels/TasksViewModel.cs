@@ -7,7 +7,7 @@ namespace BoincManagerMobile.ViewModels
 {
     public class TasksViewModel : BaseViewModel
     {
-        public ObservableCollection<BoincTask> Tasks { get => App.Manager.Tasks; }
+        public ObservableCollection<ObservableTask> Tasks { get => App.Manager.Tasks; }
         public Command RefreshTasksCommand { get; }
 
         public TasksViewModel()

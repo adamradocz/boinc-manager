@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace BoincManager.Models
 {
-    public class BoincTask : BindableBase, ITask, IFilterable, IEquatable<BoincTask>
+    public class ObservableTask : BindableBase, ITask, IFilterable, IEquatable<ObservableTask>
     {
         public int HostId { get; }
         public string HostName { get; }
@@ -83,7 +83,7 @@ namespace BoincManager.Models
         public BoincRpc.Result RpcResult { get; private set; }
         public BoincRpc.Project RpcProject { get; }
 
-        public BoincTask(HostState hostState, BoincRpc.Result result)
+        public ObservableTask(HostState hostState, BoincRpc.Result result)
         {
             HostId = hostState.Id;
             HostName = hostState.Name;
@@ -138,7 +138,7 @@ namespace BoincManager.Models
          * - https://montemagno.com/optimizing-c-struct-equality-with-iequatable/
         */
 
-        public bool Equals(BoincTask other)
+        public bool Equals(ObservableTask other)
         {
             // If parameter is null, return false.
             if (other is null)
@@ -154,7 +154,7 @@ namespace BoincManager.Models
 
         public override bool Equals(object obj)
         {
-            BoincTask boincTask = obj as BoincTask;
+            ObservableTask boincTask = obj as ObservableTask;
             return boincTask == null ? false : Equals(boincTask);
         }
 
@@ -164,7 +164,7 @@ namespace BoincManager.Models
             return (HostId, RpcResult.Name).GetHashCode();
         }
 
-        public static bool operator ==(BoincTask lhs, BoincTask rhs)
+        public static bool operator ==(ObservableTask lhs, ObservableTask rhs)
         {
             // Check for null on left side.
             if (lhs is null)
@@ -183,7 +183,7 @@ namespace BoincManager.Models
             return lhs.Equals(rhs);
         }
 
-        public static bool operator !=(BoincTask lhs, BoincTask rhs)
+        public static bool operator !=(ObservableTask lhs, ObservableTask rhs)
         {
             return !(lhs == rhs);
         }

@@ -36,7 +36,7 @@ namespace BoincManager
 
         public string SearchString { get; set; }
         public ObservableCollection<ObservableProject> Projects { get; private set; }
-        public ObservableCollection<BoincTask> Tasks { get; private set; }
+        public ObservableCollection<ObservableTask> Tasks { get; private set; }
 
         public Manager()
         {
@@ -56,7 +56,7 @@ namespace BoincManager
             if (_useObservableCollections)
             {
                 Projects = new ObservableCollection<ObservableProject>();
-                Tasks = new ObservableCollection<BoincTask>();
+                Tasks = new ObservableCollection<ObservableTask>();
             }
 
             // Initialize the Dictionary. Add all the hosts stored in the database.
@@ -194,12 +194,12 @@ namespace BoincManager
 
             foreach (var rpcResult in hostState.BoincState.Results)
             {
-                BoincTask boincTask = Tasks.FirstOrDefault(m => m.HostId == hostState.Id && m.Workunit == rpcResult.WorkunitName);
+                ObservableTask boincTask = Tasks.FirstOrDefault(m => m.HostId == hostState.Id && m.Workunit == rpcResult.WorkunitName);
                 if (boincTask == null)
                 {
                     if (string.IsNullOrEmpty(SearchString))
                     {
-                        Tasks.Add(new BoincTask(hostState, rpcResult));
+                        Tasks.Add(new ObservableTask(hostState, rpcResult));
                     }
                     else
                     {

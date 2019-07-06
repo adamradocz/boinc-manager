@@ -17,7 +17,7 @@ namespace BoincManagerMobile.Views
 
         async void OnItemSelected(object sender, SelectedItemChangedEventArgs args)
         {
-            var task = args.SelectedItem as BoincTask;
+            var task = args.SelectedItem as ObservableTask;
             if (task == null)
                 return;
 

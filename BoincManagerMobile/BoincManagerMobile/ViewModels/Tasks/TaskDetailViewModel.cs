@@ -4,8 +4,8 @@ namespace BoincManagerMobile.ViewModels
 {
     public class TaskDetailViewModel : BaseViewModel
     {
-        public BoincTask Task { get; set; }
-        public TaskDetailViewModel(BoincTask task)
+        public ObservableTask Task { get; set; }
+        public TaskDetailViewModel(ObservableTask task)
         {
             Title = task.Application;
             Task = task;
