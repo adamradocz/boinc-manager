@@ -20,7 +20,7 @@ namespace BoincManagerMobile
             // Initialize the application            
             using (var context = new ApplicationDbContext(Utils.Storage.GetDbContextOptions()))
             {
-                BoincManager.Utils.InitializeApplication(context, Manager);
+                BoincManager.Utils.InitializeApplication(context, Manager, true);
             }
 
             Manager.Start();

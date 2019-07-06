@@ -547,7 +547,7 @@ namespace BoincManagerWindows.ViewModels
             // Initialize the application
             using (var context = new ApplicationDbContext(Utils.Storage.GetDbContextOptions()))
             {
-                BoincManager.Utils.InitializeApplication(context, _manager);
+                BoincManager.Utils.InitializeApplication(context, _manager, false);
             }
 
             // Start the Boinc Manager

@@ -1,9 +1,11 @@
-﻿using System;
+﻿using BoincManager.Models;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using BoincManager.Models;
 
 namespace BoincManager
 {
@@ -14,20 +16,26 @@ namespace BoincManager
         // Key is the host's Id
         private readonly ConcurrentDictionary<int, HostState> _hostStates;
 
+        private bool _useObservableCollections;
+
         private CancellationTokenSource _updateLoopCancellationTokenSource;
         private CancellationToken _updateLoopCancellationToken;
 
         private CancellationTokenSource _delayedStopCancellationTokenSource;
         private CancellationToken _delayedStopCancellationToken;
 
+        private bool _updating;
+
         public bool IsRunning { get; private set; }
 
         /// <summary>
-        /// Set X milliseconds Delay in the <see cref="StartUpdateLoop"/>.
+        /// Set X milliseconds Delay in the update loop in the <see cref="Start"/>.
         /// </summary>
         public int UpdatePeriod { get; set; } = 2000;
-
         public bool DelayedStopStarted { get; private set; }
+
+        public string SearchString { get; set; }
+        public ObservableCollection<BoincTask> Tasks { get; private set; }
 
         public Manager()
         {
@@ -39,8 +47,16 @@ namespace BoincManager
         /// -Load the data from database.
         /// </summary>
         /// <param name="hosts"></param>
-        public void Initialize(IEnumerable<HostConnection> hosts)
+        /// <param name="useObservableCollections">Initialize the Observable Collections which can be used in MVVM framework.</param>
+        public void Initialize(IEnumerable<HostConnection> hosts, bool useObservableCollections)
         {
+            // Initialize the Observable Collections
+            _useObservableCollections = useObservableCollections;
+            if (_useObservableCollections)
+            {
+                Tasks = new ObservableCollection<BoincTask>();
+            }
+
             // Initialize the Dictionary. Add all the hosts stored in the database.
             foreach (var host in hosts)
             {
@@ -68,11 +84,7 @@ namespace BoincManager
 
             await ConnectAll();
 
-            await StartUpdateLoop();
-        }
-
-        private async Task StartUpdateLoop()
-        {            
+            // Update loop
             while (!_updateLoopCancellationToken.IsCancellationRequested)
             {
                 await Update();
@@ -80,23 +92,91 @@ namespace BoincManager
             }
         }
 
-        private async Task Update()
+        public async Task Update()
         {
+            if (_updating)
+                return;
+
+            _updating = true;
+
             // TODO - Update in prallel
             // TODO - Update only the Viewed tabs (is that possible?)
             foreach (var hostState in _hostStates.Values)
             {
                 if (_updateLoopCancellationToken.IsCancellationRequested)
-                {
                     break;
-                }
 
                 if (hostState.Connected)
                 {
                     await hostState.BoincState.UpdateProjects();
-                    await hostState.BoincState.UpdateResults(); // Tasks
+                    await UpdateTasks(hostState);
+
                     await hostState.BoincState.UpdateFileTransfers();
                     await hostState.BoincState.UpdateMessages();
+                }
+            }
+
+            if (_useObservableCollections)
+            {
+                RemoveOutdatedTasks(_hostStates.Values);
+            }
+
+            _updating = false;
+        }
+
+        private async Task UpdateTasks(HostState hostState)
+        {
+            await hostState.BoincState.UpdateResults(); // Tasks
+
+            if (!_useObservableCollections)
+                return;
+
+            foreach (var rpcResult in hostState.BoincState.Results)
+            {
+                BoincTask boincTask = Tasks.FirstOrDefault(m => m.HostId == hostState.Id && m.Workunit == rpcResult.WorkunitName);
+                if (boincTask == null)
+                {
+                    if (string.IsNullOrEmpty(SearchString))
+                    {
+                        Tasks.Add(new BoincTask(hostState, rpcResult));
+                    }
+                    else
+                    {
+                        foreach (var content in boincTask.GetContentsForFiltering())
+                        {
+                            if (content != null && content.IndexOf(SearchString, StringComparison.InvariantCultureIgnoreCase) != -1)
+                            {
+                                // The search string is found in any of the Models's property
+                                Tasks.Add(boincTask);
+                                break;
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    boincTask.Update(hostState, rpcResult);
+                }
+            }
+        }
+
+        private void RemoveOutdatedTasks(IEnumerable<HostState> hostStates)
+        {
+            var currentTasks = new HashSet<BoincRpc.Result>();
+            foreach (var hostState in hostStates)
+            {
+                if (hostState.Connected)
+                {
+                    currentTasks.UnionWith(hostState.BoincState.Results);
+                }
+            }
+
+            for (int i = 0; i < Tasks.Count; i++)
+            {
+                if (!currentTasks.Contains(Tasks[i].RpcResult))
+                {
+                    Tasks.RemoveAt(i);
+                    i--;
                 }
             }
         }

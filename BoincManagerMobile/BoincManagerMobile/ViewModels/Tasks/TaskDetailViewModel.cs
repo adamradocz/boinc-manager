@@ -1,11 +1,11 @@
-﻿using BoincManagerMobile.Models;
+﻿using BoincManager.Models;
 
 namespace BoincManagerMobile.ViewModels
 {
     public class TaskDetailViewModel : BaseViewModel
     {
-        public Task Task { get; set; }
-        public TaskDetailViewModel(Task task)
+        public BoincTask Task { get; set; }
+        public TaskDetailViewModel(BoincTask task)
         {
             Title = task.Application;
             Task = task;

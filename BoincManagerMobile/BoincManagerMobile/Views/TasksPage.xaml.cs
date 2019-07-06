@@ -1,4 +1,5 @@
-﻿using BoincManagerMobile.ViewModels;
+﻿using BoincManager.Models;
+using BoincManagerMobile.ViewModels;
 using Xamarin.Forms;
 
 namespace BoincManagerMobile.Views
@@ -16,7 +17,7 @@ namespace BoincManagerMobile.Views
 
         async void OnItemSelected(object sender, SelectedItemChangedEventArgs args)
         {
-            var task = args.SelectedItem as Models.Task;
+            var task = args.SelectedItem as BoincTask;
             if (task == null)
                 return;
 
@@ -31,7 +32,7 @@ namespace BoincManagerMobile.Views
             base.OnAppearing();
 
             if (viewModel.Tasks.Count == 0)
-                viewModel.LoadTasksCommand.Execute(null);
+                viewModel.RefreshTasksCommand.Execute(null);
         }
     }
 }

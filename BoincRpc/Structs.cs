@@ -502,7 +502,7 @@ namespace BoincRpc
         }
     }
 
-    public class Result
+    public class Result : IEquatable<Result>
     {
         public string Name { get; private set; }
         public string WorkunitName { get; private set; }
@@ -629,6 +629,62 @@ namespace BoincRpc
         {
             return $"{Name} (Workunit: {WorkunitName}, Project: {ProjectUrl})";
         }
+
+        #region Equality comparisons
+        /* From:
+         * - https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/statements-expressions-operators/how-to-define-value-equality-for-a-type
+         * - https://intellitect.com/overidingobjectusingtuple/
+         * - https://montemagno.com/optimizing-c-struct-equality-with-iequatable/
+        */
+
+        public bool Equals(Result other)
+        {
+            // If parameter is null, return false.
+            if (other is null)
+                return false;
+
+            // Optimization for a common success case.
+            if (ReferenceEquals(this, other))
+                return true;
+
+            return Name.Equals(other.Name, StringComparison.Ordinal);
+        }
+
+        public override bool Equals(object obj)
+        {
+            Result result = obj as Result;
+            return result == null ? false : Equals(result);
+        }
+
+        public override int GetHashCode()
+        {
+            return Name.GetHashCode();
+        }
+
+        public static bool operator ==(Result lhs, Result rhs)
+        {
+            // Check for null on left side.
+            if (lhs is null)
+            {
+                if (rhs is null)
+                {
+                    // null == null = true.
+                    return true;
+                }
+
+                // Only the left side is null.
+                return false;
+            }
+
+            // Equals handles case of null on right side.
+            return lhs.Equals(rhs);
+        }
+
+        public static bool operator !=(Result lhs, Result rhs)
+        {
+            return !(lhs == rhs);
+        }
+        #endregion
     }
 
     public class FileTransfer

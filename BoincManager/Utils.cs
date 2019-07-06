@@ -21,7 +21,8 @@ namespace BoincManager
         /// </summary>
         /// <param name="context"></param>
         /// <param name="manager"></param>
-        public static void InitializeApplication(ApplicationDbContext context, Manager manager)
+        /// <param name="useObservableCollections">Initialize the Observable Collections which can be used in MVVM framework.</param>
+        public static void InitializeApplication(ApplicationDbContext context, Manager manager, bool useObservableCollections)
         {
             // Ensure the database is created and up to date at the start of the application
             context.Database.Migrate();
@@ -41,7 +42,7 @@ namespace BoincManager
             }
 
             // Initialize the BoincManager
-            manager.Initialize(hosts);
+            manager.Initialize(hosts, useObservableCollections);
         }
 
         public static string GetLocalhostGuiRpcPassword()
