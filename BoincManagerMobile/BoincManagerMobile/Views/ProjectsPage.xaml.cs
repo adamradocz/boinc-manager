@@ -1,4 +1,5 @@
-﻿using BoincManagerMobile.ViewModels;
+﻿using BoincManager.Models;
+using BoincManagerMobile.ViewModels;
 using Xamarin.Forms;
 
 namespace BoincManagerMobile.Views
@@ -16,7 +17,7 @@ namespace BoincManagerMobile.Views
 
         async void OnItemSelected(object sender, SelectedItemChangedEventArgs args)
         {
-            var project = args.SelectedItem as Models.Project;
+            var project = args.SelectedItem as ObservableProject;
             if (project == null)
                 return;
 
@@ -31,7 +32,7 @@ namespace BoincManagerMobile.Views
             base.OnAppearing();
 
             if (viewModel.Projects.Count == 0)
-                viewModel.LoadProjectsCommand.Execute(null);
+                viewModel.RefreshProjectsCommand.Execute(null);
         }
     }
 }

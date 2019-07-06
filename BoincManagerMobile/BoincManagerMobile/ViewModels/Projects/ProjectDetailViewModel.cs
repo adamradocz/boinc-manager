@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using BoincManager.Common.MVVM;
-using BoincManagerMobile.Models;
+using BoincManager.Models;
 using Xamarin.Forms;
 
 namespace BoincManagerMobile.ViewModels
@@ -10,11 +10,11 @@ namespace BoincManagerMobile.ViewModels
     {
         private readonly INavigation _navigation;
 
-        public Project Project { get; set; }
+        public ObservableProject Project { get; set; }
 
         public RelayCommand RemoveProjectCommand { get; private set; }
 
-        public ProjectDetailViewModel(Project project, INavigation navigation)
+        public ProjectDetailViewModel(ObservableProject project, INavigation navigation)
         {
             Title = project.Name;
             Project = project;

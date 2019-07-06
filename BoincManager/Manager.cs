@@ -35,6 +35,7 @@ namespace BoincManager
         public bool DelayedStopStarted { get; private set; }
 
         public string SearchString { get; set; }
+        public ObservableCollection<ObservableProject> Projects { get; private set; }
         public ObservableCollection<BoincTask> Tasks { get; private set; }
 
         public Manager()
@@ -54,6 +55,7 @@ namespace BoincManager
             _useObservableCollections = useObservableCollections;
             if (_useObservableCollections)
             {
+                Projects = new ObservableCollection<ObservableProject>();
                 Tasks = new ObservableCollection<BoincTask>();
             }
 
@@ -107,8 +109,8 @@ namespace BoincManager
                     break;
 
                 if (hostState.Connected)
-                {
-                    await hostState.BoincState.UpdateProjects();
+                {                    
+                    await UpdateProjects(hostState);
                     await UpdateTasks(hostState);
 
                     await hostState.BoincState.UpdateFileTransfers();
@@ -118,10 +120,69 @@ namespace BoincManager
 
             if (_useObservableCollections)
             {
-                RemoveOutdatedTasks(_hostStates.Values);
+                RemoveOutdatedProjects(_hostStates.Values);
+                RemoveOutdatedTasks(_hostStates.Values);                
             }
 
             _updating = false;
+        }
+
+        private async Task UpdateProjects(HostState hostState)
+        {
+            await hostState.BoincState.UpdateProjects();
+
+            if (!_useObservableCollections)
+                return;
+
+            foreach (var rpcProject in hostState.BoincState.Projects)
+            {
+                ObservableProject projectViewModel = Projects.FirstOrDefault(pvm => pvm.HostId == hostState.Id && pvm.Name == rpcProject.ProjectName);
+                if (projectViewModel == null)
+                {
+                    if (string.IsNullOrEmpty(SearchString))
+                    {
+                        Projects.Add(new ObservableProject(hostState, rpcProject));
+                    }
+                    else
+                    {
+                        var project = new ObservableProject(hostState, rpcProject);
+                        foreach (var content in project.GetContentsForFiltering())
+                        {
+                            if (content != null && content.IndexOf(SearchString, StringComparison.InvariantCultureIgnoreCase) != -1)
+                            {
+                                // The search string is found in any of the VM's property
+                                Projects.Add(project);
+                                break;
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    projectViewModel.Update(rpcProject);
+                }
+            }
+        }
+
+        private void RemoveOutdatedProjects(IEnumerable<HostState> hostStates)
+        {
+            var currentProjects = new HashSet<BoincRpc.Project>();
+            foreach (var hostState in hostStates)
+            {
+                if (hostState.Connected)
+                {
+                    currentProjects.UnionWith(hostState.BoincState.Projects);
+                }
+            }
+
+            for (int i = 0; i < Projects.Count; i++)
+            {
+                if (!currentProjects.Contains(Projects[i].RpcProject))
+                {
+                    Projects.RemoveAt(i);
+                    i--;
+                }
+            }
         }
 
         private async Task UpdateTasks(HostState hostState)
@@ -179,7 +240,7 @@ namespace BoincManager
                     i--;
                 }
             }
-        }
+         }
 
         /// <summary>
         /// Connect to a host.

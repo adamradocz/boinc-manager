@@ -16,7 +16,7 @@
                 ItemsSource="{Binding Projects}"
                 VerticalOptions="FillAndExpand"
                 HasUnevenRows="true"
-                RefreshCommand="{Binding LoadProjectsCommand}"
+                RefreshCommand="{Binding RefreshProjectsCommand}"
                 IsPullToRefreshEnabled="true"
                 IsRefreshing="{Binding IsBusy, Mode=OneWay}"
                 CachingStrategy="RecycleElement"

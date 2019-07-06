@@ -1,11 +1,9 @@
-﻿using BoincManager;
-using BoincManager.Interfaces;
-using BoincManager.Models;
+﻿using BoincManager.Interfaces;
 using System.Collections.Generic;
 
-namespace BoincManagerMobile.Models
+namespace BoincManager.Models
 {
-    public class Project : BindableBase, IProject, IFilterable
+    public class ObservableProject : BindableBase, IProject, IFilterable
     {
         public int HostId { get; }
         public string HostName { get; }
@@ -54,11 +52,16 @@ namespace BoincManagerMobile.Models
 
         public BoincRpc.Project RpcProject { get; private set; }
 
-        public Project(HostState hostState, BoincRpc.Project rpcProject)
+        public ObservableProject(HostState hostState, BoincRpc.Project rpcProject)
         {
             HostId = hostState.Id;
             HostName = hostState.Name;
 
+            Update(rpcProject);
+        }
+
+        public void Update(BoincRpc.Project rpcProject)
+        {
             RpcProject = rpcProject;
             Name = rpcProject.ProjectName;
             Username = rpcProject.UserName;

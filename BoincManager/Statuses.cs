@@ -1,7 +1,6 @@
 ﻿using BoincManager.Models;
 using BoincRpc;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace BoincManager
 {
@@ -12,7 +11,7 @@ namespace BoincManager
         /// </summary>
         /// <param name="project">Boinc RPC Project.</param>
         /// <returns></returns>
-        public static string GetProjectStatus(Project project)
+        public static string GetProjectStatus(BoincRpc.Project project)
         {
             StringBuilder status = new StringBuilder();
 
@@ -41,7 +40,7 @@ namespace BoincManager
         /// <param name="rpcProject"></param>
         /// <param name="boincState"></param>
         /// <returns></returns>
-        public static string GetTaskStatus(Result result, Project rpcProject, BoincState boincState)
+        public static string GetTaskStatus(Result result, BoincRpc.Project rpcProject, BoincState boincState)
         {
             // clientgui/MainDocument.cpp, result_description()
 
