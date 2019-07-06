@@ -96,6 +96,74 @@ namespace BoincManager
             }
         }
 
+        /// <summary>
+        /// Connect to a host.
+        /// </summary>
+        /// <param name="hostId">Host ID.</param>
+        /// <returns></returns>
+        public async Task Connect(int hostId)
+        {
+            var found = _hostStates.TryGetValue(hostId, out HostState hostState);
+            if (!found)
+                return;
+
+            if (hostState.Connected || string.IsNullOrWhiteSpace(hostState.IpAddress) || string.IsNullOrEmpty(hostState.Password))
+                return;
+
+            hostState.Status = $"Connecting...";
+
+            try
+            {
+                // Connecting to host
+                hostState.InitializeConnection();
+                await hostState.RpcClient.ConnectAsync(hostState.IpAddress, hostState.Port);
+                hostState.Authorized = await hostState.RpcClient.AuthorizeAsync(hostState.Password);
+
+                if (hostState.Authorized)
+                {
+                    hostState.Status = "Connected. Updating...";
+
+                    hostState.Connected = true;
+
+                    await hostState.BoincState.UpdateAll();
+                    hostState.Status = await hostState.GetHostStatus();
+                }
+                else
+                {
+                    hostState.Status = "Authorization error.";
+                }
+
+            }
+            catch (Exception e)
+            {
+                hostState.Status = $"Error connecting. {e.Message}";
+            }
+        }
+
+        // TODO - Paralell
+        public async Task ConnectAll(bool onlyHostsWithAutoConnect = true)
+        {
+            // Connect to all hosts where AutoConnect property is set to TRUE.
+            if (onlyHostsWithAutoConnect)
+            {
+                foreach (var hostState in _hostStates.Values)
+                {
+                    if (hostState.AutoConnect)
+                    {
+                        await Connect(hostState.Id);
+                    }
+                }
+
+            }
+            else // Connect to all hosts
+            {
+                foreach (var hostId in _hostStates.Keys)
+                {
+                    await Connect(hostId);
+                }
+            }
+        }
+
         public async Task Update()
         {
             if (_updating)
@@ -297,74 +365,6 @@ namespace BoincManager
                 {
                     Transfers.RemoveAt(i);
                     i--;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Connect to a host.
-        /// </summary>
-        /// <param name="hostId">Host ID.</param>
-        /// <returns></returns>
-        public async Task Connect(int hostId)
-        {
-            var found = _hostStates.TryGetValue(hostId, out HostState hostState);
-            if (!found)
-                return;
-
-            if (hostState.Connected || string.IsNullOrWhiteSpace(hostState.IpAddress) || string.IsNullOrEmpty(hostState.Password))
-                return;
-
-            hostState.Status = $"Connecting...";
-
-            try
-            {
-                // Connecting to host
-                hostState.InitializeConnection();
-                await hostState.RpcClient.ConnectAsync(hostState.IpAddress, hostState.Port);
-                hostState.Authorized = await hostState.RpcClient.AuthorizeAsync(hostState.Password);
-
-                if (hostState.Authorized)
-                {
-                    hostState.Status = "Connected. Updating...";
-
-                    hostState.Connected = true;
-
-                    await hostState.BoincState.UpdateAll();
-                    hostState.Status = await hostState.GetHostStatus();
-                }
-                else
-                {
-                    hostState.Status = "Authorization error.";
-                }
-
-            }
-            catch (Exception e)
-            {
-                hostState.Status = $"Error connecting. {e.Message}";
-            }
-        }
-
-        // TODO - Paralell
-        public async Task ConnectAll(bool onlyHostsWithAutoConnect = true)
-        {
-            // Connect to all hosts where AutoConnect property is set to TRUE.
-            if (onlyHostsWithAutoConnect)
-            {
-                foreach (var hostState in _hostStates.Values)
-                {
-                    if (hostState.AutoConnect)
-                    {
-                        await Connect(hostState.Id);
-                    }
-                }
-
-            }
-            else // Connect to all hosts
-            {
-                foreach (var hostId in _hostStates.Keys)
-                {
-                    await Connect(hostId);
                 }
             }
         }
