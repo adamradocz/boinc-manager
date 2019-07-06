@@ -151,7 +151,7 @@ namespace BoincRpc
         }
     }
 
-    public class VersionInfo
+    public class VersionInfo : IEquatable<VersionInfo>
     {
         public int Major { get; }
         public int Minor { get; }
@@ -178,14 +178,35 @@ namespace BoincRpc
             Release = element.ElementInt("release");
         }
 
-        public override bool Equals(object obj)
+        public override string ToString()
         {
-            VersionInfo other = obj as VersionInfo;
+            return $"{Major}.{Minor}.{Release}";
+        }
 
-            if (other == null)
+        #region Equality comparisons
+        /* From:
+         * - https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/statements-expressions-operators/how-to-define-value-equality-for-a-type
+         * - https://intellitect.com/overidingobjectusingtuple/
+         * - https://montemagno.com/optimizing-c-struct-equality-with-iequatable/
+        */
+
+        public bool Equals(VersionInfo other)
+        {
+            // If parameter is null, return false.
+            if (other is null)
                 return false;
 
-            return other.Major == Major && other.Minor == Minor && other.Release == Release;
+            // Optimization for a common success case.
+            if (ReferenceEquals(this, other))
+                return true;
+
+            return Major == other.Major && Minor == other.Minor && Release == other.Release;
+        }
+
+        public override bool Equals(object obj)
+        {
+            VersionInfo boincTask = obj as VersionInfo;
+            return boincTask == null ? false : Equals(boincTask);
         }
 
         public override int GetHashCode()
@@ -193,10 +214,30 @@ namespace BoincRpc
             return Major ^ Minor ^ Release;
         }
 
-        public override string ToString()
+        public static bool operator ==(VersionInfo lhs, VersionInfo rhs)
         {
-            return $"{Major}.{Minor}.{Release}";
+            // Check for null on left side.
+            if (lhs is null)
+            {
+                if (rhs is null)
+                {
+                    // null == null = true.
+                    return true;
+                }
+
+                // Only the left side is null.
+                return false;
+            }
+
+            // Equals handles case of null on right side.
+            return lhs.Equals(rhs);
         }
+
+        public static bool operator !=(VersionInfo lhs, VersionInfo rhs)
+        {
+            return !(lhs == rhs);
+        }
+        #endregion
     }
 
     public class DiskUsage
