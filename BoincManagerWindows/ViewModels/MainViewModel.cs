@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Input;
+using BoincManager.Common.MVVM;
 using BoincManager.Models;
 using BoincManagerWindows.Models;
 

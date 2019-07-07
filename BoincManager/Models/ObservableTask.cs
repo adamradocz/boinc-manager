@@ -133,6 +133,7 @@ namespace BoincManager.Models
 
         public static IEnumerable<string> GetLiveFilteringProperties()
         {
+            yield return nameof(Workunit);
             yield return nameof(CpuTime);
             yield return nameof(CpuTimeRemaining);
             yield return nameof(LastCheckpoint);
