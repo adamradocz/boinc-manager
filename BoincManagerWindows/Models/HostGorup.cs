@@ -1,5 +1,5 @@
 ﻿using BoincManager.Models;
-using System.Collections.ObjectModel;
+using System.Collections.Generic;
 
 namespace BoincManagerWindows.Models
 {
@@ -7,7 +7,8 @@ namespace BoincManagerWindows.Models
     {
         private string name;
         public string Name { get => name; set => SetProperty(ref name, value); }
-        public ObservableCollection<Host> Members { get; set; }
+        // The ObservableCollection refresh the list on item selected event, so when it happen it removes the selection
+        public List<ObservableHost> Members { get; set; }
 
         public HostGorup(string name)
         {

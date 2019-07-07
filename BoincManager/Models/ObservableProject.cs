@@ -83,6 +83,12 @@ namespace BoincManager.Models
             yield return Status;
         }
 
+        public static IEnumerable<string> GetLiveFilteringProperties()
+        {
+            yield return nameof(Credit);
+            yield return nameof(AverageCredit);
+            yield return nameof(Status);
+        }
 
         #region Equality comparisons
         /* From:

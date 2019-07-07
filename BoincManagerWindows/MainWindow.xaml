@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BoincManagerWindows"
         xmlns:models="clr-namespace:BoincManagerWindows.Models"
+        xmlns:commonmodels="clr-namespace:BoincManager.Models;assembly=BoincManager"
         mc:Ignorable="d"
         Title="MainWindow" Height="800" Width="1200"
         Loaded="Window_Loaded" Closing="Window_Closing">
@@ -316,7 +317,7 @@
                         <TextBlock Text=")" Foreground="Blue" />
                     </StackPanel>
                 </HierarchicalDataTemplate>
-                <DataTemplate DataType="{x:Type models:Host}">
+                <DataTemplate DataType="{x:Type commonmodels:ObservableHost}">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="{Binding Name}" />
                     </StackPanel>
@@ -385,7 +386,7 @@
                         </ContextMenu>
                     </DataGrid.ContextMenu>
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="Computer" Binding="{Binding Path=ComputerName}"/>
+                        <DataGridTextColumn Header="Host" Binding="{Binding Path=HostName}"/>
                         <DataGridTextColumn Header="Name" Binding="{Binding Path=Name}"/>
                         <DataGridTextColumn Header="Username" Binding="{Binding Path=Username}"/>
                         <DataGridTextColumn Header="Team" Binding="{Binding Path=Team}"/>
@@ -411,7 +412,7 @@
                         </Style>
                     </DataGrid.RowStyle>                    
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="Computer" Binding="{Binding Path=ComputerName}"/>
+                        <DataGridTextColumn Header="Host" Binding="{Binding Path=HostName}"/>
                         <DataGridTextColumn Header="Project" Binding="{Binding Path=Project}"/>
                         <DataGridTemplateColumn Header="Progress">
                             <DataGridTemplateColumn.CellTemplate>
@@ -447,7 +448,7 @@
                         </Style>
                     </DataGrid.RowStyle>
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="Computer" Binding="{Binding Path=ComputerName}"/>
+                        <DataGridTextColumn Header="Host" Binding="{Binding Path=HostName}"/>
                         <DataGridTextColumn Header="Project" Binding="{Binding Path=Project}"/>
                         <DataGridTextColumn Header="File name" Binding="{Binding Path=FileName}"/>
                         <DataGridTemplateColumn Header="Progress">

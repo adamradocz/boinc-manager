@@ -100,7 +100,14 @@ namespace BoincManager.Models
             yield return TimeRemaining;
             yield return Status;
         }
-
+        
+        public static IEnumerable<string> GetLiveFilteringProperties()
+        {
+            yield return nameof(TransferRate);
+            yield return nameof(ElapsedTime);
+            yield return nameof(TimeRemaining);
+            yield return nameof(Status);
+        }
 
         #region Equality comparisons
         /* From:

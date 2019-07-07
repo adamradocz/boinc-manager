@@ -66,6 +66,15 @@ namespace BoincManager.Models
             yield return Status;
         }
 
+        public static IEnumerable<string> GetLiveFilteringProperties()
+        {
+            yield return nameof(Name);
+            yield return nameof(IpAddress);
+            yield return nameof(BoincVersion);
+            yield return nameof(OperatingSystem);
+            yield return nameof(Status);
+        }
+
         #region Equality comparisons
         /* From:
          * - https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/statements-expressions-operators/how-to-define-value-equality-for-a-type
