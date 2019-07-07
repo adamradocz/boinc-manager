@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
+﻿using System.Collections.ObjectModel;
 
 using Xamarin.Forms;
-using System.Collections.Generic;
 using BoincManager.Models;
 using BoincManagerMobile.Models;
 using BoincManagerMobile.Views;
@@ -14,9 +11,8 @@ namespace BoincManagerMobile.ViewModels
     {
         private readonly INavigation _navigation;
 
-        private ObservableCollection<Host> _hosts;
-        public ObservableCollection<Host> Hosts { get => _hosts; }
-        public Command LoadHostsCommand { get; }
+        public ObservableCollection<ObservableHost> Hosts { get => App.Manager.Hosts; }
+        public Command RefreshHostsCommand { get; }
         public Command AddHostsCommand { get; }
 
         public HostsViewModel(INavigation navigation)
@@ -25,66 +21,28 @@ namespace BoincManagerMobile.ViewModels
 
             _navigation = navigation;
 
-            _hosts = new ObservableCollection<Host>();
-
-            LoadHostsCommand = new Command(() => ExecuteLoadHostsCommand());
+            RefreshHostsCommand = new Command(async () => await ExecuteRefreshHostsCommand());
             AddHostsCommand = new Command(async () => await ExecuteAddHostsCommandAsync());
 
-            MessagingCenter.Subscribe<AddHostPage, Host>(this, "AddHost", (obj, host) =>
+            MessagingCenter.Subscribe<AddHostPage, ObservableHost>(this, "AddHost", (obj, host) =>
             {
-                _hosts.Add(host);
+                //_hosts.Add(host);
             });
 
-            MessagingCenter.Subscribe<HostDetailPage, Host>(this, "RemoveHost", (obj, host) =>
+            MessagingCenter.Subscribe<HostDetailPage, ObservableHost>(this, "RemoveHost", (obj, host) =>
             {
-                _hosts.Remove(host);
+                //_hosts.Remove(host);
             });
         }
 
-        void ExecuteLoadHostsCommand()
+        async System.Threading.Tasks.Task ExecuteRefreshHostsCommand()
         {
             if (IsBusy)
                 return;
 
             IsBusy = true;
-
-            try
-            {
-                _hosts.Clear();
-                GetHosts(App.Manager.GetAllHostStates(), string.Empty, ref _hosts);                
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex);
-            }
-            finally
-            {
-                IsBusy = false;
-            }
-        }
-
-        private void GetHosts(IEnumerable<HostState> hostStates, string searchString, ref ObservableCollection<Host> hosts)
-        {
-            foreach (var hostState in hostStates)
-            {
-                if (string.IsNullOrEmpty(searchString))
-                {
-                    hosts.Add(new Host(hostState));
-                }
-                else
-                {
-                    var hostVM = new Host(hostState);
-                    foreach (var content in hostVM.GetContentsForFiltering())
-                    {
-                        if (content != null && content.IndexOf(searchString, StringComparison.InvariantCultureIgnoreCase) != -1)
-                        {
-                            // The search string is found in any of the VM's property
-                            hosts.Add(hostVM);
-                            break;
-                        }
-                    }
-                }
-            }
+            await App.Manager.Update();
+            IsBusy = false;
         }
 
         private async System.Threading.Tasks.Task ExecuteAddHostsCommandAsync()

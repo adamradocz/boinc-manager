@@ -47,7 +47,7 @@ namespace BoincManagerMobile.ViewModels
                     await App.Manager.Connect(HostConnection.Id);
                 }
 
-                MessagingCenter.Send(this, "AddHost", new Host(App.Manager.GetHostState(HostConnection.Id)));
+                MessagingCenter.Send(this, "AddHost", new ObservableHost(App.Manager.GetHostState(HostConnection.Id)));
                 await _navigation.PopAsync();
             }
             catch (Exception ex)

@@ -1,11 +1,10 @@
 ﻿using BoincManager.Interfaces;
-using BoincManager.Models;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace BoincManagerMobile.Models
+namespace BoincManager.Models
 {
-    public class Host : BindableBase, IHost, IFilterable
+    public class ObservableHost : BindableBase, IHost, IFilterable
     {
         public int Id { get; }
 
@@ -37,15 +36,20 @@ namespace BoincManagerMobile.Models
         private string status;
         public string Status { get => status; set => SetProperty(ref status, value); }
 
-        public Host(HostState hostState)
+        public ObservableHost(HostState hostState)
         {
             Id = hostState.Id;
+            Update(hostState);
+        }
 
+        public void Update(HostState hostState)
+        {
             Name = hostState.Name;
             IpAddress = hostState.IpAddress;
             Port = hostState.Port;
             Password = hostState.Password;
             AutoConnect = hostState.AutoConnect;
+
             BoincVersion = hostState.BoincVersion;
             OperatingSystem = hostState.OperatingSystem;
             Connected = hostState.Connected;

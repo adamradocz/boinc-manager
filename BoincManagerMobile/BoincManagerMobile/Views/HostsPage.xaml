@@ -16,7 +16,7 @@
                 ItemsSource="{Binding Hosts}"
                 VerticalOptions="FillAndExpand"
                 HasUnevenRows="true"
-                RefreshCommand="{Binding LoadHostsCommand}"
+                RefreshCommand="{Binding RefreshHostsCommand}"
                 IsPullToRefreshEnabled="true"
                 IsRefreshing="{Binding IsBusy, Mode=OneWay}"
                 CachingStrategy="RecycleElement"

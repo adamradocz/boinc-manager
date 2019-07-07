@@ -35,6 +35,9 @@ namespace BoincManager
         public bool DelayedStopStarted { get; private set; }
 
         public string SearchString { get; set; }
+
+        // The ObservableCollections should be ObservableDictionarys. That'd simplify a lot of code related to Update.
+        public ObservableCollection<ObservableHost> Hosts { get; private set; }
         public ObservableCollection<ObservableProject> Projects { get; private set; }
         public ObservableCollection<ObservableTask> Tasks { get; private set; }
         public ObservableCollection<ObservableTransfer> Transfers { get; private set; }
@@ -56,6 +59,7 @@ namespace BoincManager
             _useObservableCollections = useObservableCollections;
             if (_useObservableCollections)
             {
+                Hosts = new ObservableCollection<ObservableHost>();
                 Projects = new ObservableCollection<ObservableProject>();
                 Tasks = new ObservableCollection<ObservableTask>();
                 Transfers = new ObservableCollection<ObservableTransfer>();
@@ -164,6 +168,7 @@ namespace BoincManager
             }
         }
 
+        #region Update section
         public async Task Update()
         {
             if (_updating)
@@ -179,7 +184,7 @@ namespace BoincManager
                     break;
 
                 if (hostState.Connected)
-                {                    
+                {
                     await UpdateProjects(hostState);
                     await UpdateTasks(hostState);
                     await UpdateTransfers(hostState);
@@ -221,7 +226,7 @@ namespace BoincManager
                             if (content != null && content.IndexOf(SearchString, StringComparison.InvariantCultureIgnoreCase) != -1)
                             {
                                 // The search string is found in any of the VM's property
-                                Projects.Add(project);
+                                Projects.Add(new ObservableProject(hostState, rpcProject));
                                 break;
                             }
                         }
@@ -278,7 +283,7 @@ namespace BoincManager
                             if (content != null && content.IndexOf(SearchString, StringComparison.InvariantCultureIgnoreCase) != -1)
                             {
                                 // The search string is found in any of the Models's property
-                                Tasks.Add(task);
+                                Tasks.Add(new ObservableTask(hostState, rpcResult));
                                 break;
                             }
                         }
@@ -335,7 +340,7 @@ namespace BoincManager
                             if (content != null && content.IndexOf(SearchString, StringComparison.InvariantCultureIgnoreCase) != -1)
                             {
                                 // The search string is found in any of the Models's property
-                                Transfers.Add(transfer);
+                                Transfers.Add(new ObservableTransfer(hostState, fileTransfer));
                                 break;
                             }
                         }
@@ -368,6 +373,7 @@ namespace BoincManager
                 }
             }
         }
+        #endregion
 
         /// <summary>
         /// Disconnect a host.
@@ -448,6 +454,13 @@ namespace BoincManager
         public void AddHost(HostConnection host)
         {
             _hostStates.TryAdd(host.Id, new HostState(host));
+
+            // This part of the code is not concurrent, but only ASP.NET uses concurrent calls, MVVM projects are not.
+            // ASP.NET don't use ObservableCollections
+            if (_useObservableCollections)
+            {
+                Hosts.Add(new ObservableHost(GetHostState(host.Id)));
+            }
         }
 
         public void RemoveHost(int hostId)
@@ -457,8 +470,21 @@ namespace BoincManager
             {
                 hostState.Dispose();
             }
-
             _hostStates.TryRemove(hostId, out _);
+
+            // This part of the code is not concurrent, but only ASP.NET uses concurrent calls, MVVM projects are not.
+            // ASP.NET don't use ObservableCollections
+            if (_useObservableCollections)
+            {
+                for (int i = 0; i < Hosts.Count; i++)
+                {
+                    if (Hosts[i].Id == hostId)
+                    {
+                        Hosts.RemoveAt(i);
+                        break;
+                    }
+                }
+            }
         }
 
         public void UpdateHost(HostConnection host)
@@ -468,12 +494,25 @@ namespace BoincManager
             {
                 hostState.Update(host);
             }
+
+            // This part of the code is not concurrent, but only ASP.NET uses concurrent calls, MVVM projects are not.
+            // ASP.NET don't use ObservableCollections
+            if (_useObservableCollections)
+            {
+                for (int i = 0; i < Hosts.Count; i++)
+                {
+                    if (Hosts[i].Id == host.Id)
+                    {
+                        Hosts[i].Update(hostState);
+                        break;
+                    }
+                }
+            }
         }
 
         public HostState GetHostState(int id)
         {
             _hostStates.TryGetValue(id, out HostState hostState);
-
             return hostState;
         }
 

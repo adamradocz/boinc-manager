@@ -1,6 +1,5 @@
 ﻿using BoincManager.Common.MVVM;
 using BoincManager.Models;
-using BoincManagerMobile.Models;
 using System;
 using System.Diagnostics;
 using Xamarin.Forms;
@@ -11,10 +10,10 @@ namespace BoincManagerMobile.ViewModels
     {
         private readonly INavigation _navigation;
 
-        public Host Host { get; set; }
+        public ObservableHost Host { get; set; }
         public RelayCommand RemoveHostCommand { get; private set; }
 
-        public HostDetailViewModel(Host host, INavigation navigation)
+        public HostDetailViewModel(ObservableHost host, INavigation navigation)
         {
             Title = host.Name;
             Host = host;

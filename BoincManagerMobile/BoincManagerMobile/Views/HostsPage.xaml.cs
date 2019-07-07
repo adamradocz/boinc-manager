@@ -1,9 +1,8 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using Xamarin.Forms;
 
 using BoincManagerMobile.ViewModels;
-using BoincManagerMobile.Models;
+using BoincManager.Models;
 
 namespace BoincManagerMobile.Views
 {
@@ -22,7 +21,7 @@ namespace BoincManagerMobile.Views
 
         async void OnItemSelected(object sender, SelectedItemChangedEventArgs args)
         {
-            if (!(args.SelectedItem is Host host))
+            if (!(args.SelectedItem is ObservableHost host))
                 return;
 
             await Navigation.PushAsync(new HostDetailPage(new HostDetailViewModel(host, Navigation)));
@@ -36,7 +35,7 @@ namespace BoincManagerMobile.Views
             base.OnAppearing();
 
             if (viewModel.Hosts.Count == 0)
-                viewModel.LoadHostsCommand.Execute(null);
+                viewModel.RefreshHostsCommand.Execute(null);
         }
     }
 }
