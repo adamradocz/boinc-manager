@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using BoincManager.Interfaces;
 
 namespace BoincManager.Models
 {
-    public class ObservableMessage : BindableBase, IMessage, IFilterable
+    public class ObservableMessage : BindableBase, IMessage, IFilterable, IEquatable<ObservableMessage>
     {
         public int HostId { get; }
         public string HostName { get; }
@@ -34,5 +35,65 @@ namespace BoincManager.Models
             yield return Date;
             yield return MessageBody;
         }
+
+
+        #region Equality comparisons
+        /* From:
+         * - https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/statements-expressions-operators/how-to-define-value-equality-for-a-type
+         * - https://intellitect.com/overidingobjectusingtuple/
+         * - https://montemagno.com/optimizing-c-struct-equality-with-iequatable/
+        */
+
+        public bool Equals(ObservableMessage other)
+        {
+            // If parameter is null, return false.
+            if (other is null)
+                return false;
+
+            // Optimization for a common success case.
+            if (ReferenceEquals(this, other))
+                return true;
+
+            return HostId == other.HostId
+                && Project.Equals(other.Project, StringComparison.Ordinal)
+                && RpcMessage.SequenceNumber == other.RpcMessage.SequenceNumber;
+        }
+
+        public override bool Equals(object obj)
+        {
+            ObservableMessage message = obj as ObservableMessage;
+            return message == null ? false : Equals(message);
+        }
+
+        public override int GetHashCode()
+        {
+            //return HashCode.Combine(HostId, RpcResult.Name); Available in .NET Strandard 2.1, but the current Xamarin version doesn't support it, only .NET Standard 2.0
+            return (HostId, Project, RpcMessage.SequenceNumber).GetHashCode();
+        }
+
+        public static bool operator ==(ObservableMessage lhs, ObservableMessage rhs)
+        {
+            // Check for null on left side.
+            if (lhs is null)
+            {
+                if (rhs is null)
+                {
+                    // null == null = true.
+                    return true;
+                }
+
+                // Only the left side is null.
+                return false;
+            }
+
+            // Equals handles case of null on right side.
+            return lhs.Equals(rhs);
+        }
+
+        public static bool operator !=(ObservableMessage lhs, ObservableMessage rhs)
+        {
+            return !(lhs == rhs);
+        }
+        #endregion
     }
 }

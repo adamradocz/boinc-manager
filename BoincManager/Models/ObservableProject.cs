@@ -1,9 +1,10 @@
 ﻿using BoincManager.Interfaces;
+using System;
 using System.Collections.Generic;
 
 namespace BoincManager.Models
 {
-    public class ObservableProject : BindableBase, IProject, IFilterable
+    public class ObservableProject : BindableBase, IProject, IFilterable, IEquatable<ObservableProject>
     {
         public int HostId { get; }
         public string HostName { get; }
@@ -81,5 +82,64 @@ namespace BoincManager.Models
             yield return AverageCredit;
             yield return Status;
         }
+
+
+        #region Equality comparisons
+        /* From:
+         * - https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/statements-expressions-operators/how-to-define-value-equality-for-a-type
+         * - https://intellitect.com/overidingobjectusingtuple/
+         * - https://montemagno.com/optimizing-c-struct-equality-with-iequatable/
+        */
+
+        public bool Equals(ObservableProject other)
+        {
+            // If parameter is null, return false.
+            if (other is null)
+                return false;
+
+            // Optimization for a common success case.
+            if (ReferenceEquals(this, other))
+                return true;
+
+            return HostId == other.HostId
+                && Name.Equals(other.Name, StringComparison.Ordinal);
+        }
+
+        public override bool Equals(object obj)
+        {
+            ObservableProject project = obj as ObservableProject;
+            return project == null ? false : Equals(project);
+        }
+
+        public override int GetHashCode()
+        {
+            //return HashCode.Combine(HostId, RpcResult.Name); Available in .NET Strandard 2.1, but the current Xamarin version doesn't support it, only .NET Standard 2.0
+            return (HostId, Name).GetHashCode();
+        }
+
+        public static bool operator ==(ObservableProject lhs, ObservableProject rhs)
+        {
+            // Check for null on left side.
+            if (lhs is null)
+            {
+                if (rhs is null)
+                {
+                    // null == null = true.
+                    return true;
+                }
+
+                // Only the left side is null.
+                return false;
+            }
+
+            // Equals handles case of null on right side.
+            return lhs.Equals(rhs);
+        }
+
+        public static bool operator !=(ObservableProject lhs, ObservableProject rhs)
+        {
+            return !(lhs == rhs);
+        }
+        #endregion
     }
 }

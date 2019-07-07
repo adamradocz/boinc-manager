@@ -79,7 +79,7 @@ namespace BoincManager.Models
 
         public async Task UpdateMessages()
         {
-            ObservableMessage[] newMessages = await RpcClient.GetMessagesAsync(lastMessageNumber);
+            Message[] newMessages = await RpcClient.GetMessagesAsync(lastMessageNumber);
             lastMessageNumber += newMessages.Length;
             Messages.AddRange(newMessages);
         }   

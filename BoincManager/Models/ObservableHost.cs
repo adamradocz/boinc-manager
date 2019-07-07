@@ -1,10 +1,11 @@
 ﻿using BoincManager.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace BoincManager.Models
 {
-    public class ObservableHost : BindableBase, IHost, IFilterable
+    public class ObservableHost : BindableBase, IHost, IFilterable, IEquatable<ObservableHost>
     {
         public int Id { get; }
 
@@ -64,5 +65,61 @@ namespace BoincManager.Models
             yield return OperatingSystem;
             yield return Status;
         }
+
+        #region Equality comparisons
+        /* From:
+         * - https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/statements-expressions-operators/how-to-define-value-equality-for-a-type
+         * - https://intellitect.com/overidingobjectusingtuple/
+         * - https://montemagno.com/optimizing-c-struct-equality-with-iequatable/
+        */
+
+        public bool Equals(ObservableHost other)
+        {
+            // If parameter is null, return false.
+            if (other is null)
+                return false;
+
+            // Optimization for a common success case.
+            if (ReferenceEquals(this, other))
+                return true;
+
+            return Id == other.Id;
+        }
+
+        public override bool Equals(object obj)
+        {
+            ObservableHost host = obj as ObservableHost;
+            return host == null ? false : Equals(host);
+        }
+
+        public override int GetHashCode()
+        {
+            return Id.GetHashCode();
+        }
+
+        public static bool operator ==(ObservableHost lhs, ObservableHost rhs)
+        {
+            // Check for null on left side.
+            if (lhs is null)
+            {
+                if (rhs is null)
+                {
+                    // null == null = true.
+                    return true;
+                }
+
+                // Only the left side is null.
+                return false;
+            }
+
+            // Equals handles case of null on right side.
+            return lhs.Equals(rhs);
+        }
+
+        public static bool operator !=(ObservableHost lhs, ObservableHost rhs)
+        {
+            return !(lhs == rhs);
+        }
+        #endregion
     }
 }
