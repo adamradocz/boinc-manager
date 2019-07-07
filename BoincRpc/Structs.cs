@@ -908,7 +908,7 @@ namespace BoincRpc
         #endregion
     }
 
-    public class Message
+    public class Message : IEquatable<Message>
     {
         public string Project { get; }
         public MessagePriority Priority { get; }
@@ -932,6 +932,65 @@ namespace BoincRpc
             else
                 return $"{Timestamp} (Project: {Project}): {Body}";
         }
+
+        #region Equality comparisons
+        /* From:
+         * - https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/statements-expressions-operators/how-to-define-value-equality-for-a-type
+         * - https://intellitect.com/overidingobjectusingtuple/
+         * - https://montemagno.com/optimizing-c-struct-equality-with-iequatable/
+        */
+
+        public bool Equals(Message other)
+        {
+            // If parameter is null, return false.
+            if (other is null)
+                return false;
+
+            // Optimization for a common success case.
+            if (ReferenceEquals(this, other))
+                return true;
+
+            return Project.Equals(other.Project, StringComparison.Ordinal)
+                && SequenceNumber == other.SequenceNumber
+                && Body.Equals(other.Body, StringComparison.Ordinal) // Maybe checking the Body is unnecessary?
+                && Timestamp == other.Timestamp;
+        }
+
+        public override bool Equals(object obj)
+        {
+            Message message = obj as Message;
+            return message == null ? false : Equals(message);
+        }
+
+        public override int GetHashCode()
+        {
+            return (Project, SequenceNumber, Body, Timestamp).GetHashCode();
+        }
+
+        public static bool operator ==(Message lhs, Message rhs)
+        {
+            // Check for null on left side.
+            if (lhs is null)
+            {
+                if (rhs is null)
+                {
+                    // null == null = true.
+                    return true;
+                }
+
+                // Only the left side is null.
+                return false;
+            }
+
+            // Equals handles case of null on right side.
+            return lhs.Equals(rhs);
+        }
+
+        public static bool operator !=(Message lhs, Message rhs)
+        {
+            return !(lhs == rhs);
+        }
+        #endregion
     }
 
     public class Notice
