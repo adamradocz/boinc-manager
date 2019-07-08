@@ -87,33 +87,33 @@ namespace BoincManagerWindows.ViewModels
 
             // File menu
             CloseCommand = new RelayCommand(ExecuteCloseCommand);
-            CloseAndStopBoincCommand = new RelayCommand(ExecuteCloseAndStopBoincCommand, CanExecuteCloseAndStopBoincCommand);
+            CloseAndStopBoincCommand = new RelayCommand(async () => await ExecuteCloseAndStopBoincCommand(), CanExecuteCloseAndStopBoincCommand);
 
             // Extras menu
-            RunBenchmarksCommand = new RelayCommand(ExecuteRunBenchmarksCommand, IsComputerSelected);
+            RunBenchmarksCommand = new RelayCommand(async () => await ExecuteRunBenchmarksCommand(), IsComputerSelected);
 
             // Computers
-            AddComputerCommand = new RelayCommand(ExecuteAddComputerCommand);
-            RemoveComputerCommand = new RelayCommand(ExecuteRemoveComputerCommand, IsComputerSelected);
-            ConnectComputerCommand = new RelayCommand(ExecuteConnectComputerCommand, CanExecuteConnectComputerCommand);
-            DisconnectComputerCommand = new RelayCommand(ExecuteDisconnectComputerCommand, CanExecuteDisconnectComputerCommand);
+            AddComputerCommand = new RelayCommand(async () => await ExecuteAddComputerCommand());
+            RemoveComputerCommand = new RelayCommand(async () => await ExecuteRemoveComputerCommand(), IsComputerSelected);
+            ConnectComputerCommand = new RelayCommand(async () => await ExecuteConnectComputerCommand(), CanExecuteConnectComputerCommand);
+            DisconnectComputerCommand = new RelayCommand(async () => await ExecuteDisconnectComputerCommand(), CanExecuteDisconnectComputerCommand);
 
             // Projects tab
-            AttachProjectCommand = new RelayCommand(ExecuteAttachProjectCommand, IsComputerSelected);
-            UpdateProjectCommand = new RelayCommand(ExecuteUpdateProjectCommand, IsProjectSelected);
-            SuspendProjectCommand = new RelayCommand(ExecuteSuspendProjectCommand, IsProjectSelected);
-            NoNewTasksProjectCommand = new RelayCommand(ExecuteNoNewTasksProjectCommand, IsProjectSelected);
-            ResetProjectCommand = new RelayCommand(ExecuteResetProjectCommand, IsProjectSelected);
-            DetachProjectCommand = new RelayCommand(ExecuteDetachProjectCommand, IsProjectSelected);
+            AttachProjectCommand = new RelayCommand(async () => await ExecuteAttachProjectCommand(), IsComputerSelected);
+            UpdateProjectCommand = new RelayCommand(async () => await ExecuteUpdateProjectCommand(), IsProjectSelected);
+            SuspendProjectCommand = new RelayCommand(async () => await ExecuteSuspendProjectCommand(), IsProjectSelected);
+            NoNewTasksProjectCommand = new RelayCommand(async () => await ExecuteNoNewTasksProjectCommand(), IsProjectSelected);
+            ResetProjectCommand = new RelayCommand(async () => await ExecuteResetProjectCommand(), IsProjectSelected);
+            DetachProjectCommand = new RelayCommand(async () => await ExecuteDetachProjectCommand(), IsProjectSelected);
 
             // Tasks tab
             ShowGraphicsCommand = new RelayCommand(ExecuteShowGraphicsCommand, CanExecuteShowGraphicsCommand);
-            SuspendTaskCommand = new RelayCommand(ExecuteSuspendTaskCommand, CanExecuteSuspendTaskCommand);
-            AbortTaskCommand = new RelayCommand(ExecuteAbortTaskCommand, CanExecuteAbortTaskCommand);
+            SuspendTaskCommand = new RelayCommand(async () => await ExecuteSuspendTaskCommand(), CanExecuteSuspendTaskCommand);
+            AbortTaskCommand = new RelayCommand(async () => await ExecuteAbortTaskCommand(), CanExecuteAbortTaskCommand);
 
             // Transfers tab
-            RetryTransferCommand = new RelayCommand(ExecuteRetryTransferCommand, CanExecuteRetryTransferCommand);
-            AbortTransferCommand = new RelayCommand(ExecuteAbortTransferCommand, CanExecuteAbortTransferCommand);
+            RetryTransferCommand = new RelayCommand(async () => await ExecuteRetryTransferCommand(), CanExecuteRetryTransferCommand);
+            AbortTransferCommand = new RelayCommand(async () => await ExecuteAbortTransferCommand(), CanExecuteAbortTransferCommand);
 
             // Messages tab
             CopyMessagesCommand = new RelayCommand(ExecuteCopyMessagesCommand, CanExecuteCopyMessagesCommand);
@@ -131,7 +131,7 @@ namespace BoincManagerWindows.ViewModels
             Application.Current.Shutdown();
         }
 
-        private async void ExecuteCloseAndStopBoincCommand()
+        private async System.Threading.Tasks.Task ExecuteCloseAndStopBoincCommand()
         {
             if (MessageBox.Show($"Stop BOINC on localhost. Are you sure?", "Stop BOINC and close BOINC Manager", MessageBoxButton.OKCancel, MessageBoxImage.Warning) == MessageBoxResult.Cancel)
                 return;
@@ -163,7 +163,7 @@ namespace BoincManagerWindows.ViewModels
             return false;
         }
 
-        private async void ExecuteRunBenchmarksCommand()
+        private async System.Threading.Tasks.Task ExecuteRunBenchmarksCommand()
         {
             foreach(ObservableHost selectedComputer in SelectedComputers)
             {
@@ -176,7 +176,7 @@ namespace BoincManagerWindows.ViewModels
             return SelectedComputers != null && SelectedComputers.Count != 0;
         }
 
-        private async void ExecuteAddComputerCommand()
+        private async System.Threading.Tasks.Task ExecuteAddComputerCommand()
         {
             var host = new HostConnection("New host", "localhost", "123");
             using (var db = new ApplicationDbContext(Utils.Storage.GetDbContextOptions()))
@@ -186,10 +186,9 @@ namespace BoincManagerWindows.ViewModels
             }
 
             _manager.AddHost(host);
-            //Computers.Add(new Host(_manager.GetHostState(host.Id)));
         }
         
-        private async void ExecuteRemoveComputerCommand()
+        private async System.Threading.Tasks.Task ExecuteRemoveComputerCommand()
         {
             string messageBoxText = SelectedComputers.Count == 1
                 ? string.Format("Removing computer {0}. Are you sure?", ((ObservableHost)SelectedComputers[0]).Name)
@@ -223,7 +222,7 @@ namespace BoincManagerWindows.ViewModels
             }            
         }
 
-        private async void ExecuteConnectComputerCommand()
+        private async System.Threading.Tasks.Task ExecuteConnectComputerCommand()
         {
             foreach (ObservableHost computer in SelectedComputers)
             {
@@ -252,7 +251,7 @@ namespace BoincManagerWindows.ViewModels
             return false;
         }
 
-        private async void ExecuteDisconnectComputerCommand()
+        private async System.Threading.Tasks.Task ExecuteDisconnectComputerCommand()
         {
             foreach (ObservableHost computer in SelectedComputers)
             {
@@ -281,7 +280,7 @@ namespace BoincManagerWindows.ViewModels
             return false;
         }
 
-        private async void ExecuteAttachProjectCommand()
+        private async System.Threading.Tasks.Task ExecuteAttachProjectCommand()
         {
             var updateNeeded = false;
             foreach (ObservableHost selectedComputer in SelectedComputers)
@@ -303,7 +302,7 @@ namespace BoincManagerWindows.ViewModels
             }
         }
 
-        private async void ExecuteUpdateProjectCommand()
+        private async System.Threading.Tasks.Task ExecuteUpdateProjectCommand()
         {
             foreach (ObservableProject selectedProject in SelectedProjects)
             {
@@ -318,7 +317,7 @@ namespace BoincManagerWindows.ViewModels
             return SelectedProjects != null && SelectedProjects.Count != 0;
         }
 
-        private async void ExecuteSuspendProjectCommand()
+        private async System.Threading.Tasks.Task ExecuteSuspendProjectCommand()
         {
             foreach (ObservableProject selectedProject in SelectedProjects)
             {
@@ -331,7 +330,7 @@ namespace BoincManagerWindows.ViewModels
             await _manager.Update();
         }
 
-        private async void ExecuteNoNewTasksProjectCommand()
+        private async System.Threading.Tasks.Task ExecuteNoNewTasksProjectCommand()
         {
             foreach (ObservableProject selectedProject in SelectedProjects)
             {
@@ -344,7 +343,7 @@ namespace BoincManagerWindows.ViewModels
             await _manager.Update();
         }
 
-        private async void ExecuteResetProjectCommand()
+        private async System.Threading.Tasks.Task ExecuteResetProjectCommand()
         {
             string messageBoxText = SelectedProjects.Count == 1
                 ? $"Resetting project {((ObservableProject)SelectedProjects[0]).Name}. Are you sure?"
@@ -360,7 +359,7 @@ namespace BoincManagerWindows.ViewModels
             await _manager.Update();
         }
 
-        private async void ExecuteDetachProjectCommand()
+        private async System.Threading.Tasks.Task ExecuteDetachProjectCommand()
         {
             string messageBoxText = SelectedProjects.Count == 1
                 ? $"Detaching project {((ObservableProject)SelectedProjects[0]).Name}. Are you sure?"
@@ -403,7 +402,7 @@ namespace BoincManagerWindows.ViewModels
             return false;
         }
 
-        private async void ExecuteSuspendTaskCommand()
+        private async System.Threading.Tasks.Task ExecuteSuspendTaskCommand()
         {
             foreach (ObservableTask selectedTask in SelectedTasks)
             {
@@ -436,7 +435,7 @@ namespace BoincManagerWindows.ViewModels
             return false;
         }
 
-        private async void ExecuteAbortTaskCommand()
+        private async System.Threading.Tasks.Task ExecuteAbortTaskCommand()
         {
             string messageBoxText = SelectedTasks.Count == 1
                 ? $"Aborting task {((ObservableTask)SelectedTasks[0]).Workunit}. Are you sure?"
@@ -471,7 +470,7 @@ namespace BoincManagerWindows.ViewModels
             return false;
         }
 
-        private async void ExecuteRetryTransferCommand()
+        private async System.Threading.Tasks.Task ExecuteRetryTransferCommand()
         {
             foreach (ObservableTransfer selectedTransfer in SelectedTransfers)
             {
@@ -486,7 +485,7 @@ namespace BoincManagerWindows.ViewModels
             return SelectedTransfers != null && SelectedTransfers.Count != 0;
         }
 
-        private async void ExecuteAbortTransferCommand()
+        private async System.Threading.Tasks.Task ExecuteAbortTransferCommand()
         {
             string messageBoxText = SelectedTransfers.Count == 1
                 ? $"Aborting transfer {((ObservableTransfer)SelectedTransfers[0]).FileName}. Are you sure?"

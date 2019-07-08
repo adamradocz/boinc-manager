@@ -2,9 +2,11 @@
 
 namespace BoincManager.Common.MVVM
 {
-    // From:
-    // - https://github.com/jamesmontemagno/MasterDetail-Xamarin/blob/master/MasterDetail.Store/Common/RelayCommand.cs
-    // - https://christianscheer.github.io/2017/11/20/relaycommand-vs-delegatecommand.html
+    /* From:
+     * - https://github.com/jamesmontemagno/MasterDetail-Xamarin/blob/master/MasterDetail.Store/Common/RelayCommand.cs
+     * - https://christianscheer.github.io/2017/11/20/relaycommand-vs-delegatecommand.html
+     * - https://www.wpftutorial.net/DelegateCommand.html
+    */
 
     /// <summary>
     /// A command whose sole purpose is to relay its functionality to other objects by invoking delegates. 
@@ -14,7 +16,9 @@ namespace BoincManager.Common.MVVM
     /// </summary>
     public class RelayCommand : System.Windows.Input.ICommand
     {
+        private readonly Action<object> _executeWithParam;
         private readonly Action _execute;
+        private readonly Func<object, bool> _canExecuteWithParam;
         private readonly Func<bool> _canExecute;
 
         /// <summary>
@@ -26,6 +30,9 @@ namespace BoincManager.Common.MVVM
         /// Creates a new command that can always execute.
         /// </summary>
         /// <param name="execute">The execution logic.</param>
+        public RelayCommand(Action<object> execute) : this(execute, null)
+        { }
+
         public RelayCommand(Action execute) : this(execute, null)
         { }
 
@@ -34,9 +41,15 @@ namespace BoincManager.Common.MVVM
         /// </summary>
         /// <param name="execute">The execution logic.</param>
         /// <param name="canExecute">The execution status logic.</param>
+        public RelayCommand(Action<object> execute, Func<object, bool> canExecute)
+        {
+            _executeWithParam = execute ?? throw new ArgumentNullException("RelayCommand: " + nameof(execute));
+            _canExecuteWithParam = canExecute;
+        }
+
         public RelayCommand(Action execute, Func<bool> canExecute)
         {
-            _execute = execute ?? throw new ArgumentNullException("RelayCommand: execute");
+            _execute = execute ?? throw new ArgumentNullException("RelayCommand: " + nameof(execute));
             _canExecute = canExecute;
         }
 
@@ -49,7 +62,17 @@ namespace BoincManager.Common.MVVM
         /// <returns>true if this command can be executed; otherwise, false.</returns>
         public bool CanExecute(object parameter)
         {
-            return _canExecute == null ? true : _canExecute();
+            if (_canExecute != null)
+            {
+                return _canExecute();
+            }
+            else if (_canExecuteWithParam != null)
+            {
+                return _canExecuteWithParam(parameter);
+            }
+
+            // _canExecute and _canExecuteWithParam are both null
+            return true;
         }
 
         /// <summary>
@@ -60,7 +83,14 @@ namespace BoincManager.Common.MVVM
         /// </param>
         public void Execute(object parameter)
         {
-            _execute();
+            if (_execute != null)
+            {
+                _execute();
+            }
+            else
+            {
+                _executeWithParam(parameter);
+            }
         }
 
         /// <summary>

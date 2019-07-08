@@ -318,6 +318,25 @@ namespace BoincManager
                     Tasks.RemoveAt(i);
                     i--;
                 }
+                else if (!string.IsNullOrEmpty(SearchString))
+                {
+                    var searchStringFound = false;
+                    foreach (var content in Tasks[i].GetContentsForFiltering())
+                    {
+                        if (content != null && content.IndexOf(SearchString, StringComparison.InvariantCultureIgnoreCase) != -1)
+                        {
+                            // The search string is found in any of the Models's property
+                            searchStringFound = true;                            
+                            break;
+                        }
+                    }
+
+                    if (!searchStringFound)
+                    {
+                        Tasks.RemoveAt(i);
+                        i--;
+                    }
+                }
             }
          }
 

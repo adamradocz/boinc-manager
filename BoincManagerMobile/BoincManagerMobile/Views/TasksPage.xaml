@@ -8,6 +8,10 @@
              Title="{Binding Title}">
 
     <StackLayout>
+        <StackLayout Orientation="Horizontal" >
+            <Label Text="Filter:" />
+            <Entry x:Name="SearchStringEntry" ReturnCommand="{Binding SetFilterCommand}" ReturnCommandParameter="{Binding Source={x:Reference SearchStringEntry}, Path=Text}"/>
+        </StackLayout>
         <ListView x:Name="ItemsListView"
                 ItemsSource="{Binding Tasks}"
                 VerticalOptions="FillAndExpand"
