@@ -133,6 +133,18 @@ namespace BoincManager
 
                     await hostState.BoincState.UpdateAll();
                     hostState.Status = await hostState.GetHostStatus();
+
+                    if (_useObservableCollections)
+                    {
+                        for (int i = 0; i < Hosts.Count; i++)
+                        {
+                            if (Hosts[i].Id == hostState.Id)
+                            {
+                                Hosts[i].Update(hostState);
+                                break;
+                            }
+                        }
+                    }
                 }
                 else
                 {
@@ -159,7 +171,6 @@ namespace BoincManager
                         await Connect(hostState.Id);
                     }
                 }
-
             }
             else // Connect to all hosts
             {
