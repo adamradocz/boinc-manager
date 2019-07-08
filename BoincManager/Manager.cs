@@ -260,6 +260,14 @@ namespace BoincManager
                     Projects.RemoveAt(i);
                     i--;
                 }
+                else if (!string.IsNullOrEmpty(SearchString))
+                {
+                    if (!SearchStringFound(Projects[i]))
+                    {
+                        Projects.RemoveAt(i);
+                        i--;
+                    }
+                }
             }
         }
 
@@ -320,25 +328,14 @@ namespace BoincManager
                 }
                 else if (!string.IsNullOrEmpty(SearchString))
                 {
-                    var searchStringFound = false;
-                    foreach (var content in Tasks[i].GetContentsForFiltering())
-                    {
-                        if (content != null && content.IndexOf(SearchString, StringComparison.InvariantCultureIgnoreCase) != -1)
-                        {
-                            // The search string is found in any of the Models's property
-                            searchStringFound = true;                            
-                            break;
-                        }
-                    }
-
-                    if (!searchStringFound)
+                    if (!SearchStringFound(Tasks[i]))
                     {
                         Tasks.RemoveAt(i);
                         i--;
                     }
                 }
             }
-         }
+        }
 
         private async Task UpdateTransfers(HostState hostState)
         {
@@ -395,6 +392,14 @@ namespace BoincManager
                     Transfers.RemoveAt(i);
                     i--;
                 }
+                else if (!string.IsNullOrEmpty(SearchString))
+                {
+                    if (!SearchStringFound(Transfers[i]))
+                    {
+                        Transfers.RemoveAt(i);
+                        i--;
+                    }
+                }
             }
         }
 
@@ -449,7 +454,29 @@ namespace BoincManager
                     Messages.RemoveAt(i);
                     i--;
                 }
+                else if (!string.IsNullOrEmpty(SearchString))
+                {
+                    if (!SearchStringFound(Messages[i]))
+                    {
+                        Messages.RemoveAt(i);
+                        i--;
+                    }
+                }
             }
+        }
+
+        private bool SearchStringFound(Interfaces.IFilterable filterable)
+        {
+            foreach (var content in filterable.GetContentsForFiltering())
+            {
+                if (content != null && content.IndexOf(SearchString, StringComparison.InvariantCultureIgnoreCase) != -1)
+                {
+                    // The search string is found in any of the Models's property
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         #endregion
