@@ -134,17 +134,7 @@ namespace BoincManager
                     await hostState.BoincState.UpdateAll();
                     hostState.Status = await hostState.GetHostStatus();
 
-                    if (_useObservableCollections)
-                    {
-                        for (int i = 0; i < Hosts.Count; i++)
-                        {
-                            if (Hosts[i].Id == hostState.Id)
-                            {
-                                Hosts[i].Update(hostState);
-                                break;
-                            }
-                        }
-                    }
+                    UpdateObservableHost(hostState);
                 }
                 else
                 {
@@ -182,6 +172,21 @@ namespace BoincManager
         }
 
         #region Update section
+        private void UpdateObservableHost(HostState hostState)
+        {
+            if (_useObservableCollections)
+            {
+                for (int i = 0; i < Hosts.Count; i++)
+                {
+                    if (Hosts[i].Id == hostState.Id)
+                    {
+                        Hosts[i].Update(hostState);
+                        break;
+                    }
+                }
+            }
+        }
+
         public async Task Update()
         {
             if (_updating)
@@ -504,6 +509,8 @@ namespace BoincManager
                 hostState.Connected = false;                
                 hostState.TerminateConnection();
                 hostState.Status = string.Empty;
+
+                UpdateObservableHost(hostState);
             }
         }
         
@@ -614,17 +621,7 @@ namespace BoincManager
 
             // This part of the code is not concurrent, but only ASP.NET uses concurrent calls, MVVM projects are not.
             // ASP.NET don't use ObservableCollections
-            if (_useObservableCollections)
-            {
-                for (int i = 0; i < Hosts.Count; i++)
-                {
-                    if (Hosts[i].Id == host.Id)
-                    {
-                        Hosts[i].Update(hostState);
-                        break;
-                    }
-                }
-            }
+            UpdateObservableHost(hostState);
         }
 
         public HostState GetHostState(int id)
