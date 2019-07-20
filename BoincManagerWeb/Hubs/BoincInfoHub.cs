@@ -28,7 +28,8 @@ namespace BoincManagerWeb.Hubs
             // Start the Boinc background update loop if it was stopped
             if (!_manager.IsRunning)
             {
-                _manager.Start();
+                //_manager.Start();
+                Task.Run(() => _manager.Start());
             }
             else if (_manager.DelayedStopStarted)
             {
@@ -49,7 +50,7 @@ namespace BoincManagerWeb.Hubs
             if (_connections.Skip(0).Count() == 0)
             {
                 // Manager stops after 30 seconds
-                _manager.Stop(30000);
+                _manager.Stop(30000).ContinueWith(task => Console.WriteLine("Error: BoincInfoHub.OnDisconnectedAsync: " + task.Exception), TaskContinuationOptions.OnlyOnFaulted);
             }
 
             return base.OnDisconnectedAsync(exception);

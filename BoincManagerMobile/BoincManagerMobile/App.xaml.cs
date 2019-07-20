@@ -23,7 +23,7 @@ namespace BoincManagerMobile
                 BoincManager.Utils.InitializeApplication(context, Manager, true);
             }
 
-            Manager.Start();
+            System.Threading.Tasks.Task.Run(() => Manager.Start());
 
             MainPage = new MainPage();
         }

@@ -29,7 +29,7 @@ namespace BoincManager
         public bool IsRunning { get; private set; }
 
         /// <summary>
-        /// Set X milliseconds Delay in the update loop in the <see cref="Start"/>.
+        /// Set X milliseconds Delay for the update loop in the <see cref="Start"/>.
         /// </summary>
         public int UpdatePeriod { get; set; } = 2000;
         public bool DelayedStopStarted { get; private set; }

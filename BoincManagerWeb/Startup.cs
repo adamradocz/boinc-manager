@@ -94,10 +94,10 @@ namespace BoincManagerWeb
             });
 
             // Initialize the Application
-            BoincManager.Utils.InitializeApplication(context, manager, false);            
+            BoincManager.Utils.InitializeApplication(context, manager, false);
 
             // Start the Boinc Manager
-            manager.Start();
+            System.Threading.Tasks.Task.Run(() => manager.Start());
         }
     }
 }

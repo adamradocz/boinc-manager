@@ -533,7 +533,7 @@ namespace BoincManagerWindows.ViewModels
 
             // Start the Boinc Manager
             status = "Connecting...";
-            _manager.Start();
+            System.Threading.Tasks.Task.Run(() => _manager.Start());
         }
 
         public void Dispose()
