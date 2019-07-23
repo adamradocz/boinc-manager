@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BoincManagerMobile.Models;
+using System;
 using System.Windows.Input;
 
 using Xamarin.Forms;
@@ -9,7 +10,7 @@ namespace BoincManagerMobile.ViewModels
     {
         public AboutViewModel()
         {
-            Title = "About";
+            Title = nameof(MenuItemType.About);
 
             OpenWebCommand = new Command(() => Device.OpenUri(new Uri("https://xamarin.com/platform")));
         }

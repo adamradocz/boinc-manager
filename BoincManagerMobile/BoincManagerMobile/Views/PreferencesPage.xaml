@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="BoincManagerMobile.Views.PreferencesPage"
+             Title="{Binding Title}">
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Save" Command="{Binding SaveGlobalPreferencesOverrideCommand}" />
+    </ContentPage.ToolbarItems>
+
+    <TableView Intent="Settings">
+        <TableRoot>
+            <TableSection Title="General">
+                <ViewCell>
+                    <StackLayout Orientation="Horizontal" >
+                        <Label Text="Selected Host" VerticalOptions="Center" />
+                        <Picker Title="Select a Host"
+                        ItemsSource="{Binding Hosts}" ItemDisplayBinding="{Binding Name}"
+                        SelectedItem="{Binding SelectedHost}"
+                        SelectedIndexChanged="HostPicker_SelectedIndexChanged" HorizontalOptions="FillAndExpand">
+                            <d:Picker.ItemsSource>
+                                <x:Array Type="{x:Type x:String}">
+                                    <x:String>Host 1</x:String>
+                                    <x:String>Host 2</x:String>
+                                </x:Array>
+                            </d:Picker.ItemsSource>
+                        </Picker>
+                    </StackLayout>
+                </ViewCell>
+            </TableSection>
+            <TableSection Title="CPU">
+                <SwitchCell Text="RunIfUserActive" On="{Binding RunIfUserActive}" />
+                <ViewCell>
+                    <StackLayout Orientation="Horizontal">
+                        <Label Text="CPU limit" VerticalOptions="Center" />
+                        <Slider Value="{Binding CpuUsageLimit}" Minimum="0" Maximum="100" ValueChanged="CPULimitSlider_ValueChanged" HorizontalOptions="FillAndExpand"/>
+                        <Label Text="{Binding CpuUsageLimit}" VerticalOptions="Center" HorizontalOptions="End" />
+                    </StackLayout>
+                </ViewCell>
+            </TableSection>
+        </TableRoot>
+    </TableView>
+
+</ContentPage>

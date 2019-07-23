@@ -39,6 +39,9 @@ namespace BoincManagerMobile.Views
                     case (int)Models.MenuItemType.Transfers:
                         MenuPages.Add(id, new NavigationPage(new TransfersPage()));
                         break;
+                    case (int)Models.MenuItemType.Preferences:
+                        MenuPages.Add(id, new NavigationPage(new PreferencesPage()));
+                        break;
                     case (int)Models.MenuItemType.About:
                         MenuPages.Add(id, new NavigationPage(new AboutPage()));
                         break;

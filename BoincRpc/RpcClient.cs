@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Sockets;
@@ -954,13 +955,15 @@ namespace BoincRpc
             return response;
         }
 
+        // Link: https://boinc.berkeley.edu/wiki/PreferencesXml
         /// <summary>
         /// Global preferences operation: Write the given contents to the global preferences override file. If the argument is an empty string, delete the file.
         /// This request requires authentication.
+        /// Only the modified preferences will be overwritten not the whole file.
         /// </summary>
         /// <param name="globalPreferencesOverride"></param>
         /// <returns></returns>
-        public async Task SetGlobalPreferencesOverrideAsync(XElement globalPreferencesOverride)
+        public async Task SetGlobalPreferencesOverrideAsync(List<XElement> globalPreferencesOverride)
         {
             CheckDisposed();
 
@@ -969,9 +972,43 @@ namespace BoincRpc
 
             CheckConnected();
 
-            XElement request = new XElement("set_global_prefs_override", globalPreferencesOverride);
+            // Create the GlobalPreferencesOverride
+            XElement request = new XElement("set_global_prefs_override");
+            XElement globalPreferences = new XElement("global_preferences");
+            foreach (var preference in globalPreferencesOverride)
+            {
+                globalPreferences.Add(preference);
+            }
+
+            // If the argument is an empty string the intention is to delete the file,
+            // therefore no need to add back the unmodified preferences.
+            if (!globalPreferencesOverride[0].IsEmpty)
+            {
+                // Add the existing but unmodified preferences to the request so those preferences stay intact.
+                var existingGlobalPreferencesOverride = await GetGlobalPreferencesOverrideAsync();
+                foreach (var existingElement in existingGlobalPreferencesOverride.Elements())
+                {
+                    var element = globalPreferences.Element(existingElement.Name);
+                    if (element == null)
+                    {
+                        globalPreferences.Add(existingElement);
+                    }
+                }
+            }            
+
+            request.Add(globalPreferences);
 
             CheckResponse(await PerformRpcAsync(request));
+        }
+
+        public XElement CreateRunIfUserActiveXElementForGlobalPreferencesOverride(bool runIfUserActive)
+        {
+            return new XElement("run_if_user_active", runIfUserActive ? 1 : 0);
+        }
+
+        public XElement CreateCpuUsageLimitXElementForGlobalPreferencesOverride(double cpuUsageLimit)
+        {
+            return new XElement("cpu_usage_limit", cpuUsageLimit);
         }
 
         /// <summary>

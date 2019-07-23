@@ -7,6 +7,7 @@
         Tasks,
         Transfers,
         Messages,
+        Preferences,
         About
     }
     public class HomeMenuItem
