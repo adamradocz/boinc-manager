@@ -35,7 +35,7 @@ You can specialize the `boinc/client` image with either of the following tags to
 
 The following command runs the BoincManagerWeb Docker container:
 
-```dockerfile
+```sh
 docker run -d \
   --name boinc-manager-web \
   -p "8000:80" \
