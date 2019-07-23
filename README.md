@@ -35,7 +35,7 @@ You can specialize the `boinc/client` image with either of the following tags to
 
 The following command runs the BoincManagerWeb Docker container:
 
-```
+```dockerfile
 docker run -d \
   --name boinc-manager-web \
   -p "8000:80" \
@@ -48,7 +48,7 @@ Access the webui at `http://your-ip:8000`
 
 ### Docker Compose
 You can create the following `docker-compose.yml` file and from within the same directory run the Manager with `docker-compose up -d` to avoid the longer command from above. 
-```
+```yaml
 version: "2"
 services:
 
@@ -63,7 +63,7 @@ services:
 ```
 
 You can run Boinc Client and Manager together with the following `docker-compose.yml` file. For more info about the Boinc Client Docker image check out its [official page](https://hub.docker.com/r/boinc/client)
-```
+```yaml
 version: "2"
 services:
 
@@ -127,3 +127,22 @@ Environment variables have to be set:
 - `ASPNETCORE_Kestrel__Certificates__Default__Path`
 - `ASPNETCORE_Kestrel__Certificates__Default__Password`
 - `ASPNETCORE_HTTPS_PORT` (Optional)
+
+Example:
+```yaml
+  boinc-manager-web:
+    image: adamrdocz/boinc-manager-web
+    container_name: boinc-manager-web
+    restart: always
+    environment:
+      - ASPNETCORE_URLS=https://+:443;http://+:80
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/privkey.pfx
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=password
+    ports:
+      - "8000:80"
+      - "8001:443"
+    volumes:
+      - /opt/appdata/boinc-manager-web:/app/BoincManager
+      - /privkeylocation:/https
+
+```
