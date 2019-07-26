@@ -1001,6 +1001,12 @@ namespace BoincRpc
             CheckResponse(await PerformRpcAsync(request));
         }
 
+        /// <summary>
+        /// Create boolean type element for the GlobalPreferencesOverride.
+        /// </summary>
+        /// <param name="element"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
         public XElement CreateGlobalPreferencesOverrideElement(GlobalPreferencesOverrideBoolElement element, bool value)
         {
             switch (element)
@@ -1028,6 +1034,12 @@ namespace BoincRpc
             }
         }
 
+        /// <summary>
+        /// Create double type element for the GlobalPreferencesOverride.
+        /// </summary>
+        /// <param name="element"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
         public XElement CreateGlobalPreferencesOverrideElement(GlobalPreferencesOverrideDoubleElement element, double value)
         {
             switch (element)
@@ -1087,6 +1099,12 @@ namespace BoincRpc
             }            
         }
 
+        /// <summary>
+        /// Create integer type element for the GlobalPreferencesOverride.
+        /// </summary>
+        /// <param name="element"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
         public XElement CreateGlobalPreferencesOverrideElement(GlobalPreferencesOverrideIntElement element, int value)
         {
             switch (element)
@@ -1099,10 +1117,10 @@ namespace BoincRpc
         }
 
         /// <summary>
-        /// 
+        /// Create "day_prefs" element for the GlobalPreferencesOverride.
         /// </summary>
         /// <param name="dayOfWeek"></param>
-        /// <param name="startEndElements">Contains the CPU and Network starn and End hour preferences.
+        /// <param name="startEndElements">Contains the CPU and Network Start and End Hour preferences.
         /// The Key is the element name. (start_hour, end_hour, net_start_hour, net_end_hour)</param>
         /// <returns></returns>
         public XElement CreateGlobalPreferencesOverrideElement(DayOfWeek dayOfWeek, Dictionary<string, XElement> startEndElements)
