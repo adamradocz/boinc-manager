@@ -273,4 +273,54 @@
         Pipe = -237,
         NeedHttps = -238
     }
+
+    #region GlobalPreferencesOverride
+    // Link: https://boinc.berkeley.edu/wiki/PreferencesXml
+    public enum GlobalPreferencesOverrideBoolElement
+    {
+        ConfirmBeforeConnecting,
+        DontVerifyImages,
+        HangupIfDialed,
+        LeaveAppsInMemory,
+        NetworkWifiOnly,
+        OverrideFilePresent,
+        RunGpuIfUserActive,
+        RunIfUserActive,
+        RunOnBatteries     
+    }
+
+    public enum GlobalPreferencesOverrideDoubleElement
+    {
+        BatteryChargeMinPercentage,
+        BatteryMaxTemperature,
+        CpuEndHour,
+        CpuSchedulingPeriod,
+        CpuStartHour,
+        CpuUsageLimit,
+        DailyTransferLimitMB,
+        DailyTransferPeriodDays,
+        DiskInterval,
+        DiskMaxUsedGB,
+        DiskMaxUsedPercentage,
+        DiskMinFreeGB,
+        IdleTimeToRun,
+        MaxBytesPerSecondDown,
+        MaxBytesPerSecondUp,
+        MaxNumberOfCpusPercentage,
+        NetworkEndHour,
+        NetworkStartHour,
+        RamMaxUsedBusyPercentage,
+        RamMaxUsedIdlePercentage,
+        SuspendCpuUsage,
+        SuspendIfNoRecentInput,
+        VMMaxUsedPercentage,
+        WorkBufferAdditionalDays,
+        WorkBufferMinDays
+    }
+
+    public enum GlobalPreferencesOverrideIntElement
+    {
+        MaxNumberOfCpus
+    }
+    #endregion
 }

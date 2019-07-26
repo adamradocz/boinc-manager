@@ -43,8 +43,8 @@ namespace BoincManagerMobile.ViewModels
         {
             List<XElement> globalPreferencesOverride = new List<XElement>
             {
-                HostState.RpcClient.CreateRunIfUserActiveXElementForGlobalPreferencesOverride(RunIfUserActive),
-                HostState.RpcClient.CreateCpuUsageLimitXElementForGlobalPreferencesOverride(CpuUsageLimit)
+                HostState.RpcClient.CreateGlobalPreferencesOverrideElement(BoincRpc.GlobalPreferencesOverrideBoolElement.RunIfUserActive, RunIfUserActive),
+                HostState.RpcClient.CreateGlobalPreferencesOverrideElement(BoincRpc.GlobalPreferencesOverrideDoubleElement.CpuUsageLimit, CpuUsageLimit)
             };
 
             await HostState.RpcClient.SetGlobalPreferencesOverrideAsync(globalPreferencesOverride);

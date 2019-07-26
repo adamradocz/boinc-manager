@@ -1001,14 +1001,131 @@ namespace BoincRpc
             CheckResponse(await PerformRpcAsync(request));
         }
 
-        public XElement CreateRunIfUserActiveXElementForGlobalPreferencesOverride(bool runIfUserActive)
+        public XElement CreateGlobalPreferencesOverrideElement(GlobalPreferencesOverrideBoolElement element, bool value)
         {
-            return new XElement("run_if_user_active", runIfUserActive ? 1 : 0);
+            switch (element)
+            {                
+                case GlobalPreferencesOverrideBoolElement.ConfirmBeforeConnecting:
+                    return new XElement("confirm_before_connecting", value ? 1 : 0);
+                case GlobalPreferencesOverrideBoolElement.DontVerifyImages:
+                    return new XElement("dont_verify_images", value ? 1 : 0);
+                case GlobalPreferencesOverrideBoolElement.HangupIfDialed:
+                    return new XElement("hangup_if_dialed", value ? 1 : 0);
+                case GlobalPreferencesOverrideBoolElement.LeaveAppsInMemory:
+                    return new XElement("leave_apps_in_memory", value ? 1 : 0);
+                case GlobalPreferencesOverrideBoolElement.NetworkWifiOnly:
+                    return new XElement("network_wifi_only", value ? 1 : 0);
+                case GlobalPreferencesOverrideBoolElement.OverrideFilePresent:
+                    return new XElement("override_file_present", value ? 1 : 0);
+                case GlobalPreferencesOverrideBoolElement.RunGpuIfUserActive:
+                    return new XElement("run_gpu_if_user_active", value ? 1 : 0);
+                case GlobalPreferencesOverrideBoolElement.RunIfUserActive:
+                    return new XElement("run_if_user_active", value ? 1 : 0);
+                case GlobalPreferencesOverrideBoolElement.RunOnBatteries:
+                    return new XElement("run_on_batteries", value ? 1 : 0);
+                default:
+                    throw new ArgumentException("Invalid Global Preferences Override Bool Element.", nameof(element));
+            }
         }
 
-        public XElement CreateCpuUsageLimitXElementForGlobalPreferencesOverride(double cpuUsageLimit)
+        public XElement CreateGlobalPreferencesOverrideElement(GlobalPreferencesOverrideDoubleElement element, double value)
         {
-            return new XElement("cpu_usage_limit", cpuUsageLimit);
+            switch (element)
+            {
+                case GlobalPreferencesOverrideDoubleElement.BatteryChargeMinPercentage:
+                    return new XElement("battery_charge_min_pct", value);
+                case GlobalPreferencesOverrideDoubleElement.BatteryMaxTemperature:
+                    return new XElement("battery_max_temperature", value);
+                case GlobalPreferencesOverrideDoubleElement.CpuEndHour:
+                    return new XElement("end_hour", value);
+                case GlobalPreferencesOverrideDoubleElement.CpuSchedulingPeriod:
+                    return new XElement("cpu_scheduling_period_minutes", value);
+                case GlobalPreferencesOverrideDoubleElement.CpuStartHour:
+                    return new XElement("start_hour", value);
+                case GlobalPreferencesOverrideDoubleElement.CpuUsageLimit:
+                    return new XElement("cpu_usage_limit", value);
+                case GlobalPreferencesOverrideDoubleElement.DailyTransferLimitMB:
+                    return new XElement("daily_xfer_limit_mb", value);
+                case GlobalPreferencesOverrideDoubleElement.DailyTransferPeriodDays:
+                    return new XElement("daily_xfer_period_days", value);
+                case GlobalPreferencesOverrideDoubleElement.DiskInterval:
+                    return new XElement("disk_interval", value);
+                case GlobalPreferencesOverrideDoubleElement.DiskMaxUsedGB:
+                    return new XElement("disk_max_used_gb", value);
+                case GlobalPreferencesOverrideDoubleElement.DiskMaxUsedPercentage:
+                    return new XElement("disk_max_used_pct", value);
+                case GlobalPreferencesOverrideDoubleElement.DiskMinFreeGB:
+                    return new XElement("disk_min_free_gb", value);
+                case GlobalPreferencesOverrideDoubleElement.IdleTimeToRun:
+                    return new XElement("idle_time_to_run", value);
+                case GlobalPreferencesOverrideDoubleElement.MaxBytesPerSecondDown:
+                    return new XElement("max_bytes_sec_down", value);
+                case GlobalPreferencesOverrideDoubleElement.MaxBytesPerSecondUp:
+                    return new XElement("max_bytes_sec_up", value);
+                case GlobalPreferencesOverrideDoubleElement.MaxNumberOfCpusPercentage:
+                    return new XElement("max_ncpus_pct", value);
+                case GlobalPreferencesOverrideDoubleElement.NetworkEndHour:
+                    return new XElement("net_end_hour", value);
+                case GlobalPreferencesOverrideDoubleElement.NetworkStartHour:
+                    return new XElement("net_start_hour", value);
+                case GlobalPreferencesOverrideDoubleElement.RamMaxUsedBusyPercentage:
+                    return new XElement("ram_max_used_busy_pct", value);
+                case GlobalPreferencesOverrideDoubleElement.RamMaxUsedIdlePercentage:
+                    return new XElement("ram_max_used_idle_pct", value);
+                case GlobalPreferencesOverrideDoubleElement.SuspendCpuUsage:
+                    return new XElement("suspend_cpu_usage", value);
+                case GlobalPreferencesOverrideDoubleElement.SuspendIfNoRecentInput:
+                    return new XElement("suspend_if_no_recent_input", value);
+                case GlobalPreferencesOverrideDoubleElement.VMMaxUsedPercentage:
+                    return new XElement("vm_max_used_pct", value);
+                case GlobalPreferencesOverrideDoubleElement.WorkBufferAdditionalDays:
+                    return new XElement("work_buf_additional_days", value);
+                case GlobalPreferencesOverrideDoubleElement.WorkBufferMinDays:
+                    return new XElement("work_buf_min_days", value);
+                default:
+                    throw new ArgumentException("Invalid Global Preferences Override Double Element.", nameof(element));
+            }            
+        }
+
+        public XElement CreateGlobalPreferencesOverrideElement(GlobalPreferencesOverrideIntElement element, int value)
+        {
+            switch (element)
+            {
+                case GlobalPreferencesOverrideIntElement.MaxNumberOfCpus:
+                    return new XElement("max_cpus", value);
+                default:
+                    throw new ArgumentException("Invalid Global Preferences Override Integer Element.", nameof(element));
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="dayOfWeek"></param>
+        /// <param name="startEndElements">Contains the CPU and Network starn and End hour preferences.
+        /// The Key is the element name. (start_hour, end_hour, net_start_hour, net_end_hour)</param>
+        /// <returns></returns>
+        public XElement CreateGlobalPreferencesOverrideElement(DayOfWeek dayOfWeek, Dictionary<string, XElement> startEndElements)
+        {
+            XElement dayPreferences = new XElement("day_prefs");
+            dayPreferences.Add(new XElement("day_of_week", dayOfWeek));
+            
+            foreach (var dayPreferencesElement in startEndElements)
+            {
+                switch (dayPreferencesElement.Key)
+                {
+                    case "start_hour":
+                    case "end_hour":
+                    case "net_start_hour":
+                    case "net_end_hour":
+                        dayPreferences.Add(dayPreferencesElement.Value);
+                        break;
+                    default:
+                        throw new ArgumentException("Invalid DayPreferences element for Global Preferences Override.", nameof(dayPreferencesElement.Key));
+                }
+            }
+
+            return dayPreferences;
         }
 
         /// <summary>
