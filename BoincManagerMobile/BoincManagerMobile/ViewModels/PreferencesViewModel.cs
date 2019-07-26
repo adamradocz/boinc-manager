@@ -59,11 +59,11 @@ namespace BoincManagerMobile.ViewModels
         public void Update()
         {
             if (SelectedHost == null)            
-                throw new NullReferenceException(nameof(SelectedHost));            
+                throw new NullReferenceException(nameof(SelectedHost));
 
             HostState = App.Manager.GetHostState(SelectedHost.Id);
             CpuUsageLimit = HostState.BoincState.CoreClientState.GlobalPreferences.CpuUsageLimit;
-            RunIfUserActive = HostState.BoincState.CoreClientState.GlobalPreferences.NetworkWifiOnly;
+            RunIfUserActive = HostState.BoincState.CoreClientState.GlobalPreferences.RunIfUserActive;
         }
     }
 }
