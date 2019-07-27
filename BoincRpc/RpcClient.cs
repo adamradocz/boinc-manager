@@ -1002,6 +1002,7 @@ namespace BoincRpc
         }
 
         /// <summary>
+        /// Helper method for <see cref="SetGlobalPreferencesOverrideAsync"/>.
         /// Create boolean type element for the GlobalPreferencesOverride.
         /// </summary>
         /// <param name="element"></param>
@@ -1035,6 +1036,7 @@ namespace BoincRpc
         }
 
         /// <summary>
+        /// Helper method for <see cref="SetGlobalPreferencesOverrideAsync"/>.
         /// Create double type element for the GlobalPreferencesOverride.
         /// </summary>
         /// <param name="element"></param>
@@ -1100,6 +1102,7 @@ namespace BoincRpc
         }
 
         /// <summary>
+        /// Helper method for <see cref="SetGlobalPreferencesOverrideAsync"/>.
         /// Create integer type element for the GlobalPreferencesOverride.
         /// </summary>
         /// <param name="element"></param>
@@ -1117,6 +1120,7 @@ namespace BoincRpc
         }
 
         /// <summary>
+        /// Helper method for <see cref="SetGlobalPreferencesOverrideAsync"/>.
         /// Create "day_prefs" element for the GlobalPreferencesOverride.
         /// </summary>
         /// <param name="dayOfWeek"></param>
