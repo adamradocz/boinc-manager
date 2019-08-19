@@ -19,13 +19,13 @@ You can specialize the `boinc/client` image with either of the following tags to
 | [`latest`, `alpine`](Dockerfile.alpine) | Alpine based BOINC Manager. |
 
 
-### ARMv7 32-bit
+### ARMv7 32-bit (you have to build for yourself)
 | Tag | Info |
 | :--- | :--- |
 | [`arm32v7`](Dockerfile) | Debian based BOINC Manager. |
 
 
-### ARMv8 64-bit
+### ARMv8 64-bit (you have to build for yourself)
 | Tag | Info |
 | :--- | :--- |
 | [`arm64v8`](Dockerfile) | Debian based BOINC Manager. |
