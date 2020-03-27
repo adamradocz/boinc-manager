@@ -1,5 +1,5 @@
 # Builder image
-FROM mcr.microsoft.com/dotnet/core/sdk:3.0-alpine AS build
+FROM mcr.microsoft.com/dotnet/core/sdk:3.1-alpine AS build
 WORKDIR /src
 
 # Copy csprojs and restore as distinct layers
@@ -15,7 +15,7 @@ RUN dotnet publish "BoincManagerWeb.csproj" -c Release --no-restore -o /app
 
 
 # Runtime image
-FROM mcr.microsoft.com/dotnet/core/aspnet:3.0-alpine
+FROM mcr.microsoft.com/dotnet/core/aspnet:3.1-alpine
 
 # Set the ApplicationData folder path
 ENV XDG_CONFIG_HOME="/app"
