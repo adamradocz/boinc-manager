@@ -1,5 +1,5 @@
 # boinc-manager
-.NET Core implementation of a cross-platform BOINC Manager
+.NET Core cross-platform implementation of BOINC Manager
 
 ## Docker
 [![](https://images.microbadger.com/badges/version/adamradocz/boinc-manager-web.svg)](https://microbadger.com/images/adamradocz/boinc-manager-web "Get your own version badge on microbadger.com")
