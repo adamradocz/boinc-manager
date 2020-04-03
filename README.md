@@ -1,37 +1,36 @@
 # boinc-manager
 .NET Core cross-platform implementation of BOINC Manager
 
-## Docker
+## BoincManagerWeb (Docker)
 [![](https://images.microbadger.com/badges/version/adamradocz/boinc-manager-web.svg)](https://microbadger.com/images/adamradocz/boinc-manager-web "Get your own version badge on microbadger.com")
 [![](https://images.microbadger.com/badges/image/adamradocz/boinc-manager-web.svg)](https://microbadger.com/images/adamradocz/boinc-manager-web "Get your own image badge on microbadger.com")
 ![Docker Pulls](https://img.shields.io/docker/pulls/adamradocz/boinc-manager-web.svg)
 ![Docker Stars](https://img.shields.io/docker/stars/adamradocz/boinc-manager-web.svg)
 ![Docker Cloud Build Status](https://img.shields.io/docker/cloud/build/adamradocz/boinc-manager-web.svg)
 
-## Supported Architectures and Tags
+### Supported Architectures and Tags
 
-You can specialize the `boinc/client` image with either of the following tags to use one of the specialized container version instead.
 
-### x86-64
+#### x86-64
 | Tag | Info |
 | :--- | :--- |
 | [`debian`](Dockerfile) | Debian based BOINC Manager. |
 | [`latest`, `alpine`](Dockerfile.alpine) | Alpine based BOINC Manager. |
 
 
-### ARMv7 32-bit (you have to build for yourself)
+#### ARMv7 32-bit (you have to build it for yourself)
 | Tag | Info |
 | :--- | :--- |
 | [`arm32v7`](Dockerfile) | Debian based BOINC Manager. |
 
 
-### ARMv8 64-bit (you have to build for yourself)
+#### ARMv8 64-bit (you have to build it for yourself)
 | Tag | Info |
 | :--- | :--- |
 | [`arm64v8`](Dockerfile) | Debian based BOINC Manager. |
 
 
-### BoincManagerWeb Usage
+### Usage
 
 The following command runs the BoincManagerWeb Docker container:
 
@@ -42,9 +41,6 @@ docker run -d \
   -v /opt/appdata/boinc-manager-web:/app/BoincManager \
   adamradocz/boinc-manager-web
 ```
-
-### Application Setup
-Access the webui at `http://your-ip:8000`
 
 ### Docker Compose
 You can create the following `docker-compose.yml` file and from within the same directory run the Manager with `docker-compose up -d` to avoid the longer command from above. 
@@ -71,13 +67,13 @@ services:
     image: boinc/client
     container_name: boinc
     restart: always
+    network_mode: host
+    pid: host
+    volumes:
+      - /opt/appdata/boinc:/var/lib/boinc
     environment:
       - BOINC_GUI_RPC_PASSWORD=123
       - BOINC_CMD_LINE_OPTIONS=--allow_remote_gui_rpc
-    ports:
-      - "31416:31416"
-    volumes:
-      - /opt/appdata/boinc:/var/lib/boinc
 
   boinc-manager-web:
     image: adamradocz/boinc-manager-web
@@ -88,6 +84,9 @@ services:
     volumes:
      - /opt/appdata/boinc-manager-web:/app/BoincManager
 ```
+
+### Application Setup
+Access the webui at `http://your-ip:8000`
 
 
 ### More Info
