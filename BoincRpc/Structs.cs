@@ -211,7 +211,7 @@ namespace BoincRpc
 
         public override int GetHashCode()
         {
-            return Major ^ Minor ^ Release;
+            return HashCode.Combine(Major, Minor, Release);
         }
 
         public static bool operator ==(VersionInfo lhs, VersionInfo rhs)
@@ -496,7 +496,7 @@ namespace BoincRpc
 
         public override int GetHashCode()
         {
-            return (HostID, MasterUrl).GetHashCode();
+            return HashCode.Combine(HostID, MasterUrl);
         }
 
         public static bool operator ==(Project lhs, Project rhs)
@@ -756,7 +756,7 @@ namespace BoincRpc
 
         public override int GetHashCode()
         {
-            return (ProjectUrl, WorkunitName).GetHashCode();
+            return HashCode.Combine(ProjectUrl, WorkunitName);
         }
 
         public static bool operator ==(Result lhs, Result rhs)
@@ -879,7 +879,7 @@ namespace BoincRpc
 
         public override int GetHashCode()
         {
-            return (Hostname, ProjectName, Name).GetHashCode();
+            return HashCode.Combine(Hostname, ProjectName, Name);
         }
 
         public static bool operator ==(FileTransfer lhs, FileTransfer rhs)
@@ -964,7 +964,7 @@ namespace BoincRpc
 
         public override int GetHashCode()
         {
-            return (Project, SequenceNumber, Body, Timestamp).GetHashCode();
+            return HashCode.Combine(Project, SequenceNumber, Body, Timestamp);
         }
 
         public static bool operator ==(Message lhs, Message rhs)
@@ -1145,8 +1145,7 @@ namespace BoincRpc
 
         public override int GetHashCode()
         {
-            //return HashCode.Combine(StartHour, EndHour); Available in .NET Strandard 2.1, but the current Xamarin version doesn't support it, only .NET Standard 2.0
-            return (StartHour, EndHour).GetHashCode();
+            return HashCode.Combine(StartHour, EndHour);
         }
 
         public static bool operator ==(StartEndTime lhs, StartEndTime rhs)

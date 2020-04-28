@@ -103,7 +103,7 @@ namespace BoincManager.Models
 
         public override int GetHashCode()
         {
-            return Id.GetHashCode();
+            return Id;
         }
 
         public static bool operator ==(ObservableHost lhs, ObservableHost rhs)

@@ -170,8 +170,7 @@ namespace BoincManager.Models
 
         public override int GetHashCode()
         {
-            //return HashCode.Combine(HostId, RpcResult.Name); Available in .NET Strandard 2.1, but the current Xamarin version doesn't support it, only .NET Standard 2.0
-            return (HostId, RpcResult.Name).GetHashCode();
+            return HashCode.Combine(HostId, Project, RpcResult.Name);
         }
 
         public static bool operator ==(ObservableTask lhs, ObservableTask rhs)
