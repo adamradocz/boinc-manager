@@ -79,11 +79,6 @@ namespace BoincManagerWeb
 
             app.UseCookiePolicy();
 
-            app.UseSignalR(routes =>
-            {
-                routes.MapHub<BoincInfoHub>("/boincInfoHub");
-            });
-
             app.UseRouting();
 
             app.UseAuthorization();
@@ -91,6 +86,7 @@ namespace BoincManagerWeb
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapRazorPages();
+                endpoints.MapHub<BoincInfoHub>("/boincInfoHub");
             });
 
             // Initialize the Application
