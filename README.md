@@ -99,7 +99,7 @@ Access the webui at `http://your-ip:8000`
 
 ## Development requirements
 - [Visual Studio 2019](https://visualstudio.microsoft.com/vs/)
-- [.NET Core 3.0 Runtime and SDK](https://dotnet.microsoft.com/download/dotnet-core/3.0)
+- [.NET Core 3.1 Runtime and SDK](https://dotnet.microsoft.com/download/dotnet/current)
 
 
 ## Project Structure
